@@ -6,6 +6,7 @@ import (
 	"github.com/udayangaac/mobile-api/internal/config"
 	file_manager "github.com/udayangaac/mobile-api/internal/lib/file-manager"
 	log_traceable "github.com/udayangaac/mobile-api/internal/lib/log-traceable"
+	"github.com/udayangaac/mobile-api/internal/lib/orm"
 	"os"
 	"os/signal"
 	"syscall"
@@ -20,9 +21,17 @@ func Init(ctx context.Context) {
 		new(config.DatabaseConfig),
 	}.Init(file_manager.NewYamlManager())
 
+	if err := orm.InitDatabase(config.DatabaseConf); err != nil {
+		log.Fatal(log_traceable.GetMessage(ctx, "Unable to open the database error :"+err.Error()))
+	}
+
 	select {
 	case <-sigs:
 		log.Info(log_traceable.GetMessage(ctx, "Shutting down Application"))
+		// graceful shutdown code here
+		if err := orm.CloseDatabase(); err != nil {
+			log.Fatal(log_traceable.GetMessage(ctx, "Unable to close the database error :"+err.Error()))
+		}
 		log.Info(log_traceable.GetMessage(ctx, "Application stopped"))
 		os.Exit(0)
 	}
