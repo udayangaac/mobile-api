@@ -7,6 +7,7 @@ import (
 	file_manager "github.com/udayangaac/mobile-api/internal/lib/file-manager"
 	log_traceable "github.com/udayangaac/mobile-api/internal/lib/log-traceable"
 	"github.com/udayangaac/mobile-api/internal/lib/orm"
+	http2 "github.com/udayangaac/mobile-api/internal/transport/http"
 	"os"
 	"os/signal"
 	"syscall"
@@ -24,6 +25,11 @@ func Init(ctx context.Context) {
 	if err := orm.InitDatabase(config.DatabaseConf); err != nil {
 		log.Fatal(log_traceable.GetMessage(ctx, "Unable to open the database error :"+err.Error()))
 	}
+
+	webService := http2.WebService{}
+	webService.Port = config.ServerConf.Port
+	//webService.Services =
+	webService.Init()
 
 	select {
 	case <-sigs:
