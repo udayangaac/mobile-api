@@ -11,7 +11,7 @@ var DB *gorm.DB
 
 func InitDatabase(dbConf config.DatabaseConfig) (err error) {
 	connectionString := fmt.Sprintf(
-		"%v:%v@%v:%v/%v?charset=utf8&parseTime=True&loc=Local",
+		"%v:%v@tcp(%v:%v)/%v?charset=utf8&parseTime=True&loc=Local",
 		dbConf.UserName,
 		dbConf.Password,
 		dbConf.Host,
