@@ -1,5 +1,5 @@
 package repositories
 
 type RepoContainer struct {
-	RepoContainer
+	MobileUserRepo MobileAppUserRepo
 }

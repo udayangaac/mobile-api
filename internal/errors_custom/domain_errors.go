@@ -24,7 +24,7 @@ var (
 	ErrBadRequest = errors.New("bad request")
 
 	// unable to add stakeholder
-	ErrUnableToAddStakeholder = errors.New("unable to add stakeholder")
+	ErrUnableToAddMobileAppUser = errors.New("unable to add mobile app user")
 )
 
 func init() {
@@ -55,10 +55,10 @@ func init() {
 		ApplicationErrorCode: 103,
 		CustomMessage:        ErrBadRequest.Error(),
 	}
-	// unable to add stakeholder
-	customErrorMap[ErrUnableToAddStakeholder] = ErrorContent{
+	// unable to add  mobile app user
+	customErrorMap[ErrUnableToAddMobileAppUser] = ErrorContent{
 		HttpStatusCode:       http.StatusOK,
 		ApplicationErrorCode: 201,
-		CustomMessage:        ErrUnableToAddStakeholder.Error(),
+		CustomMessage:        ErrUnableToAddMobileAppUser.Error(),
 	}
 }

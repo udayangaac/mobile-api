@@ -16,3 +16,8 @@ func NewMobileAppUser() MobileAppUserRepo {
 func (m mobileAppUserMySqlRepo) AddMobileUser(mobileUser entities.MobileAppUser) (isUpdate bool) {
 	return m.DB.NewRecord(&mobileUser)
 }
+
+func (m mobileAppUserMySqlRepo) GetMobileUserByEmail(email string) (mobileUser entities.MobileAppUser, err error) {
+	err = m.DB.Where("email=?", email).First(&mobileUser).Error
+	return
+}

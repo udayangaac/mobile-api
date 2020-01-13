@@ -28,7 +28,7 @@ func Init(ctx context.Context) {
 
 	webService := http2.WebService{}
 	webService.Port = config.ServerConf.Port
-	//webService.Services =
+	// webService.Services =
 	webService.Init()
 
 	select {

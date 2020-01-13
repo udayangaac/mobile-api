@@ -7,7 +7,7 @@ type SignUpRequest struct {
 	Mobile     int    `json:"mobile"`
 	Address    string `json:"Address"`
 	DOB        string `json:"DOB"`
-	JobStatus  int    `json:"job_status"`
+	JobStatus  int16  `json:"job_status"`
 	JobDetails struct {
 		Name    string `json:"name"`
 		Address string `json:"address"`
