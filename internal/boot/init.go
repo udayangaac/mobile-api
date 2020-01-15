@@ -31,7 +31,7 @@ func Init(ctx context.Context) {
 
 	// initialize the repositories
 	repoContainer := repositories.RepoContainer{}
-	repositories.NewMobileAppUser()
+	repoContainer.MobileUserRepo = repositories.NewMobileAppUser()
 
 	// initialized the services
 	serviceContainer := services.Services{}

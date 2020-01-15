@@ -3,6 +3,7 @@ package repositories
 import (
 	"github.com/jinzhu/gorm"
 	"github.com/udayangaac/mobile-api/internal/entities"
+	"github.com/udayangaac/mobile-api/internal/lib/orm"
 )
 
 type mobileAppUserMySqlRepo struct {
@@ -10,7 +11,9 @@ type mobileAppUserMySqlRepo struct {
 }
 
 func NewMobileAppUser() MobileAppUserRepo {
-	return &mobileAppUserMySqlRepo{}
+	return &mobileAppUserMySqlRepo{
+		DB: orm.DB,
+	}
 }
 
 func (m mobileAppUserMySqlRepo) AddMobileUser(mobileUser entities.MobileAppUser) (isUpdate bool) {
