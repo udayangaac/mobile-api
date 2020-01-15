@@ -7,6 +7,9 @@ import (
 	file_manager "github.com/udayangaac/mobile-api/internal/lib/file-manager"
 	log_traceable "github.com/udayangaac/mobile-api/internal/lib/log-traceable"
 	"github.com/udayangaac/mobile-api/internal/lib/orm"
+	"github.com/udayangaac/mobile-api/internal/repositories"
+	"github.com/udayangaac/mobile-api/internal/services"
+	user_service "github.com/udayangaac/mobile-api/internal/services/user-service"
 	http2 "github.com/udayangaac/mobile-api/internal/transport/http"
 	"os"
 	"os/signal"
@@ -26,9 +29,17 @@ func Init(ctx context.Context) {
 		log.Fatal(log_traceable.GetMessage(ctx, "Unable to open the database error :"+err.Error()))
 	}
 
+	// initialize the repositories
+	repoContainer := repositories.RepoContainer{}
+	repositories.NewMobileAppUser()
+
+	// initialized the services
+	serviceContainer := services.Services{}
+	serviceContainer.UserService = user_service.NewUserService(repoContainer)
+
 	webService := http2.WebService{}
 	webService.Port = config.ServerConf.Port
-	// webService.Services =
+	webService.Services = serviceContainer
 	webService.Init()
 
 	select {

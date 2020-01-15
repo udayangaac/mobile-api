@@ -7,6 +7,7 @@ type UserService interface {
 	// add mobile user to the system,
 	AddMobileUser(param domain.SignUpRequest) (err error)
 	// generate JWT token with validating user credentials.
+	GenerateToken(param domain.LoginRequest) (resp domain.LoginResponse, err error)
 	// logout
 	// add profile picture
 	//

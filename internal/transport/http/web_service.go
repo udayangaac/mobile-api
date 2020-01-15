@@ -46,7 +46,7 @@ type WebService struct {
 func (ws *WebService) Init() {
 	routerRoot := mux.NewRouter()
 	routerRoot.Use(middleware.CORSMiddleware)
-	router := routerRoot.PathPrefix("api/1.0").Subrouter()
+	router := routerRoot.PathPrefix("/api/1.0").Subrouter()
 
 	router.Handle("/signup",
 		transportHttp.NewServer(
