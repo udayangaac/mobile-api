@@ -20,11 +20,18 @@ func NewMobileAppUser() MobileAppUserRepo {
 	}
 }
 
-func (m mobileAppUserMySqlRepo) AddMobileUser(ctx context.Context, mobileUser entities.MobileAppUser) (isUpdate bool) {
+//func (m mobileAppUserMySqlRepo) AddMobileUser(ctx context.Context, mobileUser entities.MobileAppUser) (isUpdate bool) {
+//	fmt.Printf("in the repo")
+//	log.Info(log_traceable.GetMessage(ctx, fmt.Sprintf("%v", mobileUser)))
+//	isUpdate = m.DB.NewRecord(&mobileUser)
+//	log.Info(log_traceable.GetMessage(ctx, fmt.Sprintf("%v", isUpdate)))
+//	return
+//}
+
+func (m mobileAppUserMySqlRepo) AddMobileUser(ctx context.Context, mobileUser entities.MobileAppUser) {
 	fmt.Printf("in the repo")
 	log.Info(log_traceable.GetMessage(ctx, fmt.Sprintf("%v", mobileUser)))
-	isUpdate = m.DB.NewRecord(&mobileUser)
-	log.Info(log_traceable.GetMessage(ctx, fmt.Sprintf("%v", isUpdate)))
+	m.DB.Create(&mobileUser)
 	return
 }
 

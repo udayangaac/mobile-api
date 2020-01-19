@@ -4,7 +4,6 @@ import (
 	"context"
 	"github.com/udayangaac/mobile-api/internal/domain"
 	"github.com/udayangaac/mobile-api/internal/entities"
-	"github.com/udayangaac/mobile-api/internal/errors_custom"
 	"github.com/udayangaac/mobile-api/internal/lib/sha256"
 	"github.com/udayangaac/mobile-api/internal/repositories"
 )
@@ -28,12 +27,14 @@ func (u *userService) AddMobileUser(ctx context.Context, param domain.SignUpRequ
 		EmployeeStatus: 0,
 		Status:         param.JobStatus,
 	}
-	if isAdded := u.RepoContainer.MobileUserRepo.AddMobileUser(ctx, mobileAppUser); isAdded {
-		return
-	} else {
-		err = errors_custom.ErrUnableToAddMobileAppUser
-		return
-	}
+	//if isAdded := u.RepoContainer.MobileUserRepo.AddMobileUser(ctx, mobileAppUser); isAdded {
+	//	return
+	//} else {
+	//	err = errors_custom.ErrUnableToAddMobileAppUser
+	//	return
+	//}
+	u.RepoContainer.MobileUserRepo.AddMobileUser(ctx, mobileAppUser)
+	return
 }
 
 func (u userService) GenerateToken(ctx context.Context, param domain.LoginRequest) (resp domain.LoginResponse, err error) {
