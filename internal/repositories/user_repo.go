@@ -1,8 +1,12 @@
 package repositories
 
-import "github.com/udayangaac/mobile-api/internal/entities"
+import (
+	"context"
+	"github.com/udayangaac/mobile-api/internal/entities"
+)
 
 type MobileAppUserRepo interface {
-	AddMobileUser(mobileUser entities.MobileAppUser) (isUpdate bool)
-	GetMobileUserByEmail(email string) (mobileUser entities.MobileAppUser, err error)
+	AddMobileUser(ctx context.Context, mobileUser entities.MobileAppUser) (isUpdate bool)
+	GetMobileUserByEmail(ctx context.Context, email string) (mobileUser entities.MobileAppUser, err error)
+
 }

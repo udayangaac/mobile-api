@@ -1,6 +1,7 @@
 package user_service
 
 import (
+	"context"
 	"github.com/udayangaac/mobile-api/internal/domain"
 	"github.com/udayangaac/mobile-api/internal/entities"
 	"github.com/udayangaac/mobile-api/internal/errors_custom"
@@ -18,7 +19,7 @@ func NewUserService(repoContainer repositories.RepoContainer) UserService {
 	}
 }
 
-func (u *userService) AddMobileUser(param domain.SignUpRequest) (err error) {
+func (u *userService) AddMobileUser(ctx context.Context, param domain.SignUpRequest) (err error) {
 	mobileAppUser := entities.MobileAppUser{
 		Name:           param.Name,
 		Email:          param.Email,
@@ -27,7 +28,7 @@ func (u *userService) AddMobileUser(param domain.SignUpRequest) (err error) {
 		EmployeeStatus: 0,
 		Status:         param.JobStatus,
 	}
-	if isAdded := u.RepoContainer.MobileUserRepo.AddMobileUser(mobileAppUser); isAdded {
+	if isAdded := u.RepoContainer.MobileUserRepo.AddMobileUser(ctx, mobileAppUser); isAdded {
 		return
 	} else {
 		err = errors_custom.ErrUnableToAddMobileAppUser
@@ -35,9 +36,9 @@ func (u *userService) AddMobileUser(param domain.SignUpRequest) (err error) {
 	}
 }
 
-func (u userService) GenerateToken(param domain.LoginRequest) (resp domain.LoginResponse, err error) {
+func (u userService) GenerateToken(ctx context.Context, param domain.LoginRequest) (resp domain.LoginResponse, err error) {
 	mobileAppUser := entities.MobileAppUser{}
-	mobileAppUser, err = u.RepoContainer.MobileUserRepo.GetMobileUserByEmail(param.Email)
+	mobileAppUser, err = u.RepoContainer.MobileUserRepo.GetMobileUserByEmail(ctx, param.Email)
 	if err != nil {
 		return
 	}
