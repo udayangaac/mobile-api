@@ -7,12 +7,13 @@ type SignUpRequest struct {
 	Mobile     int    `json:"mobile"`
 	Address    string `json:"Address"`
 	DOB        string `json:"DOB"`
+	Gender     string `json:"Gender"`
 	JobStatus  int16  `json:"job_status"`
 	JobDetails struct {
 		Name    string `json:"name"`
 		Address string `json:"address"`
 	} `json:"job_details"`
-	Married int `json:"married"`
+	Married int16 `json:"married"`
 	Family  struct {
 		Kids int `json:"kids"`
 	} `json:"family"`

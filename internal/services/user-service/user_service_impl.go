@@ -23,9 +23,13 @@ func (u *userService) AddMobileUser(ctx context.Context, param domain.SignUpRequ
 		Name:           param.Name,
 		Email:          param.Email,
 		HashPassword:   sha256.GetHashString(param.Password),
-		Gender:         "Unknown",
-		EmployeeStatus: 0,
-		Status:         param.JobStatus,
+		DOB:            param.DOB,
+		Gender:         param.Gender,
+		EmployeeStatus: param.JobStatus,
+		Status:         1,
+		Address:        param.Address,
+		CivilStatus:    param.Married,
+		//Job:            param.JobDetails,
 	}
 	//if isAdded := u.RepoContainer.MobileUserRepo.AddMobileUser(ctx, mobileAppUser); isAdded {
 	//	return
