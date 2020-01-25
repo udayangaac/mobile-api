@@ -48,12 +48,62 @@ func (ws *WebService) Init() {
 	routerRoot.Use(middleware.CORSMiddleware)
 	router := routerRoot.PathPrefix("/api/1.0").Subrouter()
 
-	router.Handle("/signup",
+	router.Handle("/register",
 		transportHttp.NewServer(
 			endpoint.SignUpEndpoints(ws.Services),
 			decoder.SignUpDecoder,
 			encoder.MainEncoder,
 			serverOpts...)).Methods(http.MethodPost)
+
+	router.Handle("/auth/login",
+		transportHttp.NewServer(
+			endpoint.LoginEndpoints(ws.Services),
+			decoder.LoginDecoder,
+			encoder.MainEncoder,
+			serverOpts...)).Methods(http.MethodPost)
+
+	router.Handle("/auth/logout",
+		transportHttp.NewServer(
+			endpoint.LoginEndpoints(ws.Services),
+			decoder.LoginDecoder,
+			encoder.MainEncoder,
+			serverOpts...)).Methods(http.MethodPost)
+
+	router.Handle("/notifications/users",
+		transportHttp.NewServer(
+			endpoint.LoginEndpoints(ws.Services),
+			decoder.LoginDecoder,
+			encoder.MainEncoder,
+			serverOpts...)).Methods(http.MethodPost)
+
+	router.Handle("/settings/user/profile_picture",
+		transportHttp.NewServer(
+			endpoint.LoginEndpoints(ws.Services),
+			decoder.LoginDecoder,
+			encoder.MainEncoder,
+			serverOpts...)).Methods(http.MethodPost)
+
+	router.Handle("/settings/user/permission",
+		transportHttp.NewServer(
+			endpoint.LoginEndpoints(ws.Services),
+			decoder.LoginDecoder,
+			encoder.MainEncoder,
+			serverOpts...)).Methods(http.MethodPost)
+
+	router.Handle("/settings/pull_notification",
+		transportHttp.NewServer(
+			endpoint.LoginEndpoints(ws.Services),
+			decoder.LoginDecoder,
+			encoder.MainEncoder,
+			serverOpts...)).Methods(http.MethodPost)
+
+	router.Handle("/settings/sound_notification",
+		transportHttp.NewServer(
+			endpoint.LoginEndpoints(ws.Services),
+			decoder.LoginDecoder,
+			encoder.MainEncoder,
+			serverOpts...)).Methods(http.MethodPost)
+
 
 	authSubRouter := router.PathPrefix("/auth").Subrouter()
 	authSubRouter.Use(middleware.JwtMiddleware)
