@@ -50,8 +50,8 @@ func (ws *WebService) Init() {
 
 	router.Handle("/register",
 		transportHttp.NewServer(
-			endpoint.SignUpEndpoints(ws.Services),
-			decoder.SignUpDecoder,
+			endpoint.LoginEndpoints(ws.Services),
+			decoder.LoginDecoder,
 			encoder.MainEncoder,
 			serverOpts...)).Methods(http.MethodPost)
 
@@ -64,14 +64,14 @@ func (ws *WebService) Init() {
 
 	router.Handle("/auth/logout",
 		transportHttp.NewServer(
-			endpoint.LoginEndpoints(ws.Services),
-			decoder.LoginDecoder,
+			endpoint.LogoutEndpoints(ws.Services),
+			decoder.LogoutDecoder,
 			encoder.MainEncoder,
 			serverOpts...)).Methods(http.MethodPost)
 
 	router.Handle("/notifications/users",
 		transportHttp.NewServer(
-			endpoint.LoginEndpoints(ws.Services),
+			endpoint.PushNotificationEndpoints(ws.Services),
 			decoder.LoginDecoder,
 			encoder.MainEncoder,
 			serverOpts...)).Methods(http.MethodPost)

@@ -25,7 +25,35 @@ func SignUpEndpoints(service services.Services) endpoint2.Endpoint {
 func LoginEndpoints(service services.Services) endpoint2.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		param := request.(domain.LoginRequest)
-		err; = service.UserService.GenerateToken(ctx, param)
+		err, _ = service.UserService.GenerateToken(ctx, param)
+		if err != nil {
+			return
+		}
+		response = domain.SuccessResponse{
+			Message: "successfully Login",
+		}
+		return
+	}
+}
+
+func LogoutEndpoints(service services.Services) endpoint2.Endpoint {
+	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
+		param := request.(domain.LoginRequest)
+		err, _ = service.UserService.Logout(ctx, param)
+		if err != nil {
+			return
+		}
+		response = domain.SuccessResponse{
+			Message: "successfully Login",
+		}
+		return
+	}
+}
+
+func PushNotificationEndpoints (service services.Services) endpoint2.Endpoint {
+	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
+		param := request.(domain.LoginRequest)
+		err, _ = service.UserService.Logout(ctx, param)
 		if err != nil {
 			return
 		}

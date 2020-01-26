@@ -8,7 +8,7 @@ import (
 	"net/http"
 )
 
-func SignUpDecoder(ctx context.Context, r *http.Request) (interface{}, error) {
+funcfunc SignUpDecoder(ctx context.Context, r *http.Request) (interface{}, error) {
 	signUpRequestParam := domain.SignUpRequest{}
 	err := json.NewDecoder(r.Body).Decode(&signUpRequestParam)
 	if err != nil {
@@ -16,3 +16,21 @@ func SignUpDecoder(ctx context.Context, r *http.Request) (interface{}, error) {
 	}
 	return signUpRequestParam, nil
 }
+
+func LoginDecoder(ctx context.Context, r *http.Request) (interface{}, error) {
+	loginRequestParam := domain.LoginRequest{}
+	err := json.NewDecoder(r.Body).Decode(&loginRequestParam)
+	if err != nil {
+		return nil, domain_errors.ErrBadRequest
+	}
+	return loginRequestParam, nil
+}
+func LogoutDecoder(ctx context.Context, r *http.Request) (interface{}, error) {
+	loginRequestParam := domain.LoginRequest{}
+	err := json.NewDecoder(r.Body).Decode(&loginRequestParam)
+	if err != nil {
+		return nil, domain_errors.ErrBadRequest
+	}
+	return loginRequestParam, nil
+}
+
