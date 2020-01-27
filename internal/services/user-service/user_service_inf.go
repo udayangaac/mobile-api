@@ -18,6 +18,19 @@ type UserService interface {
 
 	// push notification
 	PushNotification(ctx context.Context, param domain.PullRequest) (resp domain.PushResponse, err error)
-	// add profile picture
 
+	// pull notification
+	PullNotification(ctx context.Context, param domain.PullRequest) (resp domain.PullResponse, err error)
+
+	// Set Location Permission
+	SetLocationPermission(ctx context.Context, param domain.LocationPermissionRequest) (resp domain.SettingsChangeResponse, err error)
+
+	// Set Push Notification
+	SetPushNotificationPermission(ctx context.Context, param domain.LocationPermissionRequest) (resp domain.SettingsChangeResponse, err error)
+
+	// Set Sound Permission
+	SetSoundStatus(ctx context.Context, param domain.SoundPermissionRequest) (resp domain.SettingsChangeResponse, err error)
+
+	// user Profile Picture
+	UserProfilePicture(ctx context.Context, param domain.ProfilePictureRequest) (resp domain.SettingsChangeResponse, err error)
 }

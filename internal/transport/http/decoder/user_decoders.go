@@ -8,7 +8,7 @@ import (
 	"net/http"
 )
 
-funcfunc SignUpDecoder(ctx context.Context, r *http.Request) (interface{}, error) {
+func SignUpDecoder(ctx context.Context, r *http.Request) (interface{}, error) {
 	signUpRequestParam := domain.SignUpRequest{}
 	err := json.NewDecoder(r.Body).Decode(&signUpRequestParam)
 	if err != nil {
@@ -25,12 +25,58 @@ func LoginDecoder(ctx context.Context, r *http.Request) (interface{}, error) {
 	}
 	return loginRequestParam, nil
 }
+
 func LogoutDecoder(ctx context.Context, r *http.Request) (interface{}, error) {
-	loginRequestParam := domain.LoginRequest{}
-	err := json.NewDecoder(r.Body).Decode(&loginRequestParam)
+	logoutRequestParam := domain.LoginRequest{}
+	err := json.NewDecoder(r.Body).Decode(&logoutRequestParam)
 	if err != nil {
 		return nil, domain_errors.ErrBadRequest
 	}
-	return loginRequestParam, nil
+	return logoutRequestParam, nil
 }
 
+func PullNotificationDecoder(ctx context.Context, r *http.Request) (interface{}, error) {
+	pullNotificationRequestParam := domain.PullRequest{}
+	err := json.NewDecoder(r.Body).Decode(&pullNotificationRequestParam)
+	if err != nil {
+		return nil, domain_errors.ErrBadRequest
+	}
+	return  pullNotificationRequestParam, nil
+}
+
+func PushNotificationDecoder(ctx context.Context, r *http.Request) (interface{}, error) {
+	pushNotificationRequestParam := domain.PushRequest{}
+	err := json.NewDecoder(r.Body).Decode(&pushNotificationRequestParam)
+	if err != nil {
+		return nil, domain_errors.ErrBadRequest
+	}
+	return  pushNotificationRequestParam, nil
+}
+
+func ProfilePictureDecoder(ctx context.Context, r *http.Request) (interface{}, error) {
+	profilePictureRequestParam := domain.ProfilePictureRequest{}
+	err := json.NewDecoder(r.Body).Decode(&profilePictureRequestParam)
+	if err != nil {
+		return nil, domain_errors.ErrBadRequest
+	}
+	return  profilePictureRequestParam, nil
+
+}
+
+func LocationStatusDecoder(ctx context.Context, r *http.Request) (interface{}, error) {
+	locationRequestParam := domain.LocationPermissionRequest{}
+	err := json.NewDecoder(r.Body).Decode(&locationRequestParam)
+	if err != nil {
+		return nil, domain_errors.ErrBadRequest
+	}
+	return  locationRequestParam, nil
+}
+
+func SoundStatusDecoder(ctx context.Context, r *http.Request) (interface{}, error) {
+	soundRequestParam := domain.SoundPermissionRequest{}
+	err := json.NewDecoder(r.Body).Decode(&soundRequestParam)
+	if err != nil {
+		return nil, domain_errors.ErrBadRequest
+	}
+	return soundRequestParam , nil
+}

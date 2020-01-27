@@ -50,8 +50,8 @@ func (ws *WebService) Init() {
 
 	router.Handle("/register",
 		transportHttp.NewServer(
-			endpoint.LoginEndpoints(ws.Services),
-			decoder.LoginDecoder,
+			endpoint.SignUpEndpoints(ws.Services),
+			decoder.SignUpDecoder,
 			encoder.MainEncoder,
 			serverOpts...)).Methods(http.MethodPost)
 
@@ -72,35 +72,35 @@ func (ws *WebService) Init() {
 	router.Handle("/notifications/users",
 		transportHttp.NewServer(
 			endpoint.PushNotificationEndpoints(ws.Services),
-			decoder.LoginDecoder,
+			decoder.PushNotificationDecoder,
 			encoder.MainEncoder,
 			serverOpts...)).Methods(http.MethodPost)
 
 	router.Handle("/settings/user/profile_picture",
 		transportHttp.NewServer(
-			endpoint.LoginEndpoints(ws.Services),
-			decoder.LoginDecoder,
+			endpoint.UserProfilePictureEndpoints(ws.Services),
+			decoder.ProfilePictureDecoder,
 			encoder.MainEncoder,
 			serverOpts...)).Methods(http.MethodPost)
 
 	router.Handle("/settings/user/permission",
 		transportHttp.NewServer(
-			endpoint.LoginEndpoints(ws.Services),
-			decoder.LoginDecoder,
+			endpoint.TrackLocationPermissonEndpoints(ws.Services),
+			decoder.LocationStatusDecoder,
 			encoder.MainEncoder,
 			serverOpts...)).Methods(http.MethodPost)
 
 	router.Handle("/settings/pull_notification",
 		transportHttp.NewServer(
-			endpoint.LoginEndpoints(ws.Services),
-			decoder.LoginDecoder,
+			endpoint.PullNotificationEndpoints(ws.Services),
+			decoder.PullNotificationDecoder,
 			encoder.MainEncoder,
-			serverOpts...)).Methods(http.MethodPost)
+			serverOpts...)).Methods(http.MethodGet)
 
 	router.Handle("/settings/sound_notification",
 		transportHttp.NewServer(
-			endpoint.LoginEndpoints(ws.Services),
-			decoder.LoginDecoder,
+			endpoint.SoundPermissonEndpoints(ws.Services),
+			decoder.SoundStatusDecoder,
 			encoder.MainEncoder,
 			serverOpts...)).Methods(http.MethodPost)
 

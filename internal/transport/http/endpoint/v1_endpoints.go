@@ -44,7 +44,21 @@ func LogoutEndpoints(service services.Services) endpoint2.Endpoint {
 			return
 		}
 		response = domain.SuccessResponse{
-			Message: "successfully Login",
+			Message: "successfully Logout",
+		}
+		return
+	}
+}
+
+func PullNotificationEndpoints (service services.Services) endpoint2.Endpoint {
+	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
+		param := request.(domain.PullRequest)
+		err, _ = service.UserService.PullNotification(ctx, param)
+		if err != nil {
+			return
+		}
+		response = domain.SuccessResponse{
+			Message: "successfully Pull",
 		}
 		return
 	}
@@ -52,13 +66,57 @@ func LogoutEndpoints(service services.Services) endpoint2.Endpoint {
 
 func PushNotificationEndpoints (service services.Services) endpoint2.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
-		param := request.(domain.LoginRequest)
-		err, _ = service.UserService.Logout(ctx, param)
+		param := request.(domain.PullRequest)
+		err, _ = service.UserService.PushNotification(ctx, param)
 		if err != nil {
 			return
 		}
 		response = domain.SuccessResponse{
-			Message: "successfully Login",
+			Message: "successfully Push",
+		}
+		return
+	}
+}
+
+func UserProfilePictureEndpoints (service services.Services) endpoint2.Endpoint {
+	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
+		param := request.(domain.PullRequest)
+		err, _ = service.UserService.PushNotification(ctx, param)
+		if err != nil {
+			return
+		}
+		response = domain.SuccessResponse{
+			Message: "successfully Push",
+		}
+		return
+	}
+}
+
+func TrackLocationPermissonEndpoints (service services.Services) endpoint2.Endpoint {
+	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
+		param := request.(domain.LocationPermissionRequest)
+		err, _ = service.UserService.SetLocationPermission(ctx, param)
+		if err != nil {
+			return
+		}
+		response = domain.SuccessResponse{
+			Message: "successfully Login ",
+		}
+		return
+	}
+}
+
+
+
+func SoundPermissonEndpoints (service services.Services) endpoint2.Endpoint {
+	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
+		param := request.(domain.SoundPermissionRequest)
+		err, _ = service.UserService.SetSoundStatus(ctx, param)
+		if err != nil {
+			return
+		}
+		response = domain.SuccessResponse{
+			Message: "successfully Login ",
 		}
 		return
 	}
