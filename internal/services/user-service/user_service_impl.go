@@ -63,97 +63,52 @@ func (u userService) LogOut(ctx context.Context, param domain.LoginRequest) (res
 }
 
 func (u userService) PushNotification(ctx context.Context, param domain.PushRequest) (resp domain.PushResponse, err error) {
-	mobileAppUser := entities.MobileAppUser{}
-	mobileAppUser, err = u.RepoContainer.MobileUserRepo.PushNotification(ctx, param.Email)
+	notification := entities.Notification{}
+	notification, err = u.RepoContainer.MobileUserRepo.PushNotification(ctx, param.UserId)
 	if err != nil {
 		return
 	}
-	if mobileAppUser.HashPassword == sha256.GetHashString(param.Password) {
-		resp.Email = mobileAppUser.Email
-		resp.ID = int(mobileAppUser.ID)
-		resp.Name = mobileAppUser.Name
-		// resp.Avatar
-		// resp.LbsNotification.ID
-	}
+
 	return
 }
 
 func (u userService) PullNotification(ctx context.Context, param domain.PullRequest) (resp domain.PullResponse, err error) {
-	mobileAppUser := entities.MobileAppUser{}
-	mobileAppUser, err = u.RepoContainer.MobileUserRepo.GetMobileUserByEmail(ctx, param.Email)
+	notification := entities.Notification{}
+	notification, err = u.RepoContainer.MobileUserRepo.PullNotification(ctx, param.Location)
 	if err != nil {
 		return
 	}
-	if mobileAppUser.HashPassword == sha256.GetHashString(param.Password) {
-		resp.Email = mobileAppUser.Email
-		resp.ID = int(mobileAppUser.ID)
-		resp.Name = mobileAppUser.Name
-		// resp.Avatar
-		// resp.LbsNotification.ID
-	}
+
 	return
 }
 
 func (u userService) UserProfilePicture(ctx context.Context, param domain.ProfilePictureRequest) (resp domain.SettingsChangeResponse, err error) {
 	mobileAppUser := entities.MobileAppUser{}
-	mobileAppUser, err = u.RepoContainer.MobileUserRepo.GetMobileUserByEmail(ctx, param.Email)
+	mobileAppUser, err = u.RepoContainer.MobileUserRepo.UserProfilePicture(ctx, param.UserId)
 	if err != nil {
 		return
 	}
-	if mobileAppUser.HashPassword == sha256.GetHashString(param.Password) {
-		resp.Email = mobileAppUser.Email
-		resp.ID = int(mobileAppUser.ID)
-		resp.Name = mobileAppUser.Name
-		// resp.Avatar
-		// resp.LbsNotification.ID
-	}
+
 	return
 }
 
 func (u userService) SetLocationPermission(ctx context.Context, param domain.LocationPermissionRequest) (resp domain.SettingsChangeResponse, err error) {
 	mobileAppUser := entities.MobileAppUser{}
-	mobileAppUser, err = u.RepoContainer.MobileUserRepo.GetMobileUserByEmail(ctx, param.Email)
-	if err != nil {
-		return
-	}
-	if mobileAppUser.HashPassword == sha256.GetHashString(param.Password) {
-		resp.Email = mobileAppUser.Email
-		resp.ID = int(mobileAppUser.ID)
-		resp.Name = mobileAppUser.Name
-		// resp.Avatar
-		// resp.LbsNotification.ID
-	}
+	mobileAppUser, err = u.RepoContainer.MobileUserRepo.LocationTrack(ctx, param.UserId)
+
 	return
 }
 
 func (u userService) SetSoundStatus(ctx context.Context, param domain.SoundPermissionRequest) (resp domain.SettingsChangeResponse, err error) {
 	mobileAppUser := entities.MobileAppUser{}
-	mobileAppUser, err = u.RepoContainer.MobileUserRepo.GetMobileUserByEmail(ctx, param.Email)
-	if err != nil {
-		return
-	}
-	if mobileAppUser.HashPassword == sha256.GetHashString(param.Password) {
-		resp.Email = mobileAppUser.Email
-		resp.ID = int(mobileAppUser.ID)
-		resp.Name = mobileAppUser.Name
-		// resp.Avatar
-		// resp.LbsNotification.ID
-	}
+	mobileAppUser, err = u.RepoContainer.MobileUserRepo.SoundSettingChange(ctx, param.UserId)
+
 	return
 }
 
-func (u userService) SetPushNotificationPermission(ctx context.Context, param domain.LocationPermissionRequest) (resp domain.SettingsChangeResponse, err error) {
+func (u userService) SetPushNotificationPermission(ctx context.Context, param domain.SettingChangeRequest) (resp domain.SettingsChangeResponse, err error) {
 	mobileAppUser := entities.MobileAppUser{}
-	mobileAppUser, err = u.RepoContainer.MobileUserRepo.GetMobileUserByEmail(ctx, param.Email)
-	if err != nil {
-		return
-	}
-	if mobileAppUser.HashPassword == sha256.GetHashString(param.Password) {
-		resp.Email = mobileAppUser.Email
-		resp.ID = int(mobileAppUser.ID)
-		resp.Name = mobileAppUser.Name
-		// resp.Avatar
-		// resp.LbsNotification.ID
-	}
+	mobileAppUser, err = u.RepoContainer.MobileUserRepo.PushNotificationSetting(ctx, param.UserId)
+
 	return
 }
