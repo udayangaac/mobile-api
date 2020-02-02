@@ -65,8 +65,8 @@ func PullNotificationEndpoints (service services.Services) endpoint2.Endpoint {
 
 func PushNotificationEndpoints (service services.Services) endpoint2.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
-		param := request.(domain.PullRequest)
-		err, _ = service.UserService.PushNotification(ctx, param)
+		param := request.(domain.PushRequest)
+		err, _ = service.UserService.PushNotification(ctx, lat, lon)
 		if err != nil {
 			return
 		}
