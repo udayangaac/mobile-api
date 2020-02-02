@@ -62,53 +62,53 @@ func (u *userService) LogOut(ctx context.Context, param domain.LoginRequest) (re
 	return
 }
 
-func (u *userService) PushNotification(ctx context.Context, param domain.PushRequest) (resp domain.PushResponse, err error) {
+func (u *userService) PushNotification(ctx context.Context, userId int16, lat float64, lon float64) (resp entities.Notification, err error) {
 	notification := entities.Notification{}
-	notification, err = u.RepoContainer.MobileUserRepo.PushNotification(ctx, param.UserId)
+	notification, err = u.RepoContainer.MobileUserRepo.PushNotification(ctx, userId, lat, lon)
 	if err != nil {
 		return
 	}
 
-	return
+	return notification, err
 }
 
-func (u *userService) PullNotification(ctx context.Context, param domain.PullRequest) (resp domain.PullResponse, err error) {
+func (u *userService) PullNotification(ctx context.Context, userId int16, lat float64, lon float64) (resp entities.Notification, err error) {
 	notification := entities.Notification{}
-	notification, err = u.RepoContainer.MobileUserRepo.PullNotification(ctx, param.Location)
+	notification, err = u.RepoContainer.MobileUserRepo.PullNotification(ctx, userId, lat, lon )
 	if err != nil {
 		return
 	}
 
-	return
+	return notification, err
 }
 
-func (u *userService) UserProfilePicture(ctx context.Context, param domain.ProfilePictureRequest) (resp domain.SettingsChangeResponse, err error) {
-	mobileAppUser := entities.MobileAppUser{}
-	mobileAppUser, err = u.RepoContainer.MobileUserRepo.UserProfilePicture(ctx, param.UserId)
+func (u *userService) UserProfilePicture(ctx context.Context, userId int16) (resp domain.SettingsChangeResponse, err error) {
+	/*mobileAppUser := entities.MobileAppUser{}
+	mobileAppUser, err = u.RepoContainer.MobileUserRepo.UserProfilePicture(ctx, userId)
 	if err != nil {
 		return
-	}
+	}*/
 
 	return
 }
 
-func (u *userService) SetLocationPermission(ctx context.Context, param domain.LocationPermissionRequest) (resp domain.SettingsChangeResponse, err error) {
-	mobileAppUser := entities.MobileAppUser{}
-	mobileAppUser, err = u.RepoContainer.MobileUserRepo.LocationTrack(ctx, param.UserId)
+func (u *userService) SetLocationPermission(ctx context.Context, userId int) (resp domain.SettingsChangeResponse, err error) {
+	/*mobileAppUser := entities.MobileAppUser{}
+	mobileAppUser, err = u.RepoContainer.MobileUserRepo.LocationTrack(ctx, userId)*/
 
 	return
 }
 
-func (u *userService) SetSoundStatus(ctx context.Context, param domain.SoundPermissionRequest) (resp domain.SettingsChangeResponse, err error) {
-	mobileAppUser := entities.MobileAppUser{}
-	mobileAppUser, err = u.RepoContainer.MobileUserRepo.SoundSettingChange(ctx, param.UserId)
+func (u *userService) SetSoundStatus(ctx context.Context, userId int) (resp domain.SettingsChangeResponse, err error) {
+	/*mobileAppUser := entities.MobileAppUser{}
+	mobileAppUser, err = u.RepoContainer.MobileUserRepo.SoundSettingChange(ctx, userId)*/
 
 	return
 }
 
-func (u *userService) SetPushNotificationPermission(ctx context.Context, param domain.SettingChangeRequest) (resp domain.SettingsChangeResponse, err error) {
-	mobileAppUser := entities.MobileAppUser{}
-	mobileAppUser, err = u.RepoContainer.MobileUserRepo.PushNotificationSetting(ctx, param.UserId)
+func (u *userService) SetPushNotificationPermission(ctx context.Context, userId int) (resp domain.SettingsChangeResponse, err error) {
+	/*mobileAppUser := entities.MobileAppUser{}
+	mobileAppUser, err = u.RepoContainer.MobileUserRepo.PushNotificationSetting(ctx, userId)*/
 
 	return
 }

@@ -85,7 +85,7 @@ func (ws *WebService) Init() {
 
 	router.Handle("/settings/user/permission",
 		transportHttp.NewServer(
-			endpoint.TrackLocationPermissonEndpoints(ws.Services),
+			endpoint.TrackLocationPermissionEndpoints(ws.Services),
 			decoder.LocationStatusDecoder,
 			encoder.MainEncoder,
 			serverOpts...)).Methods(http.MethodPost)
@@ -99,7 +99,7 @@ func (ws *WebService) Init() {
 
 	router.Handle("/settings/sound_notification",
 		transportHttp.NewServer(
-			endpoint.SoundPermissonEndpoints(ws.Services),
+			endpoint.SoundPermissionEndpoints(ws.Services),
 			decoder.SoundStatusDecoder,
 			encoder.MainEncoder,
 			serverOpts...)).Methods(http.MethodPost)

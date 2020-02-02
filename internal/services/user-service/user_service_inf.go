@@ -3,6 +3,7 @@ package user_service
 import (
 	"context"
 	"github.com/udayangaac/mobile-api/internal/domain"
+	"github.com/udayangaac/mobile-api/internal/entities"
 )
 
 // User management related functions are done by this service
@@ -17,20 +18,20 @@ type UserService interface {
 	LogOut(ctx context.Context, param domain.LoginRequest) (resp domain.LogoutResponse, err error)
 
 	// push notification
-	PushNotification(ctx context.Context, param domain.PushRequest) (resp domain.PushResponse, err error)
+	PushNotification(ctx context.Context, userId int16, lat float64, lon float64) (resp entities.Notification, err error)
 
 	// pull notification
-	PullNotification(ctx context.Context, param domain.PullRequest) (resp domain.PullResponse, err error)
+	PullNotification(ctx context.Context, userId int16, lat float64, lon float64) (resp entities.Notification, err error)
 
 	// Set Location Permission
-	SetLocationPermission(ctx context.Context, param domain.LocationPermissionRequest) (resp domain.SettingsChangeResponse, err error)
+	SetLocationPermission(ctx context.Context, userId int) (resp domain.SettingsChangeResponse, err error)
 
 	// Set Push Notification
-	SetPushNotificationPermission(ctx context.Context, param domain.SettingChangeRequest) (resp domain.SettingsChangeResponse, err error)
+	SetPushNotificationPermission(ctx context.Context, userId int) (resp domain.SettingsChangeResponse, err error)
 
 	// Set Sound Permission
-	SetSoundStatus(ctx context.Context, param domain.SoundPermissionRequest) (resp domain.SettingsChangeResponse, err error)
+	SetSoundStatus(ctx context.Context, userId int) (resp domain.SettingsChangeResponse, err error)
 
 	// user Profile Picture
-	UserProfilePicture(ctx context.Context, param domain.ProfilePictureRequest) (resp domain.SettingsChangeResponse, err error)
+	UserProfilePicture(ctx context.Context, userId int16) (resp domain.SettingsChangeResponse, err error)
 }

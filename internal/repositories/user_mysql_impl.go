@@ -37,41 +37,41 @@ func (m mobileAppUserMySqlRepo) UserLogout(ctx context.Context) (err error) {
 	return
 }
 
-func (m mobileAppUserMySqlRepo) PushNotification(ctx context.Context, userId int, lat float64, lon float64) (mobileUser entities.Notification, err error) {
+func (m mobileAppUserMySqlRepo) PushNotification(ctx context.Context, userId int16, lat float64, lon float64) (mobileUser entities.Notification, err error) {
 	err = m.DB.Where("email=?").First(&mobileUser).Error
 	return
 }
 
-func (m mobileAppUserMySqlRepo) PullNotification(ctx context.Context, userId int, lat float64, lon float64) (mobileUser entities.Notification, err error) {
+func (m mobileAppUserMySqlRepo) PullNotification(ctx context.Context, userId int16, lat float64, lon float64) (mobileUser entities.Notification, err error) {
 	err = m.DB.Where("email=?").First(&mobileUser).Error
 	return
 
 }
 
-func (m mobileAppUserMySqlRepo) LocationTrack(ctx context.Context, email string) (mobileUser entities.MobileAppUser, err error) {
-	err = m.DB.Where("email=?", email).First(&mobileUser).Error
+func (m mobileAppUserMySqlRepo) LocationTrack(ctx context.Context, userId int) (mobileUser entities.MobileAppUser, err error) {
+	err = m.DB.Where("email=?").First(&mobileUser).Error
 	return
 
 }
 
-func (m mobileAppUserMySqlRepo) UserProfilePicture(ctx context.Context, email string) (mobileUser entities.MobileAppUser, err error) {
-	err = m.DB.Where("email=?", email).First(&mobileUser).Error
+func (m mobileAppUserMySqlRepo) UserProfilePicture(ctx context.Context, userId int16) (mobileUser entities.MobileAppUser, err error) {
+	err = m.DB.Where("email=?").First(&mobileUser).Error
 	return
 
 }
 
-func (m mobileAppUserMySqlRepo) SoundSettingChange(ctx context.Context, email string) (mobileUser entities.MobileAppUser, err error) {
-	err = m.DB.Where("email=?", email).First(&mobileUser).Error
+func (m mobileAppUserMySqlRepo) SoundSettingChange(ctx context.Context, userId int) (mobileUser entities.MobileAppUser, err error) {
+	err = m.DB.Where("email=?").First(&mobileUser).Error
 	return
 
 }
 
-func (m mobileAppUserMySqlRepo) SetPushNotificationPermission(ctx context.Context, email string) (mobileUser entities.MobileAppUser, err error) {
-	err = m.DB.Where("email=?", email).First(&mobileUser).Error
-	return
+//func (m mobileAppUserMySqlRepo) SetPushNotificationPermission(ctx context.Context, userId int) (mobileUser entities.MobileAppUser, err error) {
+//	err = m.DB.Where("email=?", email).First(&mobileUser).Error
+//	return
+//
+//}
 
-}
-
-func (m mobileAppUserMySqlRepo) PushNotificationSetting(ctx context.Context, email string) (mobileUser entities.MobileAppUser, err error) {
+func (m mobileAppUserMySqlRepo) PushNotificationSetting(ctx context.Context, userId int) (mobileUser entities.MobileAppUser, err error) {
 	return
 }
