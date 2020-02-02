@@ -56,3 +56,104 @@ func (u userService) GenerateToken(ctx context.Context, param domain.LoginReques
 	}
 	return
 }
+
+func (u userService) LogOut(ctx context.Context, param domain.LoginRequest) (resp domain.LogoutResponse, err error) {
+	err = u.RepoContainer.MobileUserRepo.UserLogout(ctx)
+	return
+}
+
+func (u userService) PushNotification(ctx context.Context, param domain.PushRequest) (resp domain.PushResponse, err error) {
+	mobileAppUser := entities.MobileAppUser{}
+	mobileAppUser, err = u.RepoContainer.MobileUserRepo.PushNotification(ctx, param.Email)
+	if err != nil {
+		return
+	}
+	if mobileAppUser.HashPassword == sha256.GetHashString(param.Password) {
+		resp.Email = mobileAppUser.Email
+		resp.ID = int(mobileAppUser.ID)
+		resp.Name = mobileAppUser.Name
+		// resp.Avatar
+		// resp.LbsNotification.ID
+	}
+	return
+}
+
+func (u userService) PullNotification(ctx context.Context, param domain.PullRequest) (resp domain.PullResponse, err error) {
+	mobileAppUser := entities.MobileAppUser{}
+	mobileAppUser, err = u.RepoContainer.MobileUserRepo.GetMobileUserByEmail(ctx, param.Email)
+	if err != nil {
+		return
+	}
+	if mobileAppUser.HashPassword == sha256.GetHashString(param.Password) {
+		resp.Email = mobileAppUser.Email
+		resp.ID = int(mobileAppUser.ID)
+		resp.Name = mobileAppUser.Name
+		// resp.Avatar
+		// resp.LbsNotification.ID
+	}
+	return
+}
+
+func (u userService) UserProfilePicture(ctx context.Context, param domain.ProfilePictureRequest) (resp domain.SettingsChangeResponse, err error) {
+	mobileAppUser := entities.MobileAppUser{}
+	mobileAppUser, err = u.RepoContainer.MobileUserRepo.GetMobileUserByEmail(ctx, param.Email)
+	if err != nil {
+		return
+	}
+	if mobileAppUser.HashPassword == sha256.GetHashString(param.Password) {
+		resp.Email = mobileAppUser.Email
+		resp.ID = int(mobileAppUser.ID)
+		resp.Name = mobileAppUser.Name
+		// resp.Avatar
+		// resp.LbsNotification.ID
+	}
+	return
+}
+
+func (u userService) SetLocationPermission(ctx context.Context, param domain.LocationPermissionRequest) (resp domain.SettingsChangeResponse, err error) {
+	mobileAppUser := entities.MobileAppUser{}
+	mobileAppUser, err = u.RepoContainer.MobileUserRepo.GetMobileUserByEmail(ctx, param.Email)
+	if err != nil {
+		return
+	}
+	if mobileAppUser.HashPassword == sha256.GetHashString(param.Password) {
+		resp.Email = mobileAppUser.Email
+		resp.ID = int(mobileAppUser.ID)
+		resp.Name = mobileAppUser.Name
+		// resp.Avatar
+		// resp.LbsNotification.ID
+	}
+	return
+}
+
+func (u userService) SetSoundStatus(ctx context.Context, param domain.SoundPermissionRequest) (resp domain.SettingsChangeResponse, err error) {
+	mobileAppUser := entities.MobileAppUser{}
+	mobileAppUser, err = u.RepoContainer.MobileUserRepo.GetMobileUserByEmail(ctx, param.Email)
+	if err != nil {
+		return
+	}
+	if mobileAppUser.HashPassword == sha256.GetHashString(param.Password) {
+		resp.Email = mobileAppUser.Email
+		resp.ID = int(mobileAppUser.ID)
+		resp.Name = mobileAppUser.Name
+		// resp.Avatar
+		// resp.LbsNotification.ID
+	}
+	return
+}
+
+func (u userService) SetPushNotificationPermission(ctx context.Context, param domain.LocationPermissionRequest) (resp domain.SettingsChangeResponse, err error) {
+	mobileAppUser := entities.MobileAppUser{}
+	mobileAppUser, err = u.RepoContainer.MobileUserRepo.GetMobileUserByEmail(ctx, param.Email)
+	if err != nil {
+		return
+	}
+	if mobileAppUser.HashPassword == sha256.GetHashString(param.Password) {
+		resp.Email = mobileAppUser.Email
+		resp.ID = int(mobileAppUser.ID)
+		resp.Name = mobileAppUser.Name
+		// resp.Avatar
+		// resp.LbsNotification.ID
+	}
+	return
+}

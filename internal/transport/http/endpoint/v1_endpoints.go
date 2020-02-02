@@ -21,7 +21,6 @@ func SignUpEndpoints(service services.Services) endpoint2.Endpoint {
 	}
 }
 
-
 func LoginEndpoints(service services.Services) endpoint2.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		param := request.(domain.LoginRequest)
@@ -92,7 +91,7 @@ func UserProfilePictureEndpoints (service services.Services) endpoint2.Endpoint 
 	}
 }
 
-func TrackLocationPermissonEndpoints (service services.Services) endpoint2.Endpoint {
+func TrackLocationPermissionEndpoints (service services.Services) endpoint2.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		param := request.(domain.LocationPermissionRequest)
 		err, _ = service.UserService.SetLocationPermission(ctx, param)
@@ -106,9 +105,7 @@ func TrackLocationPermissonEndpoints (service services.Services) endpoint2.Endpo
 	}
 }
 
-
-
-func SoundPermissonEndpoints (service services.Services) endpoint2.Endpoint {
+func SoundPermissionEndpoints (service services.Services) endpoint2.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		param := request.(domain.SoundPermissionRequest)
 		err, _ = service.UserService.SetSoundStatus(ctx, param)

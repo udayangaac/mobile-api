@@ -14,10 +14,10 @@ type UserService interface {
 	GenerateToken(ctx context.Context, param domain.LoginRequest) (resp domain.LoginResponse, err error)
 
 	// Logout
-	Logout(ctx context.Context, param domain.LoginRequest) (resp domain.LoginResponse, err error)
+	LogOut(ctx context.Context, param domain.LoginRequest) (resp domain.LogoutResponse, err error)
 
 	// push notification
-	PushNotification(ctx context.Context, param domain.PullRequest) (resp domain.PushResponse, err error)
+	PushNotification(ctx context.Context, param domain.PushRequest) (resp domain.PushResponse, err error)
 
 	// pull notification
 	PullNotification(ctx context.Context, param domain.PullRequest) (resp domain.PullResponse, err error)
