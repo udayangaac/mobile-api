@@ -37,13 +37,13 @@ func (m mobileAppUserMySqlRepo) UserLogout(ctx context.Context) (err error) {
 	return
 }
 
-func (m mobileAppUserMySqlRepo) PushNotification(ctx context.Context, email string) (mobileUser entities.MobileAppUser, err error) {
-	err = m.DB.Where("email=?", email).First(&mobileUser).Error
+func (m mobileAppUserMySqlRepo) PushNotification(ctx context.Context, userId int, lat float64, lon float64) (mobileUser entities.Notification, err error) {
+	err = m.DB.Where("email=?").First(&mobileUser).Error
 	return
 }
 
-func (m mobileAppUserMySqlRepo) PullNotification(ctx context.Context, email string) (mobileUser entities.MobileAppUser, err error) {
-	err = m.DB.Where("email=?", email).First(&mobileUser).Error
+func (m mobileAppUserMySqlRepo) PullNotification(ctx context.Context, userId int, lat float64, lon float64) (mobileUser entities.Notification, err error) {
+	err = m.DB.Where("email=?").First(&mobileUser).Error
 	return
 
 }
@@ -70,4 +70,8 @@ func (m mobileAppUserMySqlRepo) SetPushNotificationPermission(ctx context.Contex
 	err = m.DB.Where("email=?", email).First(&mobileUser).Error
 	return
 
+}
+
+func (m mobileAppUserMySqlRepo) PushNotificationSetting(ctx context.Context, email string) (mobileUser entities.MobileAppUser, err error) {
+	return
 }
