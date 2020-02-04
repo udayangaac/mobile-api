@@ -37,7 +37,6 @@ func (m mobileAppUserMySqlRepo) UserLogout(ctx context.Context) (err error) {
 }
 
 func (m mobileAppUserMySqlRepo) PushNotification(ctx context.Context, userId int, lat float64, lon float64) (PushNotification entities.Notification, err error) {
-
 	err = m.DB.Where("id=?", userId).First(&PushNotification).Error
 	return
 }

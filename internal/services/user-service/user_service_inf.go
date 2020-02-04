@@ -18,7 +18,7 @@ type UserService interface {
 	LogOut(ctx context.Context, param domain.LoginRequest) (resp domain.LogoutResponse, err error)
 
 	// push notification
-	PushNotification(ctx context.Context, userId int16, lat float64, lon float64) (resp entities.Notification, err error)
+	PushNotification(ctx context.Context, userId int, lat float64, lon float64) (resp entities.Notification, err error)
 
 	// pull notification
 	PullNotification(ctx context.Context, userId int16, lat float64, lon float64) (resp entities.Notification, err error)
