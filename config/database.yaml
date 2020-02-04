@@ -1,3 +1,5 @@
+# Jayan
+
 host: 127.0.0.1
 port: 3306
 database: turbit
@@ -6,3 +8,13 @@ password: 123456
 max_open_conn: 100
 max_idle_conn: 50
 conn_max_life_time: 10000
+
+# Chamith
+#host: 127.0.0.1
+#port: 3306
+#database: turbit
+#user_name: username
+#password: password
+#max_open_conn: 100
+#max_idle_conn: 50
+#conn_max_life_time: 10000

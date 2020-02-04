@@ -72,7 +72,7 @@ func (u *userService) PushNotification(ctx context.Context, userId int, lat floa
 	return notification, err
 }
 
-func (u *userService) PullNotification(ctx context.Context, userId int16, lat float64, lon float64) (resp entities.Notification, err error) {
+func (u *userService) PullNotification(ctx context.Context, userId int, lat float64, lon float64) (resp entities.Notification, err error) {
 	notification := entities.Notification{}
 	notification, err = u.RepoContainer.MobileUserRepo.PullNotification(ctx, userId, lat, lon )
 	if err != nil {
