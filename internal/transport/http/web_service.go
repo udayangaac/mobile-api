@@ -69,7 +69,7 @@ func (ws *WebService) Init() {
 			encoder.MainEncoder,
 			serverOpts...)).Methods(http.MethodPost)
 
-	router.Handle("/notifications/users",
+	router.Handle("/push",
 		transportHttp.NewServer(
 			endpoint.PushNotificationEndpoints(ws.Services),
 			decoder.PushNotificationDecoder,

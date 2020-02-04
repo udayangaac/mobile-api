@@ -21,7 +21,6 @@ func NewMobileAppUser() MobileAppUserRepo {
 }
 
 func (m mobileAppUserMySqlRepo) AddMobileUser(ctx context.Context, mobileUser entities.MobileAppUser) {
-	fmt.Printf("in the repo")
 	log.Info(log_traceable.GetMessage(ctx, fmt.Sprintf("%v", mobileUser)))
 	m.DB.Create(&mobileUser)
 	return
@@ -37,13 +36,14 @@ func (m mobileAppUserMySqlRepo) UserLogout(ctx context.Context) (err error) {
 	return
 }
 
-func (m mobileAppUserMySqlRepo) PushNotification(ctx context.Context, userId int16, lat float64, lon float64) (mobileUser entities.Notification, err error) {
-	err = m.DB.Where("email=?").First(&mobileUser).Error
+func (m mobileAppUserMySqlRepo) PushNotification(ctx context.Context, userId int, lat float64, lon float64) (PushNotification entities.Notification, err error) {
+
+	err = m.DB.Where("id=?", userId).First(&PushNotification).Error
 	return
 }
 
-func (m mobileAppUserMySqlRepo) PullNotification(ctx context.Context, userId int16, lat float64, lon float64) (mobileUser entities.Notification, err error) {
-	err = m.DB.Where("email=?").First(&mobileUser).Error
+func (m mobileAppUserMySqlRepo) PullNotification(ctx context.Context, userId int16, lat float64, lon float64) (Notification entities.Notification, err error) {
+	err = m.DB.Where("email=?").First(&Notification).Error
 	return
 
 }

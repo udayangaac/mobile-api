@@ -3,7 +3,9 @@ package endpoint
 import (
 	"context"
 	endpoint2 "github.com/go-kit/kit/endpoint"
+	log "github.com/sirupsen/logrus"
 	"github.com/udayangaac/mobile-api/internal/domain"
+	"github.com/udayangaac/mobile-api/internal/entities"
 	"github.com/udayangaac/mobile-api/internal/services"
 )
 
@@ -63,16 +65,16 @@ func PullNotificationEndpoints (service services.Services) endpoint2.Endpoint {
 	}
 }
 
-func PushNotificationEndpoints (service services.Services) endpoint2.Endpoint {
+func PushNotificationEndpoints (service services.Services) endpoint2.Endpoint  {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
-		/*param := request.(domain.PushRequest)
-		err, _ = service.UserService.PushNotification(ctx, param.UserId, param.Location.Lat, param.Location.Lon)
+		notification := entities.Notification{}
+		param := request.(domain.PushRequest)
+		notification, err = service.UserService.PushNotification(ctx, param.UserId, param.Location.Lat, param.Location.Lon)
+		log.Info(err)
 		if err != nil {
 			return
 		}
-		response = domain.SuccessResponse{
-			Message: "successfully Push",
-		}*/
+		response = notification
 		return
 	}
 }

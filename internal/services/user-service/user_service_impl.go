@@ -62,7 +62,7 @@ func (u *userService) LogOut(ctx context.Context, param domain.LoginRequest) (re
 	return
 }
 
-func (u *userService) PushNotification(ctx context.Context, userId int16, lat float64, lon float64) (resp entities.Notification, err error) {
+func (u *userService) PushNotification(ctx context.Context, userId int, lat float64, lon float64) (resp entities.Notification, err error) {
 	notification := entities.Notification{}
 	notification, err = u.RepoContainer.MobileUserRepo.PushNotification(ctx, userId, lat, lon)
 	if err != nil {

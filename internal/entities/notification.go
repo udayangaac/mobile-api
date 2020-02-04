@@ -1,8 +1,12 @@
 package entities
 
+import (
+	"github.com/jinzhu/gorm"
+)
+
 type Notification struct {
-	Id           int16 // `json:"name"`
-	Content         string // `json:"email"`
+	gorm.Model
+	Content        string // `json:"content"`
 	Status         int16  // `json:"status"`
 	Address        string // json:"address"`
 }

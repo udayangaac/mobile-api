@@ -27,5 +27,5 @@ type JobDetails struct {
 
 type Family struct {
 	Kids   int16
-	Kids_Gender string
+	KidsGender string
 }
