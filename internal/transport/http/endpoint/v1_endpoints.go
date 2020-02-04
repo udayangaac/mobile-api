@@ -53,14 +53,14 @@ func LogoutEndpoints(service services.Services) endpoint2.Endpoint {
 
 func PullNotificationEndpoints (service services.Services) endpoint2.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
-		/*param := request.(domain.PullRequest)
-		err, _ = service.UserService.PullNotification(ctx,  param.UserId, param.Location.Lat, param.Location.Lon)
+		notification := entities.Notification{}
+		param := request.(domain.PullRequest)
+		notification, err = service.UserService.PullNotification(ctx, param.UserId, param.Location.Lat, param.Location.Lon)
+		log.Info(err)
 		if err != nil {
 			return
 		}
-		response = domain.SuccessResponse{
-			Message: "successfully Pull",
-		}*/
+		response = notification
 		return
 	}
 }

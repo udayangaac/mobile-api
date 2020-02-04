@@ -1,7 +1,7 @@
 package domain
 
 type PushRequest struct {
-	UserId    int16 `json:"id"`
+	UserId    int `json:"id"`
 	Location struct {
 		Lat float64 `json:"lat"`
 		Lon float64 `json:"lon"`

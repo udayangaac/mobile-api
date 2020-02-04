@@ -1,8 +1,7 @@
 package domain
 
-
 type PullRequest struct {
-	UserId    int16 `json:"id"`
+	UserId    int `json:"id"`
 	Type      string `json:"type"`
 	Location struct {
 		Lat float64 `json:"lat"`
