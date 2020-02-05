@@ -2,6 +2,7 @@ package user_service
 
 import (
 	"context"
+	log "github.com/sirupsen/logrus"
 	"github.com/udayangaac/mobile-api/internal/domain"
 	"github.com/udayangaac/mobile-api/internal/entities"
 	"github.com/udayangaac/mobile-api/internal/lib/sha256"
@@ -44,6 +45,7 @@ func (u *userService) AddMobileUser(ctx context.Context, param domain.SignUpRequ
 func (u *userService) GenerateToken(ctx context.Context, param domain.LoginRequest) (resp domain.LoginResponse, err error) {
 	mobileAppUser := entities.MobileAppUser{}
 	mobileAppUser, err = u.RepoContainer.MobileUserRepo.GetMobileUserByEmail(ctx, param.Email)
+	log.Info(mobileAppUser)
 	if err != nil {
 		return
 	}
