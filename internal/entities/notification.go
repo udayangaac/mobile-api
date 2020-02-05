@@ -6,7 +6,8 @@ import (
 
 type Notification struct {
 	gorm.Model
-	Content        string // `json:"content"`
-	Status         int16  // `json:"status"`
-	Address        string // json:"address"`
+	NotificationContent        string  // `json:"content"`
+	Status                     int     // `json:"status"`
+	Image                      string  // `json:"image"`
+	Company                    int     // `json:"company"`
 }

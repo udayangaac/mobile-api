@@ -56,7 +56,7 @@ func PullNotificationEndpoints (service services.Services) endpoint2.Endpoint {
 		notification := entities.Notification{}
 		param := request.(domain.PullRequest)
 		notification, err = service.UserService.PullNotification(ctx, param.UserId, param.Location.Lat, param.Location.Lon)
-		log.Info(err)
+		log.Info(param.UserId)
 		if err != nil {
 			return
 		}
@@ -70,7 +70,7 @@ func PushNotificationEndpoints (service services.Services) endpoint2.Endpoint  {
 		notification := entities.Notification{}
 		param := request.(domain.PushRequest)
 		notification, err = service.UserService.PushNotification(ctx, param.UserId, param.Location.Lat, param.Location.Lon)
-		log.Info(err)
+		log.Info(param.UserId)
 		if err != nil {
 			return
 		}
