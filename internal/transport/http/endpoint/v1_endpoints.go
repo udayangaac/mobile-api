@@ -108,14 +108,17 @@ func TrackLocationPermissionEndpoints (service services.Services) endpoint2.Endp
 
 func SoundPermissionEndpoints (service services.Services) endpoint2.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
-		/*param := request.(domain.SoundPermissionRequest)
-		err, _ = service.UserService.SetSoundStatus(ctx, param)
+		param := request.(domain.SoundPermissionRequest)
+		_, err = service.UserService.SetSoundStatus(ctx, param.UserId, param.Status)
+		log.Info("sdddddddddddd")
 		if err != nil {
 			return
 		}
+
 		response = domain.SuccessResponse{
-			Message: "successfully Login ",
-		}*/
+			Message: "successfully added the user",
+		}
+
 		return
 	}
 }

@@ -1,6 +1,6 @@
 package domain
 
 type SoundPermissionRequest struct {
-	UserId    string `json:"id"`
-	Status    string `json:"id"`
+	UserId    int `json:"userId"`
+	Status    int `json:"status"`
 }

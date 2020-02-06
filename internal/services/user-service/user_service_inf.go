@@ -30,7 +30,7 @@ type UserService interface {
 	SetPushNotificationPermission(ctx context.Context, userId int) (resp domain.SettingsChangeResponse, err error)
 
 	// Set Sound Permission
-	SetSoundStatus(ctx context.Context, userId int) (resp domain.SettingsChangeResponse, err error)
+	SetSoundStatus(ctx context.Context, userId int, Status int) (resp domain.SettingsChangeResponse, err error)
 
 	// user Profile Picture
 	UserProfilePicture(ctx context.Context, userId int16) (resp domain.SettingsChangeResponse, err error)

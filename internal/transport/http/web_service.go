@@ -82,8 +82,7 @@ func (ws *WebService) Init() {
 			decoder.PullNotificationDecoder,
 			encoder.MainEncoder,
 			serverOpts...)).Methods(http.MethodGet)
-
-
+	
 	router.Handle("/settings/user/profile_picture",
 		transportHttp.NewServer(
 			endpoint.UserProfilePictureEndpoints(ws.Services),

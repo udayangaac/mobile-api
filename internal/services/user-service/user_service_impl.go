@@ -101,9 +101,8 @@ func (u *userService) SetLocationPermission(ctx context.Context, userId int) (re
 	return
 }
 
-func (u *userService) SetSoundStatus(ctx context.Context, userId int) (resp domain.SettingsChangeResponse, err error) {
-	/*mobileAppUser := entities.MobileAppUser{}
-	mobileAppUser, err = u.RepoContainer.MobileUserRepo.SoundSettingChange(ctx, userId)*/
+func (u *userService) SetSoundStatus(ctx context.Context, userId int, status int) (resp domain.SettingsChangeResponse, err error) {
+	_, err = u.RepoContainer.MobileUserRepo.SoundSettingChange(ctx, userId, status)
 
 	return
 }
