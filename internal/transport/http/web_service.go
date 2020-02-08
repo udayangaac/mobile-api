@@ -55,65 +55,64 @@ func (ws *WebService) Init() {
 			encoder.MainEncoder,
 			serverOpts...)).Methods(http.MethodPost)
 
-	router.Handle("/auth/login",
+	router.Handle("/login",
 		transportHttp.NewServer(
 			endpoint.LoginEndpoints(ws.Services),
 			decoder.LoginDecoder,
 			encoder.MainEncoder,
 			serverOpts...)).Methods(http.MethodPost)
 
-	router.Handle("/auth/logout",
+	authSubRouter := router.PathPrefix("/auth").Subrouter()
+	authSubRouter.Use(middleware.JwtMiddleware)
+
+	authSubRouter.Handle("/logout",
 		transportHttp.NewServer(
 			endpoint.LogoutEndpoints(ws.Services),
 			decoder.LogoutDecoder,
 			encoder.MainEncoder,
 			serverOpts...)).Methods(http.MethodPost)
 
-	router.Handle("/push",
+	authSubRouter.Handle("/push",
 		transportHttp.NewServer(
 			endpoint.PushNotificationEndpoints(ws.Services),
 			decoder.PushNotificationDecoder,
 			encoder.MainEncoder,
 			serverOpts...)).Methods(http.MethodPost)
 
-	router.Handle("/pull",
+	authSubRouter.Handle("/pull",
 		transportHttp.NewServer(
 			endpoint.PullNotificationEndpoints(ws.Services),
 			decoder.PullNotificationDecoder,
 			encoder.MainEncoder,
 			serverOpts...)).Methods(http.MethodGet)
-	
-	router.Handle("/settings/user/profile_picture",
+
+	authSubRouter.Handle("/settings/user/profile_picture",
 		transportHttp.NewServer(
 			endpoint.UserProfilePictureEndpoints(ws.Services),
 			decoder.ProfilePictureDecoder,
 			encoder.MainEncoder,
 			serverOpts...)).Methods(http.MethodPost)
 
-	router.Handle("/settings/user/permission",
+	authSubRouter.Handle("/settings/user/permission",
 		transportHttp.NewServer(
 			endpoint.TrackLocationPermissionEndpoints(ws.Services),
 			decoder.LocationStatusDecoder,
 			encoder.MainEncoder,
 			serverOpts...)).Methods(http.MethodPost)
 
-	router.Handle("/settings/pull_notification",
+	authSubRouter.Handle("/settings/pull_notification",
 		transportHttp.NewServer(
 			endpoint.PullNotificationEndpoints(ws.Services),
 			decoder.PullNotificationDecoder,
 			encoder.MainEncoder,
 			serverOpts...)).Methods(http.MethodGet)
 
-	router.Handle("/settings/sound_notification",
+	authSubRouter.Handle("/settings/sound_notification",
 		transportHttp.NewServer(
 			endpoint.SoundPermissionEndpoints(ws.Services),
 			decoder.SoundStatusDecoder,
 			encoder.MainEncoder,
 			serverOpts...)).Methods(http.MethodPost)
-
-
-	authSubRouter := router.PathPrefix("/auth").Subrouter()
-	authSubRouter.Use(middleware.JwtMiddleware)
 
 	server = &http.Server{
 		Addr:         fmt.Sprintf(":%v", ws.Port),

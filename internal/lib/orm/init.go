@@ -26,6 +26,7 @@ func InitDatabase(dbConf config.DatabaseConfig) (err error) {
 		return
 	}
 	DB.SetLogger(&customLogger{})
+	DB.LogMode(true)
 	return
 }
 
