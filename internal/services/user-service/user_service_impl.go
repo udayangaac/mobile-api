@@ -104,10 +104,8 @@ func (u *userService) UserProfilePicture(ctx context.Context, userId int16) (res
 	return
 }
 
-func (u *userService) SetLocationPermission(ctx context.Context, userId int) (resp domain.SettingsChangeResponse, err error) {
-	/*mobileAppUser := entities.MobileAppUser{}
-	mobileAppUser, err = u.RepoContainer.MobileUserRepo.LocationTrack(ctx, userId)*/
-
+func (u *userService) SetLocationPermission(ctx context.Context, userId int, status int) (resp domain.SettingsChangeResponse, err error) {
+	err = u.RepoContainer.MobileUserRepo.LocationTrack(ctx, userId, status)
 	return
 }
 

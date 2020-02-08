@@ -24,7 +24,7 @@ type UserService interface {
 	PullNotification(ctx context.Context, userId int, lat float64, lon float64) (resp entities.Notification, err error)
 
 	// Set Location Permission
-	SetLocationPermission(ctx context.Context, userId int) (resp domain.SettingsChangeResponse, err error)
+	SetLocationPermission(ctx context.Context, userId int, Status int) (resp domain.SettingsChangeResponse, err error)
 
 	// Set Push Notification
 	SetPushNotificationPermission(ctx context.Context, userId int) (resp domain.SettingsChangeResponse, err error)

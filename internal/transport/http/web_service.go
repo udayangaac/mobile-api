@@ -86,14 +86,14 @@ func (ws *WebService) Init() {
 			encoder.MainEncoder,
 			serverOpts...)).Methods(http.MethodGet)
 
-	authSubRouter.Handle("/settings/user/profile_picture",
+	authSubRouter.Handle("/settings/profile-picture",
 		transportHttp.NewServer(
 			endpoint.UserProfilePictureEndpoints(ws.Services),
 			decoder.ProfilePictureDecoder,
 			encoder.MainEncoder,
 			serverOpts...)).Methods(http.MethodPost)
 
-	authSubRouter.Handle("/settings/user/permission",
+	authSubRouter.Handle("/settings/track-location",
 		transportHttp.NewServer(
 			endpoint.TrackLocationPermissionEndpoints(ws.Services),
 			decoder.LocationStatusDecoder,

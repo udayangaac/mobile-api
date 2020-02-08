@@ -25,7 +25,7 @@ func SignUpEndpoints(service services.Services) endpoint2.Endpoint {
 
 func LoginEndpoints(service services.Services) endpoint2.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
-	    token := domain.LoginResponse{}
+		token := domain.LoginResponse{}
 		param := request.(domain.LoginRequest)
 		token, err = service.UserService.GenerateToken(ctx, param)
 		if err != nil {
@@ -50,7 +50,7 @@ func LogoutEndpoints(service services.Services) endpoint2.Endpoint {
 	}
 }
 
-func PullNotificationEndpoints (service services.Services) endpoint2.Endpoint {
+func PullNotificationEndpoints(service services.Services) endpoint2.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		notification := entities.Notification{}
 		param := request.(domain.PullRequest)
@@ -64,7 +64,7 @@ func PullNotificationEndpoints (service services.Services) endpoint2.Endpoint {
 	}
 }
 
-func PushNotificationEndpoints (service services.Services) endpoint2.Endpoint  {
+func PushNotificationEndpoints(service services.Services) endpoint2.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		notification := entities.Notification{}
 		param := request.(domain.PushRequest)
@@ -78,7 +78,7 @@ func PushNotificationEndpoints (service services.Services) endpoint2.Endpoint  {
 	}
 }
 
-func UserProfilePictureEndpoints (service services.Services) endpoint2.Endpoint {
+func UserProfilePictureEndpoints(service services.Services) endpoint2.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		/*param := request.(domain.PullRequest)
 		err, _ = service.UserService.PushNotification(ctx, userId, lat, lon)
@@ -92,31 +92,32 @@ func UserProfilePictureEndpoints (service services.Services) endpoint2.Endpoint 
 	}
 }
 
-func TrackLocationPermissionEndpoints (service services.Services) endpoint2.Endpoint {
+func TrackLocationPermissionEndpoints(service services.Services) endpoint2.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
-		/*param := request.(domain.LocationPermissionRequest)
-		err, _ = service.UserService.SetLocationPermission(ctx, param)
+		param := request.(domain.LocationPermissionRequest)
+		_, err = service.UserService.SetLocationPermission(ctx, param.UserId, param.Status)
 		if err != nil {
 			return
 		}
+
 		response = domain.SuccessResponse{
-			Message: "successfully Login ",
-		}*/
+			Message: "successfully Updated",
+		}
 		return
 	}
 }
 
-func SoundPermissionEndpoints (service services.Services) endpoint2.Endpoint {
+func SoundPermissionEndpoints(service services.Services) endpoint2.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		param := request.(domain.SoundPermissionRequest)
 		_, err = service.UserService.SetSoundStatus(ctx, param.UserId, param.Status)
-		
+
 		if err != nil {
 			return
 		}
 
 		response = domain.SuccessResponse{
-			Message: "successfully added the user",
+			Message: "successfully Updated",
 		}
 
 		return

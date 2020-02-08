@@ -4,6 +4,7 @@ import "github.com/jinzhu/gorm"
 
 type MobileUserConfiguration struct {
 	gorm.Model
-	UserId int
-	Status int `gorm:"column:sound_status"`
+	UserId                int
+	SoundStatus           int `gorm:"column:sound_status"`
+	LocationServiceStatus int `gorm:"column:location_service_status"`
 }

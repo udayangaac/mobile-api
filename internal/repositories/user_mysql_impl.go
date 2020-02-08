@@ -47,8 +47,8 @@ func (m mobileAppUserMySqlRepo) PullNotification(ctx context.Context, userId int
 
 }
 
-func (m mobileAppUserMySqlRepo) LocationTrack(ctx context.Context, userId int) (mobileUser entities.MobileAppUser, err error) {
-	err = m.DB.Where("email=?").First(&mobileUser).Error
+func (m mobileAppUserMySqlRepo) LocationTrack(ctx context.Context, userId int, status int) (err error) {
+	err = m.DB.Model(entities.MobileUserConfiguration{}).Where("user_id = 1").Update("location_service_status", "0").Error
 	return
 
 }
