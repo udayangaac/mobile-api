@@ -13,8 +13,8 @@ var (
 )
 
 type Claims struct {
-	UserId            int64 `json:"userId"`
-	BusinessProfileId int64 `json:"businessProfileId"`
+	UserId uint   `json:"userId"`
+	Role   string `json:"role"`
 }
 
 type Resolver struct {

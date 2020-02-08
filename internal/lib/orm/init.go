@@ -1,10 +1,13 @@
 package orm
 
 import (
+	"context"
 	"fmt"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
+	log "github.com/sirupsen/logrus"
 	"github.com/udayangaac/mobile-api/internal/config"
+	log_traceable "github.com/udayangaac/mobile-api/internal/lib/log-traceable"
 )
 
 var DB *gorm.DB
@@ -19,10 +22,21 @@ func InitDatabase(dbConf config.DatabaseConfig) (err error) {
 		dbConf.Database,
 	)
 	DB, err = gorm.Open("mysql", connectionString)
+	if err != nil {
+		return
+	}
+	DB.SetLogger(&customLogger{})
+	DB.LogMode(true)
 	return
 }
 
 func CloseDatabase() (err error) {
 	err = DB.Close()
 	return
+}
+
+type customLogger struct{}
+
+func (c *customLogger) Print(v ...interface{}) {
+	log.Info(log_traceable.GetMessage(context.Background(), v))
 }

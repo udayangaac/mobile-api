@@ -48,15 +48,78 @@ func (ws *WebService) Init() {
 	routerRoot.Use(middleware.CORSMiddleware)
 	router := routerRoot.PathPrefix("/api/1.0").Subrouter()
 
-	router.Handle("/signup",
+	router.Handle("/register",
 		transportHttp.NewServer(
 			endpoint.SignUpEndpoints(ws.Services),
 			decoder.SignUpDecoder,
 			encoder.MainEncoder,
 			serverOpts...)).Methods(http.MethodPost)
 
+	router.Handle("/login",
+		transportHttp.NewServer(
+			endpoint.LoginEndpoints(ws.Services),
+			decoder.LoginDecoder,
+			encoder.MainEncoder,
+			serverOpts...)).Methods(http.MethodPost)
+
 	authSubRouter := router.PathPrefix("/auth").Subrouter()
 	authSubRouter.Use(middleware.JwtMiddleware)
+
+	authSubRouter.Handle("/logout",
+		transportHttp.NewServer(
+			endpoint.LogoutEndpoints(ws.Services),
+			decoder.LogoutDecoder,
+			encoder.MainEncoder,
+			serverOpts...)).Methods(http.MethodPost)
+
+	authSubRouter.Handle("/push",
+		transportHttp.NewServer(
+			endpoint.PushNotificationEndpoints(ws.Services),
+			decoder.PushNotificationDecoder,
+			encoder.MainEncoder,
+			serverOpts...)).Methods(http.MethodPost)
+
+	authSubRouter.Handle("/pull",
+		transportHttp.NewServer(
+			endpoint.PullNotificationEndpoints(ws.Services),
+			decoder.PullNotificationDecoder,
+			encoder.MainEncoder,
+			serverOpts...)).Methods(http.MethodGet)
+
+	authSubRouter.Handle("/settings/profile-picture",
+		transportHttp.NewServer(
+			endpoint.UserProfilePictureEndpoints(ws.Services),
+			decoder.ProfilePictureDecoder,
+			encoder.MainEncoder,
+			serverOpts...)).Methods(http.MethodPost)
+
+	authSubRouter.Handle("/settings/track-location",
+		transportHttp.NewServer(
+			endpoint.TrackLocationPermissionEndpoints(ws.Services),
+			decoder.LocationStatusDecoder,
+			encoder.MainEncoder,
+			serverOpts...)).Methods(http.MethodPost)
+
+	authSubRouter.Handle("/settings/push-status",
+		transportHttp.NewServer(
+			endpoint.PushPermissionEndpoints(ws.Services),
+			decoder.PushNotificationStatusDecoder,
+			encoder.MainEncoder,
+			serverOpts...)).Methods(http.MethodPost)
+
+	authSubRouter.Handle("/settings/login-status",
+		transportHttp.NewServer(
+			endpoint.LoginStatusEndpoints(ws.Services),
+			decoder.LoginStatusDecoder,
+			encoder.MainEncoder,
+			serverOpts...)).Methods(http.MethodPost)
+
+	authSubRouter.Handle("/settings/sound_notification",
+		transportHttp.NewServer(
+			endpoint.SoundPermissionEndpoints(ws.Services),
+			decoder.SoundStatusDecoder,
+			encoder.MainEncoder,
+			serverOpts...)).Methods(http.MethodPost)
 
 	server = &http.Server{
 		Addr:         fmt.Sprintf(":%v", ws.Port),

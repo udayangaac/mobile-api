@@ -1,9 +1,12 @@
 package user_service
 
 import (
+	"context"
+	log "github.com/sirupsen/logrus"
+	"github.com/udayangaac/mobile-api/internal/config"
 	"github.com/udayangaac/mobile-api/internal/domain"
 	"github.com/udayangaac/mobile-api/internal/entities"
-	"github.com/udayangaac/mobile-api/internal/errors_custom"
+	jwt2 "github.com/udayangaac/mobile-api/internal/lib/jwt"
 	"github.com/udayangaac/mobile-api/internal/lib/sha256"
 	"github.com/udayangaac/mobile-api/internal/repositories"
 )
@@ -18,35 +21,105 @@ func NewUserService(repoContainer repositories.RepoContainer) UserService {
 	}
 }
 
-func (u *userService) AddMobileUser(param domain.SignUpRequest) (err error) {
+func (u *userService) AddMobileUser(ctx context.Context, param domain.SignUpRequest) (err error) {
 	mobileAppUser := entities.MobileAppUser{
 		Name:           param.Name,
 		Email:          param.Email,
 		HashPassword:   sha256.GetHashString(param.Password),
-		Gender:         "Unknown",
-		EmployeeStatus: 0,
-		Status:         param.JobStatus,
+		DOB:            param.DOB,
+		Gender:         param.Gender,
+		EmployeeStatus: param.JobStatus,
+		Status:         1,
+		Address:        param.Address,
+		CivilStatus:    param.Married,
 	}
-	if isAdded := u.RepoContainer.MobileUserRepo.AddMobileUser(mobileAppUser); isAdded {
-		return
-	} else {
-		err = errors_custom.ErrUnableToAddMobileAppUser
-		return
-	}
+
+	//if isAdded := u.RepoContainer.MobileUserRepo.AddMobileUser(ctx, mobileAppUser); isAdded {
+	//	return
+	//} else {
+	//	err = errors_custom.ErrUnableToAddMobileAppUser
+	//	return
+	//}
+
+	u.RepoContainer.MobileUserRepo.AddMobileUser(ctx, mobileAppUser)
+	return
 }
 
-func (u userService) GenerateToken(param domain.LoginRequest) (resp domain.LoginResponse, err error) {
+func (u *userService) GenerateToken(ctx context.Context, param domain.LoginRequest) (resp domain.LoginResponse, err error) {
 	mobileAppUser := entities.MobileAppUser{}
-	mobileAppUser, err = u.RepoContainer.MobileUserRepo.GetMobileUserByEmail(param.Email)
+	jwt := jwt2.Resolver{
+		SecretKey:     config.ServerConf.Jwt.Key,
+		ValidDuration: config.ServerConf.Jwt.Duration,
+	}
+
+	mobileAppUser, err = u.RepoContainer.MobileUserRepo.GetMobileUserByEmail(ctx, param.Email)
+	log.Info(mobileAppUser)
 	if err != nil {
 		return
 	}
+
 	if mobileAppUser.HashPassword == sha256.GetHashString(param.Password) {
 		resp.Email = mobileAppUser.Email
 		resp.ID = int(mobileAppUser.ID)
 		resp.Name = mobileAppUser.Name
-		// resp.Avatar
-		// resp.LbsNotification.ID
+		claims := jwt2.Claims{Role: "user", UserId: mobileAppUser.ID}
+		resp.Token, err = jwt.GenerateToken(claims)
 	}
+
+	return
+}
+
+func (u *userService) LogOut(ctx context.Context, param domain.LoginRequest) (resp domain.LogoutResponse, err error) {
+	err = u.RepoContainer.MobileUserRepo.UserLogout(ctx)
+	return
+}
+
+func (u *userService) PushNotification(ctx context.Context, userId int, lat float64, lon float64) (resp entities.Notification, err error) {
+	notification := entities.Notification{}
+	notification, err = u.RepoContainer.MobileUserRepo.PushNotification(ctx, userId, lat, lon)
+	if err != nil {
+		return
+	}
+
+	return notification, err
+}
+
+func (u *userService) PullNotification(ctx context.Context, userId int, lat float64, lon float64) (resp entities.Notification, err error) {
+	notification := entities.Notification{}
+	notification, err = u.RepoContainer.MobileUserRepo.PullNotification(ctx, userId, lat, lon)
+	if err != nil {
+		return
+	}
+
+	return notification, err
+}
+
+func (u *userService) UserProfilePicture(ctx context.Context, userId int16) (resp domain.SettingsChangeResponse, err error) {
+	/*mobileAppUser := entities.MobileAppUser{}
+	mobileAppUser, err = u.RepoContainer.MobileUserRepo.UserProfilePicture(ctx, userId)
+	if err != nil {
+		return
+	}*/
+
+	return
+}
+
+func (u *userService) SetLocationPermission(ctx context.Context, userId int, status int) (resp domain.SettingsChangeResponse, err error) {
+	err = u.RepoContainer.MobileUserRepo.LocationTrack(ctx, userId, status)
+	return
+}
+
+func (u *userService) SetSoundStatus(ctx context.Context, userId int, status int) (resp domain.SettingsChangeResponse, err error) {
+	err = u.RepoContainer.MobileUserRepo.SoundSettingChange(ctx, userId, status)
+	return
+}
+
+func (u *userService) SetPushNotificationPermission(ctx context.Context, userId int, status int) (resp domain.SettingsChangeResponse, err error) {
+	err = u.RepoContainer.MobileUserRepo.PushNotificationSetting(ctx, userId, status)
+	return
+}
+
+func (u *userService) SetLoginStatus(ctx context.Context, userId int, status int) (resp domain.SettingsChangeResponse, err error) {
+	err = u.RepoContainer.MobileUserRepo.SetLoginStatus(ctx, userId, status)
 	return
 }
