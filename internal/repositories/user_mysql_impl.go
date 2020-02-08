@@ -59,10 +59,9 @@ func (m mobileAppUserMySqlRepo) UserProfilePicture(ctx context.Context, userId i
 
 }
 
-func (m mobileAppUserMySqlRepo) SoundSettingChange(ctx context.Context, userId int, status int) (mobileUserConfiguration entities.MobileUserConfiguration, err error) {
-	// err = m.DB.Where("id=?", userId).First(&mobileUserConfiguration).Error
-	err = m.DB.Model(&mobileUserConfiguration).Where("user_id = 1").Update("sound_status", "0").Error
-	log.Info(&mobileUserConfiguration)
+func (m mobileAppUserMySqlRepo) SoundSettingChange(ctx context.Context, userId int, status int) (err error) {
+	err = m.DB.Model(entities.MobileUserConfiguration{}).Where("user_id = 1", 1).Update("name", "hello").Error
+	log.Info(err)
 	return
 
 }
