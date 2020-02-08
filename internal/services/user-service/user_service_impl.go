@@ -118,3 +118,8 @@ func (u *userService) SetPushNotificationPermission(ctx context.Context, userId 
 	err = u.RepoContainer.MobileUserRepo.PushNotificationSetting(ctx, userId, status)
 	return
 }
+
+func (u *userService) SetLoginStatus(ctx context.Context, userId int, status int) (resp domain.SettingsChangeResponse, err error) {
+	err = u.RepoContainer.MobileUserRepo.SetLoginStatus(ctx, userId, status)
+	return
+}

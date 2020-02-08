@@ -60,14 +60,19 @@ func (m mobileAppUserMySqlRepo) UserProfilePicture(ctx context.Context, userId i
 }
 
 func (m mobileAppUserMySqlRepo) SoundSettingChange(ctx context.Context, userId int, status int) (err error) {
-	err = m.DB.Model(entities.MobileUserConfiguration{}).Where("user_id = 1").Update("sound_status", "0").Error
+	err = m.DB.Model(entities.MobileUserConfiguration{}).Where("user_id = ?", userId).Update("sound_status", status).Error
 	log.Info(err)
 	return
 }
 
-
 func (m mobileAppUserMySqlRepo) PushNotificationSetting(ctx context.Context, userId int, status int) (err error) {
-	err = m.DB.Model(entities.MobileUserConfiguration{}).Where("user_id = 1").Update("push_notification_status", "0").Error
+	err = m.DB.Model(entities.MobileUserConfiguration{}).Where("user_id = ?", userId).Update("push_notification_status", status).Error
+	log.Info(err)
+	return
+}
+
+func (m mobileAppUserMySqlRepo) SetLoginStatus(ctx context.Context, userId int, status int) (err error) {
+	err = m.DB.Model(entities.MobileUserConfiguration{}).Where("user_id = ?", userId).Update("login_status", status).Error
 	log.Info(err)
 	return
 }

@@ -139,3 +139,20 @@ func PushPermissionEndpoints(service services.Services) endpoint2.Endpoint {
 		return
 	}
 }
+
+func LoginStatusEndpoints(service services.Services) endpoint2.Endpoint {
+	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
+		param := request.(domain.SettingChangeRequest)
+		_, err = service.UserService.SetLoginStatus(ctx, param.UserId, param.Status)
+
+		if err != nil {
+			return
+		}
+
+		response = domain.SuccessResponse{
+			Message: "successfully Updated",
+		}
+
+		return
+	}
+}

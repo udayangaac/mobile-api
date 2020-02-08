@@ -82,6 +82,15 @@ func PushNotificationStatusDecoder(ctx context.Context, r *http.Request) (interf
 	return  pushRequestParam, nil
 }
 
+func LoginStatusDecoder(ctx context.Context, r *http.Request) (interface{}, error) {
+	loginStatusRequestParam := domain.SettingChangeRequest{}
+	err := json.NewDecoder(r.Body).Decode(&loginStatusRequestParam)
+	if err != nil {
+		return nil, domain_errors.ErrBadRequest
+	}
+	return  loginStatusRequestParam, nil
+}
+
 func SoundStatusDecoder(ctx context.Context, r *http.Request) (interface{}, error) {
 	soundRequestParam := domain.SoundPermissionRequest{}
 	err := json.NewDecoder(r.Body).Decode(&soundRequestParam)

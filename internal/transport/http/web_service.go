@@ -107,6 +107,13 @@ func (ws *WebService) Init() {
 			encoder.MainEncoder,
 			serverOpts...)).Methods(http.MethodPost)
 
+	authSubRouter.Handle("/settings/login-status",
+		transportHttp.NewServer(
+			endpoint.LoginStatusEndpoints(ws.Services),
+			decoder.LoginStatusDecoder,
+			encoder.MainEncoder,
+			serverOpts...)).Methods(http.MethodPost)
+
 	authSubRouter.Handle("/settings/sound_notification",
 		transportHttp.NewServer(
 			endpoint.SoundPermissionEndpoints(ws.Services),

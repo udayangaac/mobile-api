@@ -34,4 +34,7 @@ type UserService interface {
 
 	// user Profile Picture
 	UserProfilePicture(ctx context.Context, userId int16) (resp domain.SettingsChangeResponse, err error)
+
+	// Set Login Status
+	SetLoginStatus(ctx context.Context, userId int, Status int) (resp domain.SettingsChangeResponse, err error)
 }
