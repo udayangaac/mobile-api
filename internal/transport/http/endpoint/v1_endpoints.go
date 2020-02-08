@@ -69,7 +69,6 @@ func PushNotificationEndpoints(service services.Services) endpoint2.Endpoint {
 		notification := entities.Notification{}
 		param := request.(domain.PushRequest)
 		notification, err = service.UserService.PushNotification(ctx, param.UserId, param.Location.Lat, param.Location.Lon)
-		log.Info(param.UserId)
 		if err != nil {
 			return
 		}
@@ -111,6 +110,23 @@ func SoundPermissionEndpoints(service services.Services) endpoint2.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		param := request.(domain.SoundPermissionRequest)
 		_, err = service.UserService.SetSoundStatus(ctx, param.UserId, param.Status)
+
+		if err != nil {
+			return
+		}
+
+		response = domain.SuccessResponse{
+			Message: "successfully Updated",
+		}
+
+		return
+	}
+}
+
+func PushPermissionEndpoints(service services.Services) endpoint2.Endpoint {
+	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
+		param := request.(domain.SettingChangeRequest)
+		_, err = service.UserService.SetPushNotificationPermission(ctx, param.UserId, param.Status)
 
 		if err != nil {
 			return

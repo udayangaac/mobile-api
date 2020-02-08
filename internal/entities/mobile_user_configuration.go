@@ -7,4 +7,5 @@ type MobileUserConfiguration struct {
 	UserId                int
 	SoundStatus           int `gorm:"column:sound_status"`
 	LocationServiceStatus int `gorm:"column:location_service_status"`
+	PushNotificationStatus int `gorm:"column:push_notification_status"`
 }

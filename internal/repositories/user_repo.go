@@ -14,5 +14,5 @@ type MobileAppUserRepo interface {
 	LocationTrack(ctx context.Context, userId int, status int) (err error)
 	UserProfilePicture(ctx context.Context, userId int16) (mobileUser entities.MobileAppUser, err error)
 	SoundSettingChange(ctx context.Context, userId int, status int) (err error)
-	PushNotificationSetting(ctx context.Context, userId int) (mobileUser entities.MobileAppUser, err error)
+	PushNotificationSetting(ctx context.Context, userId int, status int) ( err error)
 }

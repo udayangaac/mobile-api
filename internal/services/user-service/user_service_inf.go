@@ -27,7 +27,7 @@ type UserService interface {
 	SetLocationPermission(ctx context.Context, userId int, Status int) (resp domain.SettingsChangeResponse, err error)
 
 	// Set Push Notification
-	SetPushNotificationPermission(ctx context.Context, userId int) (resp domain.SettingsChangeResponse, err error)
+	SetPushNotificationPermission(ctx context.Context, userId int, Status int) (resp domain.SettingsChangeResponse, err error)
 
 	// Set Sound Permission
 	SetSoundStatus(ctx context.Context, userId int, Status int) (resp domain.SettingsChangeResponse, err error)

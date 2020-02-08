@@ -1,6 +1,6 @@
 package domain
 
 type SettingChangeRequest struct {
-	UserId    string `json:"id"`
-	Status    string `json:"id"`
+	UserId    int  `json:"id"`
+	Status    int  `json:"id"`
 }

@@ -72,6 +72,16 @@ func LocationStatusDecoder(ctx context.Context, r *http.Request) (interface{}, e
 	return  locationRequestParam, nil
 }
 
+
+func PushNotificationStatusDecoder(ctx context.Context, r *http.Request) (interface{}, error) {
+	pushRequestParam := domain.SettingChangeRequest{}
+	err := json.NewDecoder(r.Body).Decode(&pushRequestParam)
+	if err != nil {
+		return nil, domain_errors.ErrBadRequest
+	}
+	return  pushRequestParam, nil
+}
+
 func SoundStatusDecoder(ctx context.Context, r *http.Request) (interface{}, error) {
 	soundRequestParam := domain.SoundPermissionRequest{}
 	err := json.NewDecoder(r.Body).Decode(&soundRequestParam)

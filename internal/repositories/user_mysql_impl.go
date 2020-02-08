@@ -65,12 +65,9 @@ func (m mobileAppUserMySqlRepo) SoundSettingChange(ctx context.Context, userId i
 	return
 }
 
-//func (m mobileAppUserMySqlRepo) SetPushNotificationPermission(ctx context.Context, userId int) (mobileUser entities.MobileAppUser, err error) {
-//	err = m.DB.Where("email=?", email).First(&mobileUser).Error
-//	return
-//
-//}
 
-func (m mobileAppUserMySqlRepo) PushNotificationSetting(ctx context.Context, userId int) (mobileUser entities.MobileAppUser, err error) {
+func (m mobileAppUserMySqlRepo) PushNotificationSetting(ctx context.Context, userId int, status int) (err error) {
+	err = m.DB.Model(entities.MobileUserConfiguration{}).Where("user_id = 1").Update("push_notification_status", "0").Error
+	log.Info(err)
 	return
 }

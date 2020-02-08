@@ -114,9 +114,7 @@ func (u *userService) SetSoundStatus(ctx context.Context, userId int, status int
 	return
 }
 
-func (u *userService) SetPushNotificationPermission(ctx context.Context, userId int) (resp domain.SettingsChangeResponse, err error) {
-	/*mobileAppUser := entities.MobileAppUser{}
-	mobileAppUser, err = u.RepoContainer.MobileUserRepo.PushNotificationSetting(ctx, userId)*/
-
+func (u *userService) SetPushNotificationPermission(ctx context.Context, userId int, status int) (resp domain.SettingsChangeResponse, err error) {
+	err = u.RepoContainer.MobileUserRepo.PushNotificationSetting(ctx, userId, status)
 	return
 }

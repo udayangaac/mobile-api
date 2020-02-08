@@ -100,12 +100,12 @@ func (ws *WebService) Init() {
 			encoder.MainEncoder,
 			serverOpts...)).Methods(http.MethodPost)
 
-	authSubRouter.Handle("/settings/pull_notification",
+	authSubRouter.Handle("/settings/push-status",
 		transportHttp.NewServer(
-			endpoint.PullNotificationEndpoints(ws.Services),
-			decoder.PullNotificationDecoder,
+			endpoint.PushPermissionEndpoints(ws.Services),
+			decoder.PushNotificationStatusDecoder,
 			encoder.MainEncoder,
-			serverOpts...)).Methods(http.MethodGet)
+			serverOpts...)).Methods(http.MethodPost)
 
 	authSubRouter.Handle("/settings/sound_notification",
 		transportHttp.NewServer(
