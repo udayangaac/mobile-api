@@ -110,7 +110,7 @@ func SoundPermissionEndpoints (service services.Services) endpoint2.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		param := request.(domain.SoundPermissionRequest)
 		_, err = service.UserService.SetSoundStatus(ctx, param.UserId, param.Status)
-		log.Info("sdddddddddddd")
+		
 		if err != nil {
 			return
 		}

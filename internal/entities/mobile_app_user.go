@@ -13,9 +13,9 @@ type MobileAppUser struct {
 	Gender         string 	// `json:"gender"`
 	EmployeeStatus int16  	// `json:"employee_status"`
 	Status         int16  	// `json:"status"`
-	Address        string 	// json:"address"`
-	CivilStatus    int16  	//  json:"civil_status"`
-	Family         Family
+	Address        string 	// `json:"address"`
+	CivilStatus    int16  	// `json:"civil_status"`
+	Family         Family   // `json:"family"`
 	Job            JobDetails
 }
 
