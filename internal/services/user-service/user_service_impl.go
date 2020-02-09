@@ -50,7 +50,8 @@ func (u *userService) AddMobileUser(ctx context.Context, param domain.SignUpRequ
 		return
 	}*/
 
-	u.RepoContainer.MobileUserRepo.AddMobileUser(ctx, mobileAppUser, mobileUserConfiguration)
+	u.RepoContainer.MobileUserRepo.AddMobileUser(ctx, mobileAppUser, mobileUserConfiguration, err)
+	
 	return
 }
 

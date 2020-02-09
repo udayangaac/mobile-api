@@ -20,14 +20,12 @@ func NewMobileAppUser() MobileAppUserRepo {
 	}
 }
 
-func (m mobileAppUserMySqlRepo) AddMobileUser(ctx context.Context, mobileUser entities.MobileAppUser, mobileUserConfiguration entities.MobileUserConfiguration) {
+func (m mobileAppUserMySqlRepo) AddMobileUser(ctx context.Context, mobileUser entities.MobileAppUser, mobileUserConfiguration entities.MobileUserConfiguration, err error) {
 	log.Info(log_traceable.GetMessage(ctx, fmt.Sprintf("%v", mobileUser)))
-	m.DB.Create(&mobileUser)
+	err = m.DB.Create(&mobileUser).Error
 	mobileUserConfiguration.UserId = mobileUser.ID
-	m.DB.Create(&mobileUserConfiguration)
-	/*if isCreated nil {
-		return
-	}*/
+	err = m.DB.Create(&mobileUserConfiguration).Error
+
 	return
 }
 
