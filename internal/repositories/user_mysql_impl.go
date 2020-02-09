@@ -23,9 +23,11 @@ func NewMobileAppUser() MobileAppUserRepo {
 func (m mobileAppUserMySqlRepo) AddMobileUser(ctx context.Context, mobileUser entities.MobileAppUser, mobileUserConfiguration entities.MobileUserConfiguration, err error) {
 	log.Info(log_traceable.GetMessage(ctx, fmt.Sprintf("%v", mobileUser)))
 	err = m.DB.Create(&mobileUser).Error
+	if err != nil {
+		return
+	}
 	mobileUserConfiguration.UserId = mobileUser.ID
 	err = m.DB.Create(&mobileUserConfiguration).Error
-
 	return
 }
 
@@ -35,7 +37,6 @@ func (m mobileAppUserMySqlRepo) GetMobileUserByEmail(ctx context.Context, email 
 }
 
 func (m mobileAppUserMySqlRepo) UserLogout(ctx context.Context) (err error) {
-
 	return
 }
 
