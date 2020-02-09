@@ -35,12 +35,12 @@ func (u *userService) AddMobileUser(ctx context.Context, param domain.SignUpRequ
 	}
 
 	mobileUserConfiguration := entities.MobileUserConfiguration{
-		UserId:                         3,
-		LoginStatus:           			1,
-		PushNotificationStatus:         1,
-		SoundStatus: 					1,
-		LocationServiceStatus:          1,
-		AnyStatus:                      0,
+		UserId:                 3,
+		LoginStatus:            1,
+		PushNotificationStatus: 1,
+		SoundStatus:            1,
+		LocationServiceStatus:  1,
+		AnyStatus:              0,
 	}
 
 	/*if isAdded := u.RepoContainer.MobileUserRepo.AddMobileUser(ctx, mobileAppUser); isAdded {
@@ -50,8 +50,7 @@ func (u *userService) AddMobileUser(ctx context.Context, param domain.SignUpRequ
 		return
 	}*/
 
-	u.RepoContainer.MobileUserRepo.AddMobileUser(ctx, mobileAppUser, mobileUserConfiguration, err)
-	
+	err = u.RepoContainer.MobileUserRepo.AddMobileUser(ctx, mobileAppUser, mobileUserConfiguration)
 	return
 }
 
