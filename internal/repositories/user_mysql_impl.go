@@ -6,6 +6,7 @@ import (
 	"github.com/jinzhu/gorm"
 	log "github.com/sirupsen/logrus"
 	"github.com/udayangaac/mobile-api/internal/entities"
+	"github.com/udayangaac/mobile-api/internal/errors_custom"
 	log_traceable "github.com/udayangaac/mobile-api/internal/lib/log-traceable"
 	"github.com/udayangaac/mobile-api/internal/lib/orm"
 )
@@ -22,8 +23,9 @@ func NewMobileAppUser() MobileAppUserRepo {
 
 func (m mobileAppUserMySqlRepo) AddMobileUser(ctx context.Context, mobileUser entities.MobileAppUser, mobileUserConfiguration entities.MobileUserConfiguration) (err error) {
 	log.Info(log_traceable.GetMessage(ctx, fmt.Sprintf("%v", mobileUser)))
-	err = m.DB.Create(&mobileUser).Error
-	if err != nil {
+	rowAffected := m.DB.Create(&mobileUser).RowsAffected
+	if rowAffected != 0 {
+		err = errors_custom.ErrDuplicateUserEntry
 		return
 	}
 	mobileUserConfiguration.UserId = mobileUser.ID
