@@ -24,7 +24,7 @@ func NewMobileAppUser() MobileAppUserRepo {
 func (m mobileAppUserMySqlRepo) AddMobileUser(ctx context.Context, mobileUser entities.MobileAppUser, mobileUserConfiguration entities.MobileUserConfiguration) (err error) {
 	log.Info(log_traceable.GetMessage(ctx, fmt.Sprintf("%v", mobileUser)))
 	rowAffected := m.DB.Create(&mobileUser).RowsAffected
-	if rowAffected != 0 {
+	if rowAffected == 0 {
 		err = errors_custom.ErrDuplicateUserEntry
 		return
 	}
