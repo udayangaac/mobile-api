@@ -22,9 +22,10 @@ var (
 	ErrInvalidToken = errors.New("invalid token")
 	// bad request
 	ErrBadRequest = errors.New("bad request")
-
 	// unable to add stakeholder
 	ErrUnableToAddMobileAppUser = errors.New("unable to add mobile app user")
+	// duplicate email
+	ErrDuplicateUserEntry = errors.New("e-mail is already used")
 )
 
 func init() {
@@ -60,5 +61,11 @@ func init() {
 		HttpStatusCode:       http.StatusOK,
 		ApplicationErrorCode: 201,
 		CustomMessage:        ErrUnableToAddMobileAppUser.Error(),
+	}
+	// Duplicate email
+	customErrorMap[ErrDuplicateUserEntry] = ErrorContent{
+		HttpStatusCode:       http.StatusBadRequest,
+		ApplicationErrorCode: 202,
+		CustomMessage:        ErrDuplicateUserEntry.Error(),
 	}
 }

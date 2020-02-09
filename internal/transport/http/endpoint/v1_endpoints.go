@@ -16,6 +16,8 @@ func SignUpEndpoints(service services.Services) endpoint2.Endpoint {
 		if err != nil {
 			return
 		}
+
+		log.Info(err)
 		response = domain.SuccessResponse{
 			Message: "successfully added the user",
 		}

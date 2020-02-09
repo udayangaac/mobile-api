@@ -34,14 +34,14 @@ func (u *userService) AddMobileUser(ctx context.Context, param domain.SignUpRequ
 		CivilStatus:    param.Married,
 	}
 
-	//if isAdded := u.RepoContainer.MobileUserRepo.AddMobileUser(ctx, mobileAppUser); isAdded {
-	//	return
-	//} else {
-	//	err = errors_custom.ErrUnableToAddMobileAppUser
-	//	return
-	//}
-
-	u.RepoContainer.MobileUserRepo.AddMobileUser(ctx, mobileAppUser)
+	mobileUserConfiguration := entities.MobileUserConfiguration{
+		LoginStatus:            1,
+		PushNotificationStatus: 1,
+		SoundStatus:            1,
+		LocationServiceStatus:  1,
+		AnyStatus:              0,
+	}
+	err = u.RepoContainer.MobileUserRepo.AddMobileUser(ctx, mobileAppUser, mobileUserConfiguration)
 	return
 }
 
