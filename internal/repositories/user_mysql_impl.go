@@ -23,6 +23,7 @@ func NewMobileAppUser() MobileAppUserRepo {
 func (m mobileAppUserMySqlRepo) AddMobileUser(ctx context.Context, mobileUser entities.MobileAppUser, mobileUserConfiguration entities.MobileUserConfiguration) {
 	log.Info(log_traceable.GetMessage(ctx, fmt.Sprintf("%v", mobileUser)))
 	m.DB.Create(&mobileUser)
+	mobileUserConfiguration.UserId = mobileUser.ID
 	m.DB.Create(&mobileUserConfiguration)
 	/*if isCreated nil {
 		return
