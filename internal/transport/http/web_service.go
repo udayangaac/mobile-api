@@ -124,7 +124,7 @@ func (ws *WebService) Init() {
 	authSubRouter.Handle("/notification-type",
 		transportHttp.NewServer(
 			endpoint.NotificationTypeEndpoints(ws.Services),
-			decoder.PushNotificationDecoder,
+			decoder.NotificationTypeDecoder,
 			encoder.MainEncoder,
 			serverOpts...)).Methods(http.MethodGet)
 

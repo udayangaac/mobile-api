@@ -124,8 +124,8 @@ func (u *userService) SetLoginStatus(ctx context.Context, userId int, status int
 	return
 }
 
-func (u *userService) NotificationTypes(ctx context.Context, userId int) (resp entities.NotificationType, err error) {
-	notificationTypes := entities.NotificationType{}
+func (u *userService) NotificationTypes(ctx context.Context, userId int) (resp entities.AdvertismentsCategories, err error) {
+	notificationTypes := entities.AdvertismentsCategories{}
 	notificationTypes, err = u.RepoContainer.MobileUserRepo.NotificationTypes(ctx, userId)
 	if err != nil {
 		return

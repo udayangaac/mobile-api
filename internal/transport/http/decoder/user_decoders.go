@@ -62,6 +62,15 @@ func UserProfileDecoder(ctx context.Context, r *http.Request) (interface{}, erro
 	return  userProfile, nil
 }
 
+func NotificationTypeDecoder(ctx context.Context, r *http.Request) (interface{}, error) {
+	notificationType := domain.NotificationType{}
+	err := json.NewDecoder(r.Body).Decode(&notificationType)
+	if err != nil {
+		return nil, domain_errors.ErrBadRequest
+	}
+	return  notificationType, nil
+}
+
 func ProfilePictureDecoder(ctx context.Context, r *http.Request) (interface{}, error) {
 	profilePictureRequestParam := domain.ProfilePictureRequest{}
 	err := json.NewDecoder(r.Body).Decode(&profilePictureRequestParam)

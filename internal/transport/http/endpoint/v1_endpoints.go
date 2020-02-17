@@ -81,8 +81,8 @@ func PushNotificationEndpoints(service services.Services) endpoint2.Endpoint {
 
 func NotificationTypeEndpoints(service services.Services) endpoint2.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
-		notificationType := entities.NotificationType{}
-		param := request.(domain.PushRequest)
+		notificationType := entities.AdvertismentsCategories{}
+		param := request.(domain.NotificationType)
 		notificationType, err = service.UserService.NotificationTypes(ctx, param.UserId)
 		if err != nil {
 			return
@@ -91,6 +91,7 @@ func NotificationTypeEndpoints(service services.Services) endpoint2.Endpoint {
 		return
 	}
 }
+
 func UserProfileEndpoints(service services.Services) endpoint2.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		mobileAppUser := entities.MobileAppUser{}
@@ -103,7 +104,6 @@ func UserProfileEndpoints(service services.Services) endpoint2.Endpoint {
 		return
 	}
 }
-
 
 func UserProfilePictureEndpoints(service services.Services) endpoint2.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
