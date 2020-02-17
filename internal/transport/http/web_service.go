@@ -121,6 +121,20 @@ func (ws *WebService) Init() {
 			encoder.MainEncoder,
 			serverOpts...)).Methods(http.MethodPost)
 
+	authSubRouter.Handle("/notification-type",
+		transportHttp.NewServer(
+			endpoint.NotificationTypeEndpoints(ws.Services),
+			decoder.PushNotificationDecoder,
+			encoder.MainEncoder,
+			serverOpts...)).Methods(http.MethodGet)
+
+	authSubRouter.Handle("/user-profile",
+		transportHttp.NewServer(
+			endpoint.UserProfileEndpoints(ws.Services),
+			decoder.UserProfileDecoder,
+			encoder.MainEncoder,
+			serverOpts...)).Methods(http.MethodGet)
+
 	server = &http.Server{
 		Addr:         fmt.Sprintf(":%v", ws.Port),
 		WriteTimeout: time.Second * 15,

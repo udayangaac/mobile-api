@@ -82,3 +82,12 @@ func (m mobileAppUserMySqlRepo) SetLoginStatus(ctx context.Context, userId int, 
 	log.Info(err)
 	return
 }
+
+func (m mobileAppUserMySqlRepo) NotificationTypes(ctx context.Context, userId int) (NotificationTypes entities.NotificationType, err error) {
+	err = m.DB.Where("id=?", userId).First(&NotificationTypes).Error
+	return
+}
+func (m mobileAppUserMySqlRepo) UserProfile(ctx context.Context, userId int) (NotificationTypes entities.MobileAppUser, err error) {
+	err = m.DB.Where("id=?", userId).First(&entities.MobileAppUser{}).Error
+	return
+}

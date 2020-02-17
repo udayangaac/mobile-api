@@ -20,6 +20,12 @@ type UserService interface {
 	// push notification
 	PushNotification(ctx context.Context, userId int, lat float64, lon float64) (resp entities.Notification, err error)
 
+	// Notification Types
+	NotificationTypes(ctx context.Context, userId int) (resp entities.NotificationType, err error)
+
+	// User Profile
+	UserProfile(ctx context.Context, userId int) (resp entities.MobileAppUser, err error)
+
 	// pull notification
 	PullNotification(ctx context.Context, userId int, lat float64, lon float64) (resp entities.Notification, err error)
 

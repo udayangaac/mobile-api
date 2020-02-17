@@ -123,3 +123,23 @@ func (u *userService) SetLoginStatus(ctx context.Context, userId int, status int
 	err = u.RepoContainer.MobileUserRepo.SetLoginStatus(ctx, userId, status)
 	return
 }
+
+func (u *userService) NotificationTypes(ctx context.Context, userId int) (resp entities.NotificationType, err error) {
+	notificationTypes := entities.NotificationType{}
+	notificationTypes, err = u.RepoContainer.MobileUserRepo.NotificationTypes(ctx, userId)
+	if err != nil {
+		return
+	}
+
+	return notificationTypes, err
+}
+
+func (u *userService) UserProfile(ctx context.Context, userId int) (resp entities.MobileAppUser, err error) {
+	notificationTypes := entities.MobileAppUser{}
+	notificationTypes, err = u.RepoContainer.MobileUserRepo.UserProfile(ctx, userId)
+	if err != nil {
+		return
+	}
+
+	return notificationTypes, err
+}
