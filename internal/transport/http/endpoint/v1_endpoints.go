@@ -94,9 +94,22 @@ func NotificationTypeEndpoints(service services.Services) endpoint2.Endpoint {
 
 func UserProfileEndpoints(service services.Services) endpoint2.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
+		notificationType := entities.MobileAppUser{}
+		param := request.(domain.UserProfile)
+		notificationType, err = service.UserService.GetUserProfile(ctx, param.UserId)
+		if err != nil {
+			return
+		}
+		response = notificationType
+		return
+	}
+}
+
+func UserProfileUpdateEndpoints(service services.Services) endpoint2.Endpoint {
+	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		mobileAppUser := entities.MobileAppUser{}
 		param := request.(domain.UserProfile)
-		mobileAppUser, err = service.UserService.UserProfile(ctx, param.UserId)
+		err = service.UserService.UpdateUserProfile(ctx, param)
 		if err != nil {
 			return
 		}

@@ -26,12 +26,12 @@ func (u *userService) AddMobileUser(ctx context.Context, param domain.SignUpRequ
 		Name:           param.Name,
 		Email:          param.Email,
 		HashPassword:   sha256.GetHashString(param.Password),
-		DOB:            param.DOB,
-		Gender:         param.Gender,
-		EmployeeStatus: param.JobStatus,
-		Status:         1,
-		Address:        param.Address,
-		CivilStatus:    param.Married,
+		//DOB:            param.DOB,
+		//Gender:         param.Gender,
+		//EmployeeStatus: param.JobStatus,
+		//Status:         1,
+		//Address:        param.Address,
+		//CivilStatus:    param.Married,
 	}
 
 	mobileUserConfiguration := entities.MobileUserConfiguration{
@@ -41,7 +41,33 @@ func (u *userService) AddMobileUser(ctx context.Context, param domain.SignUpRequ
 		LocationServiceStatus:  1,
 		AnyStatus:              0,
 	}
+	
 	err = u.RepoContainer.MobileUserRepo.AddMobileUser(ctx, mobileAppUser, mobileUserConfiguration)
+	return
+}
+
+func (u *userService) UpdateUserProfile(ctx context.Context, param domain.UserProfile) (err error) {
+	mobileAppUser := entities.MobileAppUser{
+		Name:           param.Name,
+		Email:          param.Email,
+		HashPassword:   sha256.GetHashString(param.Password),
+		//DOB:            param.DOB,
+		//Gender:         param.Gender,
+		//EmployeeStatus: param.JobStatus,
+		//Status:         1,
+		//Address:        param.Address,
+		//CivilStatus:    param.Married,
+	}
+
+	mobileUserConfiguration := entities.MobileUserConfiguration{
+		LoginStatus:            1,
+		PushNotificationStatus: 1,
+		SoundStatus:            1,
+		LocationServiceStatus:  1,
+		AnyStatus:              0,
+	}
+
+	err = u.RepoContainer.MobileUserRepo.UpdateUserProfile(ctx, mobileAppUser, mobileUserConfiguration)
 	return
 }
 
@@ -140,9 +166,10 @@ func (u *userService) NotificationTypes(ctx context.Context, userId int) (resp e
 	return //notificationTypes, err
 }
 
-func (u *userService) UserProfile(ctx context.Context, userId int) (resp entities.MobileAppUser, err error) {
+func (u *userService) GetUserProfile(ctx context.Context, userId int) (resp entities.MobileAppUser, err error) {
 	notificationTypes := entities.MobileAppUser{}
-	notificationTypes, err = u.RepoContainer.MobileUserRepo.UserProfile(ctx, userId)
+	notificationTypes, err = u.RepoContainer.MobileUserRepo.GetUserProfile(ctx, userId)
+	log.Info(notificationTypes)
 	if err != nil {
 		return
 	}

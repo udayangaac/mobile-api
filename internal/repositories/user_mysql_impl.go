@@ -87,7 +87,19 @@ func (m mobileAppUserMySqlRepo) NotificationTypes(ctx context.Context, userId in
 	err = m.DB.Where("status=1").Find(&entities.AdvertismentsCategories{}).Error
 	return
 }
-func (m mobileAppUserMySqlRepo) UserProfile(ctx context.Context, userId int) (NotificationTypes entities.MobileAppUser, err error) {
+
+func (m mobileAppUserMySqlRepo) GetUserProfile(ctx context.Context, userId int) (NotificationTypes entities.MobileAppUser, err error) {
 	err = m.DB.Where("id=?", userId).First(&entities.MobileAppUser{}).Error
+	return
+}
+
+func (m mobileAppUserMySqlRepo) UpdateUserProfile(ctx context.Context, mobileUser entities.MobileAppUser, mobileUserConfiguration entities.MobileUserConfiguration) (err error) {
+	rowAffected := m.DB.Create(&mobileUser).RowsAffected
+	if rowAffected == 0 {
+		err = errors_custom.ErrDuplicateUserEntry
+		return
+	}
+	mobileUserConfiguration.UserId = mobileUser.ID
+	err = m.DB.Create(&mobileUserConfiguration).Error
 	return
 }
