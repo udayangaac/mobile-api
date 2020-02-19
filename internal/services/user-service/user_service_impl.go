@@ -150,29 +150,30 @@ func (u *userService) SetLoginStatus(ctx context.Context, userId int, status int
 	return
 }
 
-func (u *userService) NotificationTypes(ctx context.Context, userId int) (resp entities.AdvertismentsCategories, err error) {
-	notificationTypes := entities.AdvertismentsCategories{}
+func (u *userService) NotificationTypes(ctx context.Context, userId int) (resp [12]domain.NotificationTypes, err error) {
+	notification := []entities.AdvertismentsCategories{}
 
-	notificationTypes, err = u.RepoContainer.MobileUserRepo.NotificationTypes(ctx, userId)
-	log.Info(notificationTypes)
+	notification, err = u.RepoContainer.MobileUserRepo.NotificationTypesList(ctx, userId)
 	if err != nil {
 		return
 	}
 
-	resp.Id = notificationTypes.Id
-	resp.CategoryName = notificationTypes.CategoryName
-	resp.Status = notificationTypes.Status
+	for i := range notification {
+		// fmt.Println(i, notification[i].CategoryName)
+		resp[i].ID = notification[i].ID
+		resp[i].CategoryName = notification[i].CategoryName
+	}
 
-	return //notificationTypes, err
+	return
 }
 
 func (u *userService) GetUserProfile(ctx context.Context, userId int) (resp entities.MobileAppUser, err error) {
-	notificationTypes := entities.MobileAppUser{}
-	notificationTypes, err = u.RepoContainer.MobileUserRepo.GetUserProfile(ctx, userId)
-	log.Info(notificationTypes)
+	userProfile := entities.MobileAppUser{}
+	userProfile, err = u.RepoContainer.MobileUserRepo.GetUserProfile(ctx, userId)
+	log.Info(userProfile)
 	if err != nil {
 		return
 	}
 
-	return notificationTypes, err
+	return userProfile, err
 }

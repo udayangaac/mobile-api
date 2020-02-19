@@ -83,8 +83,8 @@ func (m mobileAppUserMySqlRepo) SetLoginStatus(ctx context.Context, userId int, 
 	return
 }
 
-func (m mobileAppUserMySqlRepo) NotificationTypes(ctx context.Context, userId int) (NotificationTypes entities.AdvertismentsCategories, err error) {
-	err = m.DB.Where("status=1").Find(&entities.AdvertismentsCategories{}).Error
+func (m mobileAppUserMySqlRepo) NotificationTypesList(ctx context.Context, userId int) (NotificationTypes []entities.AdvertismentsCategories, err error) {
+	err = m.DB.Select([]string{"id", "category_name", "status"}).Where("status=1").Find(&NotificationTypes).Error
 	return
 }
 

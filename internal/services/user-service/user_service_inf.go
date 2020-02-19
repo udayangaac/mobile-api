@@ -21,7 +21,7 @@ type UserService interface {
 	PushNotification(ctx context.Context, userId int, lat float64, lon float64) (resp entities.Notification, err error)
 
 	// Notification Types
-	NotificationTypes(ctx context.Context, userId int) (resp entities.AdvertismentsCategories, err error)
+	NotificationTypes(ctx context.Context, userId int) (resp [12]domain.NotificationTypes, err error)
 
 	// Get Mobile user
 	GetUserProfile(ctx context.Context, userId int) (resp entities.MobileAppUser, err error)
