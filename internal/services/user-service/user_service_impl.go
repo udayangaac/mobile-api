@@ -26,23 +26,18 @@ func (u *userService) AddMobileUser(ctx context.Context, param domain.SignUpRequ
 		Name:           param.Name,
 		Email:          param.Email,
 		HashPassword:   sha256.GetHashString(param.Password),
-		//DOB:            param.DOB,
-		//Gender:         param.Gender,
-		//EmployeeStatus: param.JobStatus,
-		//Status:         1,
-		//Address:        param.Address,
-		//CivilStatus:    param.Married,
 	}
 
-	mobileUserConfiguration := entities.MobileUserConfiguration{
+	/*mobileUserConfiguration := entities.MobileUserConfiguration{
 		LoginStatus:            1,
 		PushNotificationStatus: 1,
 		SoundStatus:            1,
 		LocationServiceStatus:  1,
 		AnyStatus:              0,
 	}
-	
-	err = u.RepoContainer.MobileUserRepo.AddMobileUser(ctx, mobileAppUser, mobileUserConfiguration)
+*/
+	err = u.RepoContainer.MobileUserRepo.AddMobileUser(ctx, mobileAppUser)
+	log.Info(err)
 	return
 }
 
@@ -167,13 +162,13 @@ func (u *userService) NotificationTypes(ctx context.Context, userId int) (resp [
 	return
 }
 
-func (u *userService) GetUserProfile(ctx context.Context, userId int) (resp entities.MobileAppUser, err error) {
+func (u *userService) GetUserProfile(ctx context.Context, userId int) (resp domain.UserProfileResponse, err error) {
 	userProfile := entities.MobileAppUser{}
 	userProfile, err = u.RepoContainer.MobileUserRepo.GetUserProfile(ctx, userId)
-	log.Info(userProfile)
+	log.Info(userProfile.Name)
 	if err != nil {
 		return
 	}
-
-	return userProfile, err
+	//resp.Name = userProfile.Name
+	return // userProfile, err
 }

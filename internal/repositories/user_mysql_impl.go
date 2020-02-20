@@ -21,15 +21,16 @@ func NewMobileAppUser() MobileAppUserRepo {
 	}
 }
 
-func (m mobileAppUserMySqlRepo) AddMobileUser(ctx context.Context, mobileUser entities.MobileAppUser, mobileUserConfiguration entities.MobileUserConfiguration) (err error) {
+func (m mobileAppUserMySqlRepo) AddMobileUser(ctx context.Context, mobileUser entities.MobileAppUser) (err error) {
 	log.Info(log_traceable.GetMessage(ctx, fmt.Sprintf("%v", mobileUser)))
-	rowAffected := m.DB.Create(&mobileUser).RowsAffected
-	if rowAffected == 0 {
+	err = m.DB.Create(&mobileUser).Error
+	
+	/*if rowAffected == 0 {
 		err = errors_custom.ErrDuplicateUserEntry
 		return
-	}
-	mobileUserConfiguration.UserId = mobileUser.ID
-	err = m.DB.Create(&mobileUserConfiguration).Error
+	*/
+	// mobileUserConfiguration.UserId = mobileUser.ID
+	//err = m.DB.Create(&mobileUserConfiguration).Error
 	return
 }
 
@@ -84,11 +85,17 @@ func (m mobileAppUserMySqlRepo) SetLoginStatus(ctx context.Context, userId int, 
 }
 
 func (m mobileAppUserMySqlRepo) NotificationTypesList(ctx context.Context, userId int) (NotificationTypes []entities.AdvertismentsCategories, err error) {
-	err = m.DB.Select([]string{"id", "category_name", "status"}).Where("status=1").Find(&NotificationTypes).Error
+
+	if userId == 0 {
+		err = m.DB.Select([]string{"id", "category_name", "status"}).Where("status=1").Find(&NotificationTypes).Error
+	}  else {
+		err = m.DB.Select([]string{"id", "category_name", "status"}).Where("status=1").Find(&NotificationTypes).Error
+	}
+
 	return
 }
 
-func (m mobileAppUserMySqlRepo) GetUserProfile(ctx context.Context, userId int) (NotificationTypes entities.MobileAppUser, err error) {
+func (m mobileAppUserMySqlRepo) GetUserProfile(ctx context.Context, userId int) (UserProfile entities.MobileAppUser, err error) {
 	err = m.DB.Where("id=?", userId).First(&entities.MobileAppUser{}).Error
 	return
 }

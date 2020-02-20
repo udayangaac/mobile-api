@@ -13,11 +13,11 @@ func SignUpEndpoints(service services.Services) endpoint2.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		param := request.(domain.SignUpRequest)
 		err = service.UserService.AddMobileUser(ctx, param)
+		log.Info(err)
 		if err != nil {
 			return
 		}
 
-		log.Info(err)
 		response = domain.SuccessResponse{
 			Message: "successfully added the user",
 		}
@@ -94,13 +94,13 @@ func NotificationTypeEndpoints(service services.Services) endpoint2.Endpoint {
 
 func UserProfileEndpoints(service services.Services) endpoint2.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
-		notificationType := entities.MobileAppUser{}
+		getUserProfile := domain.UserProfileResponse{}
 		param := request.(domain.UserProfile)
-		notificationType, err = service.UserService.GetUserProfile(ctx, param.UserId)
+		getUserProfile, err = service.UserService.GetUserProfile(ctx, param.UserId)
 		if err != nil {
 			return
 		}
-		response = notificationType
+		response = getUserProfile
 		return
 	}
 }
