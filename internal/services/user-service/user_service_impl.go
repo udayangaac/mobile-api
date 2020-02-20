@@ -156,9 +156,9 @@ func (u *userService) NotificationTypes(ctx context.Context, userId int) (resp [
 }
 
 func (u *userService) GetUserProfile(ctx context.Context, userId int) (resp domain.UserProfileResponse, err error) {
-	userProfile := entities.MobileAppUser{}
+	userProfile := domain.UserProfileResponse{}
 	userProfile, err = u.RepoContainer.MobileUserRepo.GetUserProfile(ctx, userId)
-	log.Info(userProfile.Name)
+	log.Info(userProfile)
 	if err != nil {
 		return
 	}

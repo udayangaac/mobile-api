@@ -6,7 +6,7 @@ import (
 
 type MobileAppUser struct {
 	gorm.Model
-//	UserId         int    `json:"userId"`
+    //	UserId         int    `json:"userId"`
 	Name           string 	// `json:"name"`
 	Email          string 	// `json:"email"`
 	HashPassword   string 	// `json:"hash_password"`
@@ -16,7 +16,8 @@ type MobileAppUser struct {
 	Status         int16  	// `json:"status"`
 	Address        string 	// `json:"address"`
 	CivilStatus    int16  	// `json:"civil_status"`*/
-	//Family         Family   // `json:"family"`
+	MobileUserConfigurations        MobileUserConfiguration  // `json:"family"`
 	//Job            JobDetails
 }
+
 

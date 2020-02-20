@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/jinzhu/gorm"
 	log "github.com/sirupsen/logrus"
+	"github.com/udayangaac/mobile-api/internal/domain"
 	"github.com/udayangaac/mobile-api/internal/entities"
 	"github.com/udayangaac/mobile-api/internal/errors_custom"
 	log_traceable "github.com/udayangaac/mobile-api/internal/lib/log-traceable"
@@ -95,8 +96,9 @@ func (m mobileAppUserMySqlRepo) NotificationTypesList(ctx context.Context, userI
 	return
 }
 
-func (m mobileAppUserMySqlRepo) GetUserProfile(ctx context.Context, userId int) (UserProfile entities.MobileAppUser, err error) {
-	err = m.DB.Where("id=?", userId).First(&entities.MobileAppUser{}).Error
+func (m mobileAppUserMySqlRepo) GetUserProfile(ctx context.Context, userId int) (UserProfile domain.UserProfileResponse, err error) {
+	err = m.DB.Raw("select * from mobile_app_users inner join  mobile_user_configurations muc on mobile_app_users.id = muc.user_id where mobile_app_users.id = ?", userId).Error
+	// err = m.DB.Where("id=?", userId).First(&entities.MobileAppUser{}).Error
 	return
 }
 
