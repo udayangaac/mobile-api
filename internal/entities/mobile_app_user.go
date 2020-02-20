@@ -10,7 +10,7 @@ type MobileAppUser struct {
 	Name           string 	// `json:"name"`
 	Email          string 	// `json:"email"`
 	HashPassword   string 	// `json:"hash_password"`
-	/*DOB            string 	// `json:"dob"`
+	DOB            string 	// `json:"dob"`
 	Gender         string 	// `json:"gender"`
 	EmployeeStatus int16  	// `json:"employee_status"`
 	Status         int16  	// `json:"status"`

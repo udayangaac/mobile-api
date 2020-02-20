@@ -26,16 +26,9 @@ func (u *userService) AddMobileUser(ctx context.Context, param domain.SignUpRequ
 		Name:           param.Name,
 		Email:          param.Email,
 		HashPassword:   sha256.GetHashString(param.Password),
+	    DOB: param.DOB,
 	}
 
-	/*mobileUserConfiguration := entities.MobileUserConfiguration{
-		LoginStatus:            1,
-		PushNotificationStatus: 1,
-		SoundStatus:            1,
-		LocationServiceStatus:  1,
-		AnyStatus:              0,
-	}
-*/
 	err = u.RepoContainer.MobileUserRepo.AddMobileUser(ctx, mobileAppUser)
 	log.Info(err)
 	return
@@ -46,12 +39,12 @@ func (u *userService) UpdateUserProfile(ctx context.Context, param domain.UserPr
 		Name:           param.Name,
 		Email:          param.Email,
 		HashPassword:   sha256.GetHashString(param.Password),
-		//DOB:            param.DOB,
-		//Gender:         param.Gender,
-		//EmployeeStatus: param.JobStatus,
-		//Status:         1,
-		//Address:        param.Address,
-		//CivilStatus:    param.Married,
+		DOB:            param.DOB,
+		Gender:         param.Gender,
+		EmployeeStatus: param.JobStatus,
+		Status:         1,
+		Address:        param.Address,
+		CivilStatus:    param.Married,
 	}
 
 	mobileUserConfiguration := entities.MobileUserConfiguration{
