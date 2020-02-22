@@ -5,7 +5,7 @@ type UserProfile struct {
 	Name       string `json:"name"`
 	Email      string `json:"email"`
 	Password   string `json:"password"`
-	Mobile     int    `json:"mobile"`
+	// Mobile     int    `json:"mobile"`
 	Address    string `json:"address"`
 	DOB        string `json:"dob"`
 	Gender     string `json:"gender"`
@@ -22,13 +22,10 @@ type UserProfile struct {
 		AnyStatus				  int `json:"any_status"`
 	} `json:"configuration"`
 	UserAdvertisementsCategories struct {
-		Id                         int `json:"id"`
 		AdvertisementCategoryId    int `json:"advertisement_category_id"`
 	} `json:"user_advertisement_categories"`
-	Married int16 `json:"married"`
-	Family  struct {
-		Kids int `json:"kids"`
-	} `json:"family"`
+	CivilStatus int16 `json:"civil_status"`
+	Kids int `json:"kids"`
 }
 
 

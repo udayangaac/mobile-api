@@ -107,13 +107,14 @@ func UserProfileEndpoints(service services.Services) endpoint2.Endpoint {
 
 func UserProfileUpdateEndpoints(service services.Services) endpoint2.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
-		mobileAppUser := entities.MobileAppUser{}
 		param := request.(domain.UserProfile)
-		err = service.UserService.UpdateUserProfile(ctx, param)
+		err = service.UserService.UpdateUserProfile(ctx, param, param.UserId)
 		if err != nil {
 			return
 		}
-		response = mobileAppUser
+		response = domain.SuccessResponse{
+			Message: "successfully Updated the User",
+		}
 		return
 	}
 }

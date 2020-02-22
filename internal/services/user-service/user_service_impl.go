@@ -34,17 +34,20 @@ func (u *userService) AddMobileUser(ctx context.Context, param domain.SignUpRequ
 	return
 }
 
-func (u *userService) UpdateUserProfile(ctx context.Context, param domain.UserProfile) (err error) {
+func (u *userService) UpdateUserProfile(ctx context.Context, param domain.UserProfile, userId int) (err error) {
 	mobileAppUser := entities.MobileAppUser{
-		Name:           param.Name,
-		Email:          param.Email,
-		HashPassword:   sha256.GetHashString(param.Password),
-		DOB:            param.DOB,
-		Gender:         param.Gender,
-		EmployeeStatus: param.JobStatus,
-		Status:         1,
-		Address:        param.Address,
-		CivilStatus:    param.Married,
+		Name:            		param.Name,
+		Email:          		param.Email,
+		HashPassword:   		sha256.GetHashString(param.Password),
+		DOB:            		param.DOB,
+		Gender:         		param.Gender,
+		EmployeeStatus: 		param.JobStatus,
+		Status:         		1,
+		Address:        		param.Address,
+		CivilStatus:    		param.CivilStatus,
+		JobCompanyName: 		param.JobDetails.Name,
+		JobCompanyLocation: 	param.JobDetails.Address,
+		Kids:             		param.Kids,
 	}
 
 	mobileUserConfiguration := entities.MobileUserConfiguration{
@@ -55,7 +58,11 @@ func (u *userService) UpdateUserProfile(ctx context.Context, param domain.UserPr
 		AnyStatus:              0,
 	}
 
-	err = u.RepoContainer.MobileUserRepo.UpdateUserProfile(ctx, mobileAppUser, mobileUserConfiguration)
+    // userAdvertisementCategories := entities.UserAdvertisementCategories{}
+
+	// bank := entities.MobileUserBank{}
+
+	err = u.RepoContainer.MobileUserRepo.UpdateUserProfile(ctx, mobileAppUser, mobileUserConfiguration, userId)
 	return
 }
 
@@ -147,7 +154,6 @@ func (u *userService) NotificationTypes(ctx context.Context, userId int) (resp [
 	}
 
 	for i := range notification {
-		// fmt.Println(i, notification[i].CategoryName)
 		resp[i].ID = notification[i].ID
 		resp[i].CategoryName = notification[i].CategoryName
 	}

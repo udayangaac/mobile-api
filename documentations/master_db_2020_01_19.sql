@@ -165,7 +165,7 @@ ALTER TABLE notifications
 --
 -- Indexes for table `advertisments_categories`
 --
-ALTER TABLE `advertisments_categories`
+ALTER TABLE advertisements_categories
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `id` (`id`);
 
@@ -224,7 +224,7 @@ ALTER TABLE `addvertismet_configuration`
 -- Constraints for table `mobile_user_bank`
 --
 ALTER TABLE `mobile_user_bank`
-  ADD CONSTRAINT `bank` FOREIGN KEY (`bank`) REFERENCES `banks` (`id`),
+  ADD CONSTRAINT `bank` FOREIGN KEY (bank_id) REFERENCES `banks` (`id`),
   ADD CONSTRAINT `user_id` FOREIGN KEY (`mobile_user_id`) REFERENCES `mobile_app_users` (`id`);
 
 --
