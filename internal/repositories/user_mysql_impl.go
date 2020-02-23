@@ -109,10 +109,12 @@ func (m mobileAppUserMySqlRepo) NotificationTypesList(ctx context.Context, userI
 }
 
 func (m mobileAppUserMySqlRepo) GetUserProfile(ctx context.Context, userId int) (UserProfile domain.UserProfileResponse, err error) {
-	err = m.DB.Raw("select * from mobile_app_users inner join  mobile_user_configurations muc on mobile_app_users.id = muc.user_id where mobile_app_users.id = ?", userId).Error
 
-	err = m.DB.Raw("select * from user_advertisement_categories where user_id = ?", userId).Error
-	// err = m.DB.Where("id=?", userId).First(&entities.MobileAppUser{}).Error
+	row := m.DB.Raw("select * from mobile_app_users inner join  mobile_user_configurations muc on mobile_app_users.id = muc.user_id where mobile_app_users.id = ?", userId).Row()
+	row.Scan()
+
+	mobileAppUser := []entities.MobileAppUser{}
+	err = m.DB.Where("id=?", userId).First(&mobileAppUser).Error
 	return
 }
 

@@ -81,13 +81,11 @@ func PushNotificationEndpoints(service services.Services) endpoint2.Endpoint {
 
 func NotificationTypeEndpoints(service services.Services) endpoint2.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
-		notificationType := []domain.NotificationTypes{}
 		param := request.(domain.NotificationType)
-		notificationType, err = service.UserService.NotificationTypes(ctx, param.UserId)
+		response, err = service.UserService.NotificationTypes(ctx, param.UserId)
 		if err != nil {
 			return
 		}
-		response = notificationType
 		return
 	}
 }
