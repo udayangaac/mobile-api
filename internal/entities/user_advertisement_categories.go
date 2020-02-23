@@ -6,6 +6,6 @@ import (
 
 type UserAdvertisementCategories struct {
 	gorm.Model
-	UserId                       uint
-	AdvertisementCatId           int
+	UserId             int
+	AdvertisementCatId int
 }

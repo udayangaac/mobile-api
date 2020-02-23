@@ -7,6 +7,7 @@ import (
 	log "github.com/sirupsen/logrus"
 	"github.com/udayangaac/mobile-api/internal/domain"
 	"github.com/udayangaac/mobile-api/internal/entities"
+	"github.com/udayangaac/mobile-api/internal/errors_custom"
 	log_traceable "github.com/udayangaac/mobile-api/internal/lib/log-traceable"
 	"github.com/udayangaac/mobile-api/internal/lib/orm"
 )
@@ -21,16 +22,16 @@ func NewMobileAppUser() MobileAppUserRepo {
 	}
 }
 
-func (m mobileAppUserMySqlRepo) AddMobileUser(ctx context.Context, mobileUser entities.MobileAppUser) (err error) {
+func (m mobileAppUserMySqlRepo) AddMobileUser(ctx context.Context, mobileUser entities.MobileAppUser, mobileUserConfiguration entities.MobileUserConfiguration) (err error) {
 	log.Info(log_traceable.GetMessage(ctx, fmt.Sprintf("%v", mobileUser)))
-	err = m.DB.Create(&mobileUser).Error
-	
-	/*if rowAffected == 0 {
+	rowAffected := m.DB.Create(&mobileUser).RowsAffected
+
+	if rowAffected == 0 {
 		err = errors_custom.ErrDuplicateUserEntry
 		return
-	*/
-	// mobileUserConfiguration.UserId = mobileUser.ID
-	//err = m.DB.Create(&mobileUserConfiguration).Error
+	}
+	mobileUserConfiguration.UserId = mobileUser.ID
+	err = m.DB.Create(&mobileUserConfiguration).Error
 	return
 }
 
@@ -80,17 +81,18 @@ func (m mobileAppUserMySqlRepo) PushNotificationSetting(ctx context.Context, use
 
 func (m mobileAppUserMySqlRepo) SetLoginStatus(ctx context.Context, userId int, status int) (err error) {
 	err = m.DB.Model(entities.MobileUserConfiguration{}).Where("user_id = ?", userId).Update("login_status", status).Error
-	log.Info(err)
 	return
 }
 
-func (m mobileAppUserMySqlRepo) NotificationTypesList(ctx context.Context, userId int) (NotificationTypes []entities.AdvertismentsCategories, err error) {
+func (m mobileAppUserMySqlRepo) NotificationTypesList(ctx context.Context, userId int) (NotificationTypes []entities.AdvertisementsCategories, err error) {
 	log.Info(userId)
+	notificationTypes := []entities.NotificationTypes{}
+	entities.UserAdvertisementCategories{}
 	if userId == 0 {
 		err = m.DB.Select([]string{"id", "category_name"}).Where("status=1").Find(&NotificationTypes).Error
-	}  else {
+	} else {
 		err = m.DB.Select([]string{"id"}).Where("user_id = ?", userId).Find(&entities.UserAdvertisementCategories{}).Error
-		// err = m.DB.Exec	("select ac.id, ac.category_name from user_advertisement_categories inner join advertisments_categories ac on ac.id = user_advertisement_categories.advertisement_cat_id where user_id = ?", userId).Error
+		// err = m.DB.Exec	("select ac.id, ac.category_name from user_advertisement_categories inner join advertisements_categories ac on ac.id = user_advertisement_categories.advertisement_cat_id where user_id = ?", userId).Error
 	}
 
 	return
@@ -104,15 +106,16 @@ func (m mobileAppUserMySqlRepo) GetUserProfile(ctx context.Context, userId int) 
 	return
 }
 
-func (m mobileAppUserMySqlRepo) UpdateUserProfile(ctx context.Context, user entities.MobileAppUser, mobileUserConfiguration entities.MobileUserConfiguration, userId int) (err error) {
-	// rowAffected := m.DB.Create(&mobileUser).RowsAffected
-	m.DB.Model(&user).Where("id = ?", 1).Updates(map[string]interface{}{"name": "hello", "gender": 'M', "job_company_name": "pickme22"})
-	
-	//if rowAffected == 0 {
-	//	err = errors_custom.ErrDuplicateUserEntry
-	//	return
-	//}
-	//mobileUserConfiguration.UserId = mobileUser.ID
-	//err = m.DB.Create(&mobileUserConfiguration).Error
+func (m mobileAppUserMySqlRepo) UpdateUserProfile(ctx context.Context, user entities.MobileAppUser, mobileUserConfiguration entities.MobileUserConfiguration, userAdvertisementCategories entities.UserAdvertisementCategories, userId int) (err error) {
+
+	err = m.DB.Model(&user).Where("id = 4").Updates(map[string]interface{}{"name": user.Name, "email": user.Email, "hash_password": user.HashPassword, "dob": user.DOB, "gender": user.Gender, "employee_status": user.EmployeeStatus, "address": user.Address, "civil_status": user.CivilStatus, "job_company_name": user.JobCompanyName, "job_company_location": user.JobCompanyLocation, "kids": user.Kids}).Error
+	log.Info(err)
+	if err != nil {
+		err = errors_custom.ErrDuplicateUserEntry
+		return
+	}
+	mobileUserConfiguration.UserId = 1 //mobileUser.ID
+	err = m.DB.Model(&mobileUserConfiguration).Where("user_id = 1").Updates(map[string]interface{}{"login_status": user.MobileUserConfigurations.LoginStatus, "push_notification_status": user.MobileUserConfigurations.PushNotificationStatus, "sound_status": user.MobileUserConfigurations.SoundStatus, "location_service_status": user.MobileUserConfigurations.LocationServiceStatus, "any_status": user.MobileUserConfigurations.AnyStatus}).Error
+	// err = m.DB.Create(&mobileUserConfiguration).Error
 	return
 }

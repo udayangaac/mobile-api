@@ -109,6 +109,7 @@ func UserProfileUpdateEndpoints(service services.Services) endpoint2.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		param := request.(domain.UserProfile)
 		err = service.UserService.UpdateUserProfile(ctx, param, param.UserId)
+		log.Info(err)
 		if err != nil {
 			return
 		}
