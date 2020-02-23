@@ -2,6 +2,7 @@ package user_service
 
 import (
 	"context"
+	"errors"
 	log "github.com/sirupsen/logrus"
 	"github.com/udayangaac/mobile-api/internal/config"
 	"github.com/udayangaac/mobile-api/internal/domain"
@@ -152,20 +153,25 @@ func (u *userService) SetLoginStatus(ctx context.Context, userId int, status int
 	return
 }
 
-func (u *userService) NotificationTypes(ctx context.Context, userId int) (resp [12]domain.NotificationTypes, err error) {
-	notification := []entities.AdvertisementsCategories{}
-
+func (u *userService) NotificationTypes(ctx context.Context, userId int) (resp interface{}, err error) {
+	var notification interface{}
 	notification, err = u.RepoContainer.MobileUserRepo.NotificationTypesList(ctx, userId)
+	notificationTypes := []domain.NotificationTypes{}
 	if err != nil {
 		return
 	}
-
-	for i := range notification {
-		resp[i].ID = notification[i].ID
-		resp[i].CategoryName = notification[i].CategoryName
+	categories, ok := notification.([]entities.AdvertisementsCategories)
+	if !ok {
+		return nil, errors.New("cannot cast []entities.UserAdvertisementCategories")
+	}
+	for _, val := range categories {
+		notificationType := domain.NotificationTypes{}
+		notificationType.Id = int(val.ID)
+		notificationType.CategoryName = val.CategoryName
+		notificationTypes = append(notificationTypes, notificationType)
 	}
 
-	return
+	return notificationTypes, nil
 }
 
 func (u *userService) GetUserProfile(ctx context.Context, userId int) (resp domain.UserProfileResponse, err error) {

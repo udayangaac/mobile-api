@@ -84,18 +84,28 @@ func (m mobileAppUserMySqlRepo) SetLoginStatus(ctx context.Context, userId int, 
 	return
 }
 
-func (m mobileAppUserMySqlRepo) NotificationTypesList(ctx context.Context, userId int) (NotificationTypes []entities.AdvertisementsCategories, err error) {
+func (m mobileAppUserMySqlRepo) NotificationTypesList(ctx context.Context, userId int) (notificationTypes interface{}, err error) {
 	log.Info(userId)
-	notificationTypes := []entities.NotificationTypes{}
-	entities.UserAdvertisementCategories{}
+	nts := []entities.AdvertisementsCategories{}
+	//userAdvertisementCategories := []entities.UserAdvertisementCategories{}
 	if userId == 0 {
-		err = m.DB.Select([]string{"id", "category_name"}).Where("status=1").Find(&NotificationTypes).Error
+		err = m.DB.Select([]string{"id", "category_name"}).Where("status=1").Find(&notificationType).Error
+		return nts, err
 	} else {
-		err = m.DB.Select([]string{"id"}).Where("user_id = ?", userId).Find(&entities.UserAdvertisementCategories{}).Error
-		// err = m.DB.Exec	("select ac.id, ac.category_name from user_advertisement_categories inner join advertisements_categories ac on ac.id = user_advertisement_categories.advertisement_cat_id where user_id = ?", userId).Error
-	}
+		//err = m.DB.Select([]string{"id"}).Where("user_id = ?", userId).Find(&userAdvertisementCategories).Error
+		//return userAdvertisementCategories, err
+		rows, err := m.DB.Raw("SELECT ac.id, ac.category_name FROM advertisements_categories ac INNER JOIN user_advertisement_categories uac on ac.id = uac.advertisement_cat_id WHERE uac.user_id = ?", userId).Rows()
+		if err != nil {
+			return nil, err
+		}
+		for rows.Next() {
+			nt := entities.AdvertisementsCategories{}
+			rows.Scan(&nt.Id, &nt.CategoryName)
+			nts = append(nts, nt)
+		}
 
-	return
+	}
+	return nts, nil
 }
 
 func (m mobileAppUserMySqlRepo) GetUserProfile(ctx context.Context, userId int) (UserProfile domain.UserProfileResponse, err error) {

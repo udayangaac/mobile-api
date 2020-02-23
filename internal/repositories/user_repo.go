@@ -17,7 +17,7 @@ type MobileAppUserRepo interface {
 	SoundSettingChange(ctx context.Context, userId int, status int) (err error)
 	PushNotificationSetting(ctx context.Context, userId int, status int) (err error)
 	SetLoginStatus(ctx context.Context, userId int, status int) (err error)
-	NotificationTypesList(ctx context.Context, userId int) (notification []entities.AdvertisementsCategories, err error)
+	NotificationTypesList(ctx context.Context, userId int) (notificationType interface{}, err error)
 	GetUserProfile(ctx context.Context, userId int) (userProfile domain.UserProfileResponse, err error)
 	UpdateUserProfile(ctx context.Context, mobileUser entities.MobileAppUser, mobileUserConfiguration entities.MobileUserConfiguration, userAdvertisementCategories entities.UserAdvertisementCategories, userId int) (err error)
 }
