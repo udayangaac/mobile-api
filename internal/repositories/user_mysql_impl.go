@@ -89,7 +89,7 @@ func (m mobileAppUserMySqlRepo) NotificationTypesList(ctx context.Context, userI
 	nts := []entities.AdvertisementsCategories{}
 	//userAdvertisementCategories := []entities.UserAdvertisementCategories{}
 	if userId == 0 {
-		err = m.DB.Select([]string{"id", "category_name"}).Where("status=1").Find(&notificationType).Error
+		err = m.DB.Select([]string{"id", "category_name"}).Where("status=1").Find(&nts).Error
 		return nts, err
 	} else {
 		//err = m.DB.Select([]string{"id"}).Where("user_id = ?", userId).Find(&userAdvertisementCategories).Error
@@ -118,13 +118,15 @@ func (m mobileAppUserMySqlRepo) GetUserProfile(ctx context.Context, userId int) 
 
 func (m mobileAppUserMySqlRepo) UpdateUserProfile(ctx context.Context, user entities.MobileAppUser, mobileUserConfiguration entities.MobileUserConfiguration, userAdvertisementCategories entities.UserAdvertisementCategories, userId int) (err error) {
 
+	user.MobileUserConfigurations = mobileUserConfiguration
 	err = m.DB.Model(&user).Where("id = 4").Updates(map[string]interface{}{"name": user.Name, "email": user.Email, "hash_password": user.HashPassword, "dob": user.DOB, "gender": user.Gender, "employee_status": user.EmployeeStatus, "address": user.Address, "civil_status": user.CivilStatus, "job_company_name": user.JobCompanyName, "job_company_location": user.JobCompanyLocation, "kids": user.Kids}).Error
 	log.Info(err)
 	if err != nil {
 		err = errors_custom.ErrDuplicateUserEntry
 		return
 	}
-	mobileUserConfiguration.UserId = 1 //mobileUser.ID
+
+	//mobileUserConfiguration.UserId = 1 //mobileUser.ID
 	err = m.DB.Model(&mobileUserConfiguration).Where("user_id = 1").Updates(map[string]interface{}{"login_status": user.MobileUserConfigurations.LoginStatus, "push_notification_status": user.MobileUserConfigurations.PushNotificationStatus, "sound_status": user.MobileUserConfigurations.SoundStatus, "location_service_status": user.MobileUserConfigurations.LocationServiceStatus, "any_status": user.MobileUserConfigurations.AnyStatus}).Error
 	// err = m.DB.Create(&mobileUserConfiguration).Error
 	return
