@@ -2,7 +2,6 @@ package repositories
 
 import (
 	"context"
-	"github.com/udayangaac/mobile-api/internal/domain"
 	"github.com/udayangaac/mobile-api/internal/entities"
 )
 
@@ -18,6 +17,6 @@ type MobileAppUserRepo interface {
 	PushNotificationSetting(ctx context.Context, userId int, status int) (err error)
 	SetLoginStatus(ctx context.Context, userId int, status int) (err error)
 	NotificationTypesList(ctx context.Context, userId int) (notificationType interface{}, err error)
-	GetUserProfile(ctx context.Context, userId int) (userProfile domain.UserProfileResponse, err error)
+	GetUserProfile(ctx context.Context, userId int) (userProfile interface{}, err error)
 	UpdateUserProfile(ctx context.Context, mobileUser entities.MobileAppUser, mobileUserConfiguration entities.MobileUserConfiguration, userAdvertisementCategories entities.UserAdvertisementCategories, userId int) (err error)
 }

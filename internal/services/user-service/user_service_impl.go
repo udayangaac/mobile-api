@@ -59,11 +59,11 @@ func (u *userService) UpdateUserProfile(ctx context.Context, param domain.UserPr
 	}
 
 	mobileUserConfiguration := entities.MobileUserConfiguration{
-		LoginStatus:            1,
-		PushNotificationStatus: 1,
-		SoundStatus:            1,
-		LocationServiceStatus:  1,
-		AnyStatus:              0,
+		LoginStatus:            param.Configuration.LoginStatus,
+		PushNotificationStatus: param.Configuration.PushNotificationStatus,
+		SoundStatus:            param.Configuration.SoundStatus,
+		LocationServiceStatus:  param.Configuration.LocationServiceStatus,
+		AnyStatus:              param.Configuration.AnyStatus,
 	}
 
 	userAdvertisementCategories := entities.UserAdvertisementCategories{}
@@ -174,13 +174,16 @@ func (u *userService) NotificationTypes(ctx context.Context, userId int) (resp i
 	return notificationTypes, nil
 }
 
-func (u *userService) GetUserProfile(ctx context.Context, userId int) (resp domain.UserProfileResponse, err error) {
-	userProfile := domain.UserProfileResponse{}
-	userProfile, err = u.RepoContainer.MobileUserRepo.GetUserProfile(ctx, userId)
-	log.Info(userProfile)
+func (u *userService) GetUserProfile(ctx context.Context, userId int) (resp interface{}, err error) {
+	var user interface{}
+	//userProfile := domain.UserProfileResponse{}
+	//user := userId
+	user, err = u.RepoContainer.MobileUserRepo.GetUserProfile(ctx, userId)
+	log.Info(user)
 	if err != nil {
 		return
 	}
-	//resp.Name = userProfile.Name
-	return // userProfile, err
+	//userProfile.Name = user.Name
+
+	return
 }
