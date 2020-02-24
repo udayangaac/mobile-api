@@ -17,6 +17,6 @@ type MobileAppUserRepo interface {
 	PushNotificationSetting(ctx context.Context, userId int, status int) (err error)
 	SetLoginStatus(ctx context.Context, userId int, status int) (err error)
 	NotificationTypesList(ctx context.Context, userId int) (notificationType interface{}, err error)
-	GetUserProfile(ctx context.Context, userId int) (userProfile interface{}, err error)
+	GetUserProfile(ctx context.Context, userId int) (userProfile entities.MobileAppUser, err error)
 	UpdateUserProfile(ctx context.Context, mobileUser entities.MobileAppUser, mobileUserConfiguration entities.MobileUserConfiguration, userAdvertisementCategories entities.UserAdvertisementCategories, userId int) (err error)
 }

@@ -174,7 +174,7 @@ func (u *userService) NotificationTypes(ctx context.Context, userId int) (resp i
 	return notificationTypes, nil
 }
 
-func (u *userService) GetUserProfile(ctx context.Context, userId int) (resp interface{}, err error) {
+func (u *userService) GetUserProfile(ctx context.Context, userId int) (resp entities.MobileAppUser, err error) {
 	var user interface{}
 	//userProfile := domain.UserProfileResponse{}
 	//user := userId
