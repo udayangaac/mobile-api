@@ -92,13 +92,13 @@ func NotificationTypeEndpoints(service services.Services) endpoint2.Endpoint {
 
 func UserProfileEndpoints(service services.Services) endpoint2.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
-		getUserProfile := entities.MobileAppUser{}
+		userProfile := domain.UserProfileResponse{}
 		param := request.(domain.UserProfile)
-		response, err = service.UserService.GetUserProfile(ctx, param.UserId)
+		userProfile, err = service.UserService.GetUserProfile(ctx, param.UserId)
 		if err != nil {
 			return
 		}
-		response = getUserProfile
+		response = userProfile
 		return
 	}
 }

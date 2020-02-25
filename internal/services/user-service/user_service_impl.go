@@ -174,16 +174,30 @@ func (u *userService) NotificationTypes(ctx context.Context, userId int) (resp i
 	return notificationTypes, nil
 }
 
-func (u *userService) GetUserProfile(ctx context.Context, userId int) (resp entities.MobileAppUser, err error) {
-	var user interface{}
-	//userProfile := domain.UserProfileResponse{}
-	//user := userId
-	user, err = u.RepoContainer.MobileUserRepo.GetUserProfile(ctx, userId)
-	log.Info(user)
+func (u *userService) GetUserProfile(ctx context.Context, userId int) (resp domain.UserProfileResponse, err error) {
+
+	userProfile := entities.MobileAppUser{}
+
+	userProfile, err = u.RepoContainer.MobileUserRepo.GetUserProfile(ctx, userId)
+	log.Info(userProfile.LoginStatus)
 	if err != nil {
 		return
 	}
-	//userProfile.Name = user.Name
-
-	return
+	resp.Name = userProfile.Name
+	resp.Email = userProfile.Email
+	resp.DOB = userProfile.DOB
+	resp.Gender = userProfile.Gender
+	resp.EmployeeStatus = userProfile.EmployeeStatus
+	resp.Address = userProfile.Address
+	resp.CivilStatus = userProfile.CivilStatus
+	resp.JobCompanyName = userProfile.JobCompanyName
+	resp.JobCompanyLocation = userProfile.JobCompanyLocation
+	resp.Kids = userProfile.Kids
+	resp.Configuration.LoginStatus = userProfile.LoginStatus
+	resp.Configuration.PushNotificationStatus = userProfile.PushNotificationStatus
+	resp.Configuration.SoundStatus =  userProfile.SoundStatus
+	resp.Configuration.LocationServiceStatus = userProfile.LocationServiceStatus
+	resp.Configuration.AnyStatus = userProfile.AnyStatus
+	
+	return resp,err
 }

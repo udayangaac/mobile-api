@@ -24,7 +24,7 @@ type UserService interface {
 	NotificationTypes(ctx context.Context, userId int) (resp interface{}, err error)
 
 	// Get Mobile user
-	GetUserProfile(ctx context.Context, userId int) (resp entities.MobileAppUser, err error)
+	GetUserProfile(ctx context.Context, userId int) (resp domain.UserProfileResponse, err error)
 
 	// User Profile
 	UpdateUserProfile(ctx context.Context, param domain.UserProfile, userId int) (err error)
