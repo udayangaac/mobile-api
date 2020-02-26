@@ -44,18 +44,23 @@ func (u *userService) AddMobileUser(ctx context.Context, param domain.SignUpRequ
 
 func (u *userService) UpdateUserProfile(ctx context.Context, param domain.UserProfile, userId int) (err error) {
 	mobileAppUser := entities.MobileAppUser{
-		Name:               param.Name,
-		Email:              param.Email,
-		HashPassword:       sha256.GetHashString(param.Password),
-		DOB:                param.DOB,
-		Gender:             param.Gender,
-		EmployeeStatus:     param.JobStatus,
-		Status:             1,
-		Address:            param.Address,
-		CivilStatus:        param.CivilStatus,
-		JobCompanyName:     param.JobDetails.Name,
-		JobCompanyLocation: param.JobDetails.Address,
-		Kids:               param.Kids,
+		Name:               	param.Name,
+		Email:              	param.Email,
+		HashPassword:       	sha256.GetHashString(param.Password),
+		DOB:                	param.DOB,
+		Gender:             	param.Gender,
+		EmployeeStatus:     	param.JobStatus,
+		Status:             	1,
+		Address:            	param.Address,
+		CivilStatus:        	param.CivilStatus,
+		JobCompanyName:     	param.JobDetails.Name,
+		JobCompanyLocation: 	param.JobDetails.Address,
+		Kids:               	param.Kids,
+		LoginStatus:            param.Configuration.LoginStatus,
+		PushNotificationStatus: param.Configuration.PushNotificationStatus,
+		SoundStatus:            param.Configuration.SoundStatus,
+		LocationServiceStatus:  param.Configuration.LocationServiceStatus,
+		AnyStatus:              param.Configuration.AnyStatus,
 	}
 
 	mobileUserConfiguration := entities.MobileUserConfiguration{
