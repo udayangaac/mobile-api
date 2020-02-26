@@ -6,7 +6,7 @@ import (
 
 type AdvertisementsCategories struct {
 	gorm.Model
-	Id           int    // `json:"id"`
-	Status       int    // `json:"status"`
+	// Id           int    // `json:"id"`
+	// Status       int    // `json:"status"`
 	CategoryName string // `json:"name"`
 }

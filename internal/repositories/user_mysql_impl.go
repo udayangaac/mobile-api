@@ -121,11 +121,11 @@ func (m mobileAppUserMySqlRepo) GetUserProfile(ctx context.Context, userId int) 
 	for rows.Next() {
 		nt := entities.AdvertisementsCategories{}
 		rows.Scan(&nt.ID, &nt.CategoryName)
-		userProfile.UserAdvertisementCategories = append(userProfile.UserAdvertisementCategories,nt)
+		userProfile.UserAdvertisementCategories = append(userProfile.UserAdvertisementCategories, nt)
 	}
 	return
 }
-
+                             
 func (m mobileAppUserMySqlRepo) UpdateUserProfile(ctx context.Context, user entities.MobileAppUser, mobileUserConfiguration entities.MobileUserConfiguration, userAdvertisementCategories entities.UserAdvertisementCategories, userId int) (err error) {
 
 	user.MobileUserConfigurations = mobileUserConfiguration
@@ -138,10 +138,13 @@ func (m mobileAppUserMySqlRepo) UpdateUserProfile(ctx context.Context, user enti
 
 	err = m.DB.Model(&mobileUserConfiguration).Where("user_id = 1").Updates(map[string]interface{}{"login_status": user.MobileUserConfigurations.LoginStatus, "push_notification_status": user.MobileUserConfigurations.PushNotificationStatus, "sound_status": user.MobileUserConfigurations.SoundStatus, "location_service_status": user.MobileUserConfigurations.LocationServiceStatus, "any_status": user.MobileUserConfigurations.AnyStatus}).Error
 	count := 0
+
 	m.DB.Model(&entities.UserAdvertisementCategories{}).Where("uac.user_id = ?", userId).Count(&count)
-	//row = m.DB.Raw("SELECT count(*) as count FROM user_advertisement_categories uac  WHERE uac.user_id = ?", userId).Row()
-	if count == 0 {
-		//	m.DB.FirstOrCreate(&userAdvertisementCategories, entities.UserAdvertisementCategories{"user_id": userId, "advertisement_cat_id": 1})
+
+	row := m.DB.Raw("SELECT count(*) as count FROM user_advertisement_categories uac  WHERE uac.user_id = ?", userId).RowsAffected
+	if row == 0 {
+
+		m.DB.FirstOrCreate(&userAdvertisementCategories, entities.UserAdvertisementCategories{UserId: userId, AdvertisementCatId: 1})
 	}
 	log.Info(&count)
 
