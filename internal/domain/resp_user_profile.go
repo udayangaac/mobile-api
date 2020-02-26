@@ -22,5 +22,5 @@ type UserProfileResponse struct {
 		LocationServiceStatus  int `json:"location_status"`
 		AnyStatus              int `json:"any_status"`
 	} `json:"configuration"`
-	UserAdvertisementsCategories []entities.UserAdvertisementCategories
+	UserAdvertisementsCategories []entities.AdvertisementsCategories
 }

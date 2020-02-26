@@ -17,22 +17,12 @@ type MobileAppUser struct {
 	CivilStatus                 int16  // `json:"civil_status"`
 	JobCompanyName              string //`json:"job_company_name"`
 	JobCompanyLocation          string
-	Kids                        int    //`json:"kids"`
-	LoginStatus            		int
-	PushNotificationStatus 		int
-	SoundStatus            		int
-	LocationServiceStatus  		int
-	AnyStatus              		int
+	Kids                        int //`json:"kids"`
+	LoginStatus                 int
+	PushNotificationStatus      int
+	SoundStatus                 int
+	LocationServiceStatus       int
+	AnyStatus                   int
 	MobileUserConfigurations    MobileUserConfiguration
-	// UserAdvertisementCategories []UserAdvertisementCategories
-}
-
-type UserConfiguration struct {
-	UserId                 uint
-	LoginStatus            int
-	PushNotificationStatus int
-	SoundStatus            int
-	LocationServiceStatus  int
-	AnyStatus              int
-	LastViewedAddId         int
+	UserAdvertisementCategories []AdvertisementsCategories
 }

@@ -198,6 +198,7 @@ func (u *userService) GetUserProfile(ctx context.Context, userId int) (resp doma
 	resp.Configuration.SoundStatus =  userProfile.SoundStatus
 	resp.Configuration.LocationServiceStatus = userProfile.LocationServiceStatus
 	resp.Configuration.AnyStatus = userProfile.AnyStatus
+	resp.UserAdvertisementsCategories   = userProfile.UserAdvertisementCategories
 	
 	return resp,err
 }
