@@ -42,7 +42,7 @@ func (u *userService) AddMobileUser(ctx context.Context, param domain.SignUpRequ
 	return
 }
 
-func (u *userService) UpdateUserProfile(ctx context.Context, param domain.UserProfile, userId int) (err error) {
+func (u *userService) UpdateUserProfile(ctx context.Context, param domain.UserProfile, userId int, advertisementCategory []int) (err error) {
 	mobileAppUser := entities.MobileAppUser{
 		Name:               	param.Name,
 		Email:              	param.Email,
@@ -61,7 +61,7 @@ func (u *userService) UpdateUserProfile(ctx context.Context, param domain.UserPr
 		SoundStatus:            param.Configuration.SoundStatus,
 		LocationServiceStatus:  param.Configuration.LocationServiceStatus,
 		AnyStatus:              param.Configuration.AnyStatus,
-		AdvertisementsCategories: param.AdvertisementCatId,
+		// AdvertisementsCategories: param.AdvertisementCatId,
 	}
 
 	mobileUserConfiguration := entities.MobileUserConfiguration{
@@ -74,11 +74,11 @@ func (u *userService) UpdateUserProfile(ctx context.Context, param domain.UserPr
 
 	//log.Info("cat array  ", param.AdvertisementCatId)
 
-	userAdvertisementCategories := entities.UserAdvertisementCategories{}
+	// userAdvertisementCategories := entities.UserAdvertisementCategories{}
 
 	// bank := entities.MobileUserBank{}
 
-	err = u.RepoContainer.MobileUserRepo.UpdateUserProfile(ctx, mobileAppUser, mobileUserConfiguration, userAdvertisementCategories, userId)
+	err = u.RepoContainer.MobileUserRepo.UpdateUserProfile(ctx, mobileAppUser, mobileUserConfiguration, advertisementCategory, userId)
 	return
 }
 

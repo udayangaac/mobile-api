@@ -23,7 +23,7 @@ type MobileAppUser struct {
 	SoundStatus                 int
 	LocationServiceStatus       int
 	AnyStatus                   int
-	AdvertisementsCategories    []int
+//	AdvertisementsCategories    []int
 	MobileUserConfigurations    MobileUserConfiguration
 	UserAdvertisementCategories []AdvertisementsCategories
 }

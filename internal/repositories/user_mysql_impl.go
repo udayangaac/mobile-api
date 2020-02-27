@@ -126,30 +126,28 @@ func (m mobileAppUserMySqlRepo) GetUserProfile(ctx context.Context, userId int) 
 	return
 }
                              
-func (m mobileAppUserMySqlRepo) UpdateUserProfile(ctx context.Context, user entities.MobileAppUser, mobileUserConfiguration entities.MobileUserConfiguration, userAdvertisementCategories entities.UserAdvertisementCategories, userId int) (err error) {
-
+func (m mobileAppUserMySqlRepo) UpdateUserProfile(ctx context.Context, user entities.MobileAppUser, mobileUserConfiguration entities.MobileUserConfiguration, userAdvertisementCategories []int, userId int) (err error) {
 	user.MobileUserConfigurations = mobileUserConfiguration
-
 	err = m.DB.Model(&user).Where("id = ?", userId).Updates(map[string]interface{}{"name": user.Name, "email": user.Email, "hash_password": user.HashPassword, "dob": user.DOB, "gender": user.Gender, "employee_status": user.EmployeeStatus, "address": user.Address, "civil_status": user.CivilStatus, "job_company_name": user.JobCompanyName, "job_company_location": user.JobCompanyLocation, "kids": user.Kids, "login_status": user.MobileUserConfigurations.LoginStatus, "push_notification_status": user.MobileUserConfigurations.PushNotificationStatus, "sound_status": user.MobileUserConfigurations.SoundStatus, "location_service_status": user.MobileUserConfigurations.LocationServiceStatus, "any_status": user.MobileUserConfigurations.AnyStatus }).Error
-
 	if err != nil {
 		err = errors_custom.ErrDuplicateUserEntry
 		return
 	}
-
 	err = m.DB.Model(&mobileUserConfiguration).Where("user_id = ? ", userId).Updates(map[string]interface{}{"login_status": user.MobileUserConfigurations.LoginStatus, "push_notification_status": user.MobileUserConfigurations.PushNotificationStatus, "sound_status": user.MobileUserConfigurations.SoundStatus, "location_service_status": user.MobileUserConfigurations.LocationServiceStatus, "any_status": user.MobileUserConfigurations.AnyStatus}).Error
-
 	count := 0
 	m.DB.Model(&userAdvertisementCategories).Where("user_id = ?", userId).Count(&count)
-
 	if count == 0 {
-		m.DB.FirstOrCreate(&userAdvertisementCategories, entities.UserAdvertisementCategories{UserId: userId, AdvertisementCatId: userAdvertisementCategories.AdvertisementCatId})
+		for index, element := range userAdvertisementCategories {
+			log.Info("index ", index, "element ", element)
+			m.DB.Create(&entities.UserAdvertisementCategories{UserId: userId, AdvertisementCatId: element})
+		}
+	//	m.DB.FirstOrCreate(&userAdvertisementCategories, entities.UserAdvertisementCategories{UserId: userId, AdvertisementCatId: userAdvertisementCategories.AdvertisementCatId})
 	}else{
 		m.DB.Where("user_id = ?", userId).Delete(&userAdvertisementCategories)
 
-		for index, element := range user.AdvertisementsCategories {
+		for index, element := range userAdvertisementCategories {
 			log.Info("index ", index, "element ", element)
-		  m.DB.Create(&entities.UserAdvertisementCategories{UserId: userId, AdvertisementCatId: element})
+		 m.DB.Create(&entities.UserAdvertisementCategories{UserId: userId, AdvertisementCatId: element})
 		}
 	}
 	//log.Info(&count)
