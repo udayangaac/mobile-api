@@ -61,7 +61,6 @@ func (u *userService) UpdateUserProfile(ctx context.Context, param domain.UserPr
 		SoundStatus:            param.Configuration.SoundStatus,
 		LocationServiceStatus:  param.Configuration.LocationServiceStatus,
 		AnyStatus:              param.Configuration.AnyStatus,
-		// AdvertisementsCategories: param.AdvertisementCatId,
 	}
 
 	mobileUserConfiguration := entities.MobileUserConfiguration{
@@ -72,11 +71,7 @@ func (u *userService) UpdateUserProfile(ctx context.Context, param domain.UserPr
 		AnyStatus:              param.Configuration.AnyStatus,
 	}
 
-	//log.Info("cat array  ", param.AdvertisementCatId)
-
-	// userAdvertisementCategories := entities.UserAdvertisementCategories{}
-
-	// bank := entities.MobileUserBank{}
+	//userAdvertisement :=  entities.UserAdvertisementCategories{}
 
 	err = u.RepoContainer.MobileUserRepo.UpdateUserProfile(ctx, mobileAppUser, mobileUserConfiguration, advertisementCategory, userId)
 	return
@@ -191,6 +186,7 @@ func (u *userService) GetUserProfile(ctx context.Context, userId int) (resp doma
 	if err != nil {
 		return
 	}
+	resp.UserId = userProfile.ID
 	resp.Name = userProfile.Name
 	resp.Email = userProfile.Email
 	resp.DOB = userProfile.DOB

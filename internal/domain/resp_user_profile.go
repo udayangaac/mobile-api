@@ -3,7 +3,7 @@ package domain
 import "github.com/udayangaac/mobile-api/internal/entities"
 
 type UserProfileResponse struct {
-	UserId int    `json:"userId"`
+	UserId uint   `json:"userId"`
 	Name   string `json:"name"`
 	Email  string `json:"email"`
 	// Mobile     					  int    `json:"mobile"`

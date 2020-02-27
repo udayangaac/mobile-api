@@ -106,14 +106,11 @@ func (m mobileAppUserMySqlRepo) NotificationTypesList(ctx context.Context, userI
 }
 
 func (m mobileAppUserMySqlRepo) GetUserProfile(ctx context.Context, userId int) (userProfile entities.MobileAppUser, err error) {
-
 	err = m.DB.Where("id=?", userId).First(&userProfile).Error
-
 	if err != nil {
 		return userProfile, err
 	}
-
-	rows, err := m.DB.Raw("SELECT ac.id, ac.category_name FROM advertisements_categories ac INNER JOIN user_advertisement_categories uac on ac.id = uac.advertisement_cat_id WHERE uac.user_id = ?", userId).Rows()
+	rows, err := m.DB.Raw("SELECT ac.id, ac.category_name FROM advertisements_categories ac INNER JOIN user_advertisement_categories uac on ac.id = uac.advertisement_cat_id WHERE uac.deleted_at is null and  uac.user_id = ?", userId).Rows()
 	if err != nil {
 		log.Info(err.Error())
 		return userProfile, err
@@ -123,10 +120,11 @@ func (m mobileAppUserMySqlRepo) GetUserProfile(ctx context.Context, userId int) 
 		rows.Scan(&nt.ID, &nt.CategoryName)
 		userProfile.UserAdvertisementCategories = append(userProfile.UserAdvertisementCategories, nt)
 	}
+
 	return
 }
                              
-func (m mobileAppUserMySqlRepo) UpdateUserProfile(ctx context.Context, user entities.MobileAppUser, mobileUserConfiguration entities.MobileUserConfiguration, userAdvertisementCategories []int, userId int) (err error) {
+func (m mobileAppUserMySqlRepo) UpdateUserProfile(ctx context.Context, user entities.MobileAppUser, mobileUserConfiguration entities.MobileUserConfiguration ,userAdvertisementCategories []int, userId int) (err error) {
 	user.MobileUserConfigurations = mobileUserConfiguration
 	err = m.DB.Model(&user).Where("id = ?", userId).Updates(map[string]interface{}{"name": user.Name, "email": user.Email, "hash_password": user.HashPassword, "dob": user.DOB, "gender": user.Gender, "employee_status": user.EmployeeStatus, "address": user.Address, "civil_status": user.CivilStatus, "job_company_name": user.JobCompanyName, "job_company_location": user.JobCompanyLocation, "kids": user.Kids, "login_status": user.MobileUserConfigurations.LoginStatus, "push_notification_status": user.MobileUserConfigurations.PushNotificationStatus, "sound_status": user.MobileUserConfigurations.SoundStatus, "location_service_status": user.MobileUserConfigurations.LocationServiceStatus, "any_status": user.MobileUserConfigurations.AnyStatus }).Error
 	if err != nil {
@@ -135,7 +133,7 @@ func (m mobileAppUserMySqlRepo) UpdateUserProfile(ctx context.Context, user enti
 	}
 	err = m.DB.Model(&mobileUserConfiguration).Where("user_id = ? ", userId).Updates(map[string]interface{}{"login_status": user.MobileUserConfigurations.LoginStatus, "push_notification_status": user.MobileUserConfigurations.PushNotificationStatus, "sound_status": user.MobileUserConfigurations.SoundStatus, "location_service_status": user.MobileUserConfigurations.LocationServiceStatus, "any_status": user.MobileUserConfigurations.AnyStatus}).Error
 	count := 0
-	m.DB.Model(&userAdvertisementCategories).Where("user_id = ?", userId).Count(&count)
+	m.DB.Model(&entities.UserAdvertisementCategories{}).Where("user_id = ?", userId).Count(&count)
 	if count == 0 {
 		for index, element := range userAdvertisementCategories {
 			log.Info("index ", index, "element ", element)
@@ -143,7 +141,7 @@ func (m mobileAppUserMySqlRepo) UpdateUserProfile(ctx context.Context, user enti
 		}
 	//	m.DB.FirstOrCreate(&userAdvertisementCategories, entities.UserAdvertisementCategories{UserId: userId, AdvertisementCatId: userAdvertisementCategories.AdvertisementCatId})
 	}else{
-		m.DB.Where("user_id = ?", userId).Delete(&userAdvertisementCategories)
+		m.DB.Where("user_id = ?", userId).Delete(&entities.UserAdvertisementCategories{})
 
 		for index, element := range userAdvertisementCategories {
 			log.Info("index ", index, "element ", element)
