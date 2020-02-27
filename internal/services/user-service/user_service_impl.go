@@ -61,6 +61,7 @@ func (u *userService) UpdateUserProfile(ctx context.Context, param domain.UserPr
 		SoundStatus:            param.Configuration.SoundStatus,
 		LocationServiceStatus:  param.Configuration.LocationServiceStatus,
 		AnyStatus:              param.Configuration.AnyStatus,
+		AdvertisementsCategories: param.AdvertisementCatId,
 	}
 
 	mobileUserConfiguration := entities.MobileUserConfiguration{
@@ -70,11 +71,10 @@ func (u *userService) UpdateUserProfile(ctx context.Context, param domain.UserPr
 		LocationServiceStatus:  param.Configuration.LocationServiceStatus,
 		AnyStatus:              param.Configuration.AnyStatus,
 	}
-	// var catArray [3]int
 
-	userAdvertisementCategories := entities.UserAdvertisementCategories{
-	  // catArray := [1,2,3]
-	}
+	//log.Info("cat array  ", param.AdvertisementCatId)
+
+	userAdvertisementCategories := entities.UserAdvertisementCategories{}
 
 	// bank := entities.MobileUserBank{}
 
