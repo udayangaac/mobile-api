@@ -129,7 +129,7 @@ func (m mobileAppUserMySqlRepo) GetUserProfile(ctx context.Context, userId int) 
 func (m mobileAppUserMySqlRepo) UpdateUserProfile(ctx context.Context, user entities.MobileAppUser, mobileUserConfiguration entities.MobileUserConfiguration, userAdvertisementCategories entities.UserAdvertisementCategories, userId int) (err error) {
 
 	user.MobileUserConfigurations = mobileUserConfiguration
-	log.Info("Login Status 1 ", user.MobileUserConfigurations.LoginStatus)
+
 	err = m.DB.Model(&user).Where("id = ?", userId).Updates(map[string]interface{}{"name": user.Name, "email": user.Email, "hash_password": user.HashPassword, "dob": user.DOB, "gender": user.Gender, "employee_status": user.EmployeeStatus, "address": user.Address, "civil_status": user.CivilStatus, "job_company_name": user.JobCompanyName, "job_company_location": user.JobCompanyLocation, "kids": user.Kids, "login_status": user.MobileUserConfigurations.LoginStatus, "push_notification_status": user.MobileUserConfigurations.PushNotificationStatus, "sound_status": user.MobileUserConfigurations.SoundStatus, "location_service_status": user.MobileUserConfigurations.LocationServiceStatus, "any_status": user.MobileUserConfigurations.AnyStatus }).Error
 
 	if err != nil {
@@ -137,18 +137,17 @@ func (m mobileAppUserMySqlRepo) UpdateUserProfile(ctx context.Context, user enti
 		return
 	}
 
-	log.Info("Login Status 2",user.MobileUserConfigurations.LoginStatus)
 	err = m.DB.Model(&mobileUserConfiguration).Where("user_id = 1").Updates(map[string]interface{}{"login_status": user.MobileUserConfigurations.LoginStatus, "push_notification_status": user.MobileUserConfigurations.PushNotificationStatus, "sound_status": user.MobileUserConfigurations.SoundStatus, "location_service_status": user.MobileUserConfigurations.LocationServiceStatus, "any_status": user.MobileUserConfigurations.AnyStatus}).Error
+
 	count := 0
+	m.DB.Model(&userAdvertisementCategories).Where("user_id = ?", userId).Count(&count)
 
-	m.DB.Model(&entities.UserAdvertisementCategories{}).Where("uac.user_id = ?", userId).Count(&count)
-
-	row := m.DB.Raw("SELECT count(*) as count FROM user_advertisement_categories uac  WHERE uac.user_id = ?", userId).RowsAffected
-	if row == 0 {
-
-		m.DB.FirstOrCreate(&userAdvertisementCategories, entities.UserAdvertisementCategories{UserId: userId, AdvertisementCatId: 1})
+	log.Info("categories  ", user.UserAdvertisementCategories)
+	if count == 0 {
+		m.DB.FirstOrCreate(&userAdvertisementCategories, entities.UserAdvertisementCategories{UserId: userId, AdvertisementCatId: userAdvertisementCategories.AdvertisementCatId})
+	}else{
+		m.DB.Where("user_id = ?", userId).Delete(&userAdvertisementCategories)
 	}
 	log.Info(&count)
-
 	return
 }
