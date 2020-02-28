@@ -8,6 +8,9 @@ import (
 
 func GetAuthenticationParam(ctx context.Context) (authParam domain.AuthenticationParam) {
 	//todo: null must be handled from the location.
-	values := ctx.Value("claims").(jwt.Claims)
+	values, ok := ctx.Value("claims").(jwt.Claims)
+	if ok {
+		return domain.AuthenticationParam{UserId: int(values.UserId), Role: 1}
+	}
 	return
 }

@@ -53,6 +53,24 @@ func PushNotificationDecoder(ctx context.Context, r *http.Request) (interface{},
 	return  pushNotificationRequestParam, nil
 }
 
+func UserProfileDecoder(ctx context.Context, r *http.Request) (interface{}, error) {
+	userProfile := domain.UserProfile{}
+	err := json.NewDecoder(r.Body).Decode(&userProfile)
+	if err != nil {
+		return nil, domain_errors.ErrBadRequest
+	}
+	return  userProfile, nil
+}
+
+func NotificationTypeDecoder(ctx context.Context, r *http.Request) (interface{}, error) {
+	notificationType := domain.NotificationType{}
+	err := json.NewDecoder(r.Body).Decode(&notificationType)
+	if err != nil {
+		return nil, domain_errors.ErrBadRequest
+	}
+	return  notificationType, nil
+}
+
 func ProfilePictureDecoder(ctx context.Context, r *http.Request) (interface{}, error) {
 	profilePictureRequestParam := domain.ProfilePictureRequest{}
 	err := json.NewDecoder(r.Body).Decode(&profilePictureRequestParam)
@@ -71,7 +89,6 @@ func LocationStatusDecoder(ctx context.Context, r *http.Request) (interface{}, e
 	}
 	return  locationRequestParam, nil
 }
-
 
 func PushNotificationStatusDecoder(ctx context.Context, r *http.Request) (interface{}, error) {
 	pushRequestParam := domain.SettingChangeRequest{}

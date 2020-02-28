@@ -13,11 +13,11 @@ func SignUpEndpoints(service services.Services) endpoint2.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		param := request.(domain.SignUpRequest)
 		err = service.UserService.AddMobileUser(ctx, param)
+		log.Info(err)
 		if err != nil {
 			return
 		}
 
-		log.Info(err)
 		response = domain.SuccessResponse{
 			Message: "successfully added the user",
 		}
@@ -75,6 +75,45 @@ func PushNotificationEndpoints(service services.Services) endpoint2.Endpoint {
 			return
 		}
 		response = notification
+		return
+	}
+}
+
+func NotificationTypeEndpoints(service services.Services) endpoint2.Endpoint {
+	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
+		param := request.(domain.NotificationType)
+		response, err = service.UserService.NotificationTypes(ctx, param.UserId)
+		if err != nil {
+			return
+		}
+		return
+	}
+}
+
+func UserProfileEndpoints(service services.Services) endpoint2.Endpoint {
+	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
+		userProfile := domain.UserProfileResponse{}
+		param := request.(domain.UserProfile)
+		userProfile, err = service.UserService.GetUserProfile(ctx, param.UserId)
+		if err != nil {
+			return
+		}
+		response = userProfile
+		return
+	}
+}
+
+func UserProfileUpdateEndpoints(service services.Services) endpoint2.Endpoint {
+	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
+		param := request.(domain.UserProfile)
+		err = service.UserService.UpdateUserProfile(ctx, param, param.UserId, param.AdvertisementCatId)
+		log.Info(err)
+		if err != nil {
+			return
+		}
+		response = domain.SuccessResponse{
+			Message: "successfully Updated the User",
+		}
 		return
 	}
 }
