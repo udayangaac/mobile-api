@@ -11,16 +11,14 @@ import (
 
 func SignUpEndpoints(service services.Services) endpoint2.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
+		token := domain.LoginResponse{}
 		param := request.(domain.SignUpRequest)
-		err = service.UserService.AddMobileUser(ctx, param)
+		token, err = service.UserService.AddMobileUser(ctx, param)
 		log.Info(err)
 		if err != nil {
 			return
 		}
-
-		response = domain.SuccessResponse{
-			Message: "successfully added the user",
-		}
+		response = token
 		return
 	}
 }

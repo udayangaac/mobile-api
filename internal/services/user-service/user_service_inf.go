@@ -9,7 +9,7 @@ import (
 // User management related functions are done by this service
 type UserService interface {
 	// add mobile user to the system,
-	AddMobileUser(ctx context.Context, param domain.SignUpRequest) (err error)
+	AddMobileUser(ctx context.Context, param domain.SignUpRequest) (resp domain.LoginResponse, err error)
 
 	// generate JWT token with validating user credentials.
 	GenerateToken(ctx context.Context, param domain.LoginRequest) (resp domain.LoginResponse, err error)

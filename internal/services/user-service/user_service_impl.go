@@ -22,7 +22,8 @@ func NewUserService(repoContainer repositories.RepoContainer) UserService {
 	}
 }
 
-func (u *userService) AddMobileUser(ctx context.Context, param domain.SignUpRequest) (err error) {
+func (u *userService) AddMobileUser(ctx context.Context, param domain.SignUpRequest) (resp domain.LoginResponse, err error) {
+
 	mobileAppUser := entities.MobileAppUser{
 		Name:         param.Name,
 		Email:        param.Email,
@@ -37,8 +38,22 @@ func (u *userService) AddMobileUser(ctx context.Context, param domain.SignUpRequ
 		AnyStatus:              0,
 	}
 
-	err = u.RepoContainer.MobileUserRepo.AddMobileUser(ctx, mobileAppUser, mobileUserConfiguration)
-	log.Info(err)
+	jwt := jwt2.Resolver{
+		SecretKey:     config.ServerConf.Jwt.Key,
+		ValidDuration: config.ServerConf.Jwt.Duration,
+	}
+	
+	userDetails := entities.MobileAppUser{}
+
+	userDetails, err = u.RepoContainer.MobileUserRepo.AddMobileUser(ctx, mobileAppUser, mobileUserConfiguration)
+    log.Info("created user", userDetails.Email)
+	resp.Email = param.Email
+	resp.ID = int(userDetails.ID)
+	resp.Name = param.Name
+	claims := jwt2.Claims{Role: "user", UserId: mobileAppUser.ID}
+	resp.Token, err = jwt.GenerateToken(claims)
+
+	//log.Info(err)
 	return
 }
 

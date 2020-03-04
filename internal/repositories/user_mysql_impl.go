@@ -2,12 +2,10 @@ package repositories
 
 import (
 	"context"
-	"fmt"
 	"github.com/jinzhu/gorm"
 	log "github.com/sirupsen/logrus"
 	"github.com/udayangaac/mobile-api/internal/entities"
 	"github.com/udayangaac/mobile-api/internal/errors_custom"
-	log_traceable "github.com/udayangaac/mobile-api/internal/lib/log-traceable"
 	"github.com/udayangaac/mobile-api/internal/lib/orm"
 )
 
@@ -21,8 +19,8 @@ func NewMobileAppUser() MobileAppUserRepo {
 	}
 }
 
-func (m mobileAppUserMySqlRepo) AddMobileUser(ctx context.Context, mobileUser entities.MobileAppUser, mobileUserConfiguration entities.MobileUserConfiguration) (err error) {
-	log.Info(log_traceable.GetMessage(ctx, fmt.Sprintf("%v", mobileUser)))
+func (m mobileAppUserMySqlRepo) AddMobileUser(ctx context.Context, mobileUser entities.MobileAppUser, mobileUserConfiguration entities.MobileUserConfiguration) (user entities.MobileAppUser, err error) {
+	// log.Info(log_traceable.GetMessage(ctx, fmt.Sprintf("%v", mobileUser)))
 	rowAffected := m.DB.Create(&mobileUser).RowsAffected
 
 	if rowAffected == 0 {
@@ -31,6 +29,7 @@ func (m mobileAppUserMySqlRepo) AddMobileUser(ctx context.Context, mobileUser en
 	}
 	mobileUserConfiguration.UserId = mobileUser.ID
 	err = m.DB.Create(&mobileUserConfiguration).Error
+	err = m.DB.Where("id=?", mobileUser.ID).First(&user).Error
 	return
 }
 
