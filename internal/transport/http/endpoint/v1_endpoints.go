@@ -32,7 +32,7 @@ func LoginEndpoints(service services.Services) endpoint2.Endpoint {
 			return 
 		}
 		response = token
-		log.Info("toekn id ", token.ID)
+
 		if token.ID == 0{
 			response = domain.SuccessResponse{
 				Message: "email already exist",
@@ -87,6 +87,17 @@ func NotificationTypeEndpoints(service services.Services) endpoint2.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		param := request.(domain.NotificationType)
 		response, err = service.UserService.NotificationTypes(ctx, param.UserId)
+		if err != nil {
+			return
+		}
+		return
+	}
+}
+
+func BankListEndpoints(service services.Services) endpoint2.Endpoint {
+	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
+		param := request.(domain.BankList)
+		response, err = service.UserService.BankList(ctx, param.UserId)
 		if err != nil {
 			return
 		}

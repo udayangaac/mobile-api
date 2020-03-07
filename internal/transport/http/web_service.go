@@ -128,6 +128,13 @@ func (ws *WebService) Init() {
 			encoder.MainEncoder,
 			serverOpts...)).Methods(http.MethodGet)
 
+	authSubRouter.Handle("/bank-list",
+		transportHttp.NewServer(
+			endpoint.BankListEndpoints(ws.Services),
+			decoder.BankListDecoder,
+			encoder.MainEncoder,
+			serverOpts...)).Methods(http.MethodGet)
+
 	authSubRouter.Handle("/user-profile",
 		transportHttp.NewServer(
 			endpoint.UserProfileEndpoints(ws.Services),

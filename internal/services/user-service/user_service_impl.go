@@ -195,6 +195,27 @@ func (u *userService) NotificationTypes(ctx context.Context, userId int) (resp i
 	return notificationTypes, nil
 }
 
+func (u *userService) BankList(ctx context.Context, userId int) (resp interface{}, err error) {
+	var bank interface{}
+	bank, err = u.RepoContainer.MobileUserRepo.BankList(ctx, userId)
+	bankLists := []domain.BankListResponse{}
+	if err != nil {
+		return
+	}
+	categories, ok := bank.([]entities.Banks)
+	if !ok {
+		return nil, errors.New("cannot cast []entities.UserBankList")
+	}
+	for _, val := range categories {
+		bankList := domain.BankListResponse{}
+		bankList.Id = int(val.ID)
+		bankList.BankName = val.Name
+		bankLists = append(bankLists, bankList)
+	}
+
+	return bankLists, nil
+}
+
 func (u *userService) GetUserProfile(ctx context.Context, userId int) (resp domain.UserProfileResponse, err error) {
 
 	userProfile := entities.MobileAppUser{}

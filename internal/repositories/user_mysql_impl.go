@@ -104,6 +104,28 @@ func (m mobileAppUserMySqlRepo) NotificationTypesList(ctx context.Context, userI
 	return nts, nil
 }
 
+func (m mobileAppUserMySqlRepo) BankList(ctx context.Context, userId int) (notificationTypes interface{}, err error) {
+	log.Info(userId)
+	ub := []entities.Banks{}
+
+	if userId == 0 {
+		err = m.DB.Select([]string{"id", "name"}).Where("status=1").Find(&ub).Error
+		return ub, err
+	} else {
+		rows, err := m.DB.Raw("SELECT ub.id, ub.name FROM banks ub INNER JOIN mobile_user_bank mub on ub.id = mub.bank_id WHERE mub.mobile_user_id = ?", userId).Rows()
+		if err != nil {
+			return nil, err
+		}
+		for rows.Next() {
+			nt := entities.Banks{}
+			rows.Scan(&nt.ID, &nt.Name)
+			ub = append(ub, nt)
+		}
+
+	}
+	return ub, nil
+}
+
 func (m mobileAppUserMySqlRepo) GetUserProfile(ctx context.Context, userId int) (userProfile entities.MobileAppUser, err error) {
 	err = m.DB.Where("id=?", userId).First(&userProfile).Error
 	if err != nil {

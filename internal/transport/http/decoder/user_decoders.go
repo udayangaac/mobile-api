@@ -71,6 +71,15 @@ func NotificationTypeDecoder(ctx context.Context, r *http.Request) (interface{},
 	return  notificationType, nil
 }
 
+func BankListDecoder(ctx context.Context, r *http.Request) (interface{}, error) {
+	bankList := domain.BankList{}
+	err := json.NewDecoder(r.Body).Decode(&bankList)
+	if err != nil {
+		return nil, domain_errors.ErrBadRequest
+	}
+	return  bankList, nil
+}
+
 func ProfilePictureDecoder(ctx context.Context, r *http.Request) (interface{}, error) {
 	profilePictureRequestParam := domain.ProfilePictureRequest{}
 	err := json.NewDecoder(r.Body).Decode(&profilePictureRequestParam)
