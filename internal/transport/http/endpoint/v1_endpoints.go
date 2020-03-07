@@ -29,9 +29,15 @@ func LoginEndpoints(service services.Services) endpoint2.Endpoint {
 		param := request.(domain.LoginRequest)
 		token, err = service.UserService.GenerateToken(ctx, param)
 		if err != nil {
-			return
+			return 
 		}
 		response = token
+		log.Info("toekn id ", token.ID)
+		if token.ID == 0{
+			response = domain.SuccessResponse{
+				Message: "email already exist",
+			}
+		}
 		return
 	}
 }

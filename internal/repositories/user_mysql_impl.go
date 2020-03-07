@@ -147,6 +147,6 @@ func (m mobileAppUserMySqlRepo) UpdateUserProfile(ctx context.Context, user enti
 		 m.DB.Create(&entities.UserAdvertisementCategories{UserId: userId, AdvertisementCatId: element})
 		}
 	}
-	//log.Info(&count)
+
 	return
 }

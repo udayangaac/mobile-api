@@ -46,14 +46,17 @@ func (u *userService) AddMobileUser(ctx context.Context, param domain.SignUpRequ
 	userDetails := entities.MobileAppUser{}
 
 	userDetails, err = u.RepoContainer.MobileUserRepo.AddMobileUser(ctx, mobileAppUser, mobileUserConfiguration)
-    log.Info("created user", userDetails.Email)
-	resp.Email = param.Email
+
+	if err != nil{
+		return
+	}
+	
+	resp.Email = userDetails.Email
 	resp.ID = int(userDetails.ID)
-	resp.Name = param.Name
+	resp.Name = userDetails.Name
 	claims := jwt2.Claims{Role: "user", UserId: mobileAppUser.ID}
 	resp.Token, err = jwt.GenerateToken(claims)
 
-	//log.Info(err)
 	return
 }
 
