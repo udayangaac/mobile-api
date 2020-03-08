@@ -60,7 +60,7 @@ func (u *userService) AddMobileUser(ctx context.Context, param domain.SignUpRequ
 	return
 }
 
-func (u *userService) UpdateUserProfile(ctx context.Context, param domain.UserProfile, userId int, advertisementCategory []int) (err error) {
+func (u *userService) UpdateUserProfile(ctx context.Context, param domain.UserProfile, userId int, advertisementCategory []int, bankList []int) (err error) {
 	mobileAppUser := entities.MobileAppUser{
 		Name:               	param.Name,
 		Email:              	param.Email,
@@ -91,7 +91,7 @@ func (u *userService) UpdateUserProfile(ctx context.Context, param domain.UserPr
 
 	//userAdvertisement :=  entities.UserAdvertisementCategories{}
 
-	err = u.RepoContainer.MobileUserRepo.UpdateUserProfile(ctx, mobileAppUser, mobileUserConfiguration, advertisementCategory, userId)
+	err = u.RepoContainer.MobileUserRepo.UpdateUserProfile(ctx, mobileAppUser, mobileUserConfiguration, advertisementCategory, bankList,userId)
 	return
 }
 

@@ -6,6 +6,5 @@ import (
 
 type Banks struct {
 	gorm.Model
-	// UserId          int
 	Name		string
 }

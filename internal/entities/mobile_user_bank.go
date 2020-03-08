@@ -4,6 +4,6 @@ import "github.com/jinzhu/gorm"
 
 type MobileUserBank struct {
 	gorm.Model
-	MobileUserId string
+	MobileUserId int
 	BankId       int
 }

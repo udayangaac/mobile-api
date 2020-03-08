@@ -22,6 +22,7 @@ type UserProfile struct {
 		AnyStatus              int `json:"any_status"`
 	} `json:"configuration"`
 	AdvertisementCatId []int `json:"advertisement_cat_id"`
+	BankIdList []int `json:"bank_id_list"`
 	CivilStatus int16 `json:"civil_status"`
 	Kids        int   `json:"kids"`
 }
