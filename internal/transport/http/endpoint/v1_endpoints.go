@@ -35,7 +35,7 @@ func LoginEndpoints(service services.Services) endpoint2.Endpoint {
 
 		if token.ID == 0{
 			response = domain.SuccessResponse{
-				Message: "email already exist",
+				Message: "Login Failed",
 			}
 		}
 		return

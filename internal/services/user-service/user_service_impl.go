@@ -103,7 +103,7 @@ func (u *userService) GenerateToken(ctx context.Context, param domain.LoginReque
 	}
 
 	mobileAppUser, err = u.RepoContainer.MobileUserRepo.GetMobileUserByEmail(ctx, param.Email)
-	log.Info(mobileAppUser)
+
 	if err != nil {
 		return
 	}
@@ -242,6 +242,7 @@ func (u *userService) GetUserProfile(ctx context.Context, userId int) (resp doma
 	resp.Configuration.LocationServiceStatus = userProfile.LocationServiceStatus
 	resp.Configuration.AnyStatus = userProfile.AnyStatus
 	resp.UserAdvertisementsCategories   = userProfile.UserAdvertisementCategories
+	resp.UserBanks = userProfile.UserBankList
 	
 	return resp,err
 }

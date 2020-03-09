@@ -26,4 +26,5 @@ type MobileAppUser struct {
 //	AdvertisementsCategories    []int
 	MobileUserConfigurations    MobileUserConfiguration
 	UserAdvertisementCategories []AdvertisementsCategories
+	UserBankList                []Banks
 }

@@ -112,7 +112,7 @@ func (m mobileAppUserMySqlRepo) BankList(ctx context.Context, userId int) (notif
 		err = m.DB.Select([]string{"id", "name"}).Where("status=1").Find(&ub).Error
 		return ub, err
 	} else {
-		rows, err := m.DB.Raw("SELECT ub.id, ub.name FROM banks ub INNER JOIN mobile_user_bank mub on ub.id = mub.bank_id WHERE mub.mobile_user_id = ?", userId).Rows()
+		rows, err := m.DB.Raw("SELECT ub.id, ub.name FROM banks ub INNER JOIN mobile_user_banks mub on ub.id = mub.bank_id WHERE mub.deleted_at is null and mub.mobile_user_id = ?", userId).Rows()
 		if err != nil {
 			return nil, err
 		}
@@ -140,6 +140,16 @@ func (m mobileAppUserMySqlRepo) GetUserProfile(ctx context.Context, userId int) 
 		nt := entities.AdvertisementsCategories{}
 		rows.Scan(&nt.ID, &nt.CategoryName)
 		userProfile.UserAdvertisementCategories = append(userProfile.UserAdvertisementCategories, nt)
+	}
+	bankListRows, errbank := m.DB.Raw("SELECT mub.bank_id, b.name FROM banks b INNER JOIN mobile_user_banks mub on b.id = mub.bank_id WHERE mub.deleted_at is null and  mub.mobile_user_id = ?", userId).Rows()
+	if errbank != nil {
+		log.Info(errbank.Error())
+		return userProfile, errbank
+	}
+	for bankListRows.Next() {
+		mb := entities.Banks{}
+		bankListRows.Scan(&mb.ID, &mb.Name)
+		userProfile.UserBankList = append(userProfile.UserBankList, mb)
 	}
 
 	return
