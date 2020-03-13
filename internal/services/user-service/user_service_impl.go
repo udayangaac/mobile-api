@@ -61,6 +61,7 @@ func (u *userService) AddMobileUser(ctx context.Context, param domain.SignUpRequ
 }
 
 func (u *userService) UpdateUserProfile(ctx context.Context, param domain.UserProfile, userId int, advertisementCategory []int, bankList []int) (err error) {
+
 	mobileAppUser := entities.MobileAppUser{
 		Name:               	param.Name,
 		Email:              	param.Email,

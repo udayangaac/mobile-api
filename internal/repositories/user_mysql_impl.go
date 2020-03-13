@@ -157,7 +157,62 @@ func (m mobileAppUserMySqlRepo) GetUserProfile(ctx context.Context, userId int) 
                              
 func (m mobileAppUserMySqlRepo) UpdateUserProfile(ctx context.Context, user entities.MobileAppUser, mobileUserConfiguration entities.MobileUserConfiguration ,userAdvertisementCategories []int,userBankList []int ,userId int) (err error) {
 	user.MobileUserConfigurations = mobileUserConfiguration
-	err = m.DB.Model(&user).Where("id = ?", userId).Updates(map[string]interface{}{"name": user.Name, "email": user.Email, "hash_password": user.HashPassword, "dob": user.DOB, "gender": user.Gender, "employee_status": user.EmployeeStatus, "address": user.Address, "civil_status": user.CivilStatus, "job_company_name": user.JobCompanyName, "job_company_location": user.JobCompanyLocation, "kids": user.Kids, "login_status": user.MobileUserConfigurations.LoginStatus, "push_notification_status": user.MobileUserConfigurations.PushNotificationStatus, "sound_status": user.MobileUserConfigurations.SoundStatus, "location_service_status": user.MobileUserConfigurations.LocationServiceStatus, "any_status": user.MobileUserConfigurations.AnyStatus }).Error
+    userUpdate := make(map[string]interface{})
+    if user.Name != ""{
+		userUpdate["name"] = user.Name
+	}
+	if user.Email != ""{
+		userUpdate["email"] = user.Email
+	}
+	if user.Email != ""{
+		userUpdate["hash_password"] = user.HashPassword
+	}
+	if user.DOB != ""{
+		userUpdate["dob"] = user.DOB
+	}
+	if user.Gender != ""{
+		userUpdate["gender"] = user.Gender
+	}
+	if user.EmployeeStatus != 0 {
+		userUpdate["employee_status"] = user.EmployeeStatus
+	}
+	if user.Address != "" {
+		userUpdate["address"] = user.Address
+	}
+	if user.CivilStatus != 0 {
+		userUpdate["civil_status"] = user.CivilStatus
+	}
+	if user.JobCompanyName != "" {
+		userUpdate["job_company_name"] = user.JobCompanyName
+	}
+	if user.JobCompanyLocation != "" {
+		userUpdate["job_company_location"] = user.JobCompanyLocation
+	}
+	if user.Kids != 0 {
+		userUpdate["kids"] = user.Kids
+	}
+	if user.MobileUserConfigurations.LoginStatus != 0 {
+		userUpdate["login_status"] = user.Kids
+	}
+	if user.MobileUserConfigurations.PushNotificationStatus != 0 {
+		userUpdate["push_notification_status"] = user.MobileUserConfigurations.PushNotificationStatus
+	}
+	if user.MobileUserConfigurations.SoundStatus != 0 {
+		userUpdate["sound_status"] = user.MobileUserConfigurations.SoundStatus
+	}
+	if user.MobileUserConfigurations.LocationServiceStatus != 0 {
+		userUpdate["location_service_status"] = user.MobileUserConfigurations.LocationServiceStatus
+	}
+	if user.MobileUserConfigurations.LocationServiceStatus != 0 {
+		userUpdate["location_service_status"] = user.MobileUserConfigurations.LocationServiceStatus
+	}
+	if user.MobileUserConfigurations.AnyStatus != 0 {
+		userUpdate["any_status"] = user.MobileUserConfigurations.AnyStatus
+	}
+
+	// err = m.DB.Model(&user).Where("id = ?", userId).Updates(map[string]interface{}{"name": user.Name, "email": user.Email, "hash_password": user.HashPassword, "dob": user.DOB, "gender": user.Gender, "employee_status": user.EmployeeStatus, "address": user.Address, "civil_status": user.CivilStatus, "job_company_name": user.JobCompanyName, "job_company_location": user.JobCompanyLocation, "kids": user.Kids, "login_status": user.MobileUserConfigurations.LoginStatus, "push_notification_status": user.MobileUserConfigurations.PushNotificationStatus, "sound_status": user.MobileUserConfigurations.SoundStatus, "location_service_status": user.MobileUserConfigurations.LocationServiceStatus, "any_status": user.MobileUserConfigurations.AnyStatus }).Error
+	err = m.DB.Model(&user).Where("id = ?", userId).Updates(userUpdate).Error
+
 	if err != nil {
 		err = errors_custom.ErrDuplicateUserEntry
 		return
