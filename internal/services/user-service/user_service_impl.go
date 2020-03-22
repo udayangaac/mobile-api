@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	log "github.com/sirupsen/logrus"
+	// log "github.com/sirupsen/logrus"
 	"github.com/udayangaac/mobile-api/internal/config"
 	"github.com/udayangaac/mobile-api/internal/domain"
 	"github.com/udayangaac/mobile-api/internal/entities"
@@ -222,7 +223,7 @@ func (u *userService) GetUserProfile(ctx context.Context, userId int) (resp doma
 	userProfile := entities.MobileAppUser{}
 
 	userProfile, err = u.RepoContainer.MobileUserRepo.GetUserProfile(ctx, userId)
-	log.Info(userProfile.LoginStatus)
+
 	if err != nil {
 		return
 	}
@@ -246,4 +247,16 @@ func (u *userService) GetUserProfile(ctx context.Context, userId int) (resp doma
 	resp.UserBanks = userProfile.UserBankList
 	
 	return resp,err
+}
+
+func (u *userService) TrackUserLocation(ctx context.Context, param domain.TrackUserLocation) (err error) {
+    log.Info(param)
+	location := entities.UserLocationChanges{
+		UserId: param.UserId,
+		Lat: param.Latitude,
+		Lon: param.Longitude,
+		// Date:
+	}
+	err = u.RepoContainer.MobileUserRepo.TrackUserLocation(ctx, location)
+	return
 }

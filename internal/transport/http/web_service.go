@@ -149,6 +149,13 @@ func (ws *WebService) Init() {
 			encoder.MainEncoder,
 			serverOpts...)).Methods(http.MethodPost)
 
+	authSubRouter.Handle("/track-user-location",
+		transportHttp.NewServer(
+			endpoint.TrackUserLocationEndpoints(ws.Services),
+			decoder.TrackUserDecoder,
+			encoder.MainEncoder,
+			serverOpts...)).Methods(http.MethodPost)
+
 	server = &http.Server{
 		Addr:         fmt.Sprintf(":%v", ws.Port),
 		WriteTimeout: time.Second * 15,

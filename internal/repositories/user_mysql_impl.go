@@ -234,7 +234,7 @@ func (m mobileAppUserMySqlRepo) UpdateUserProfile(ctx context.Context, user enti
 	}
 
 	m.DB.Model(&entities.MobileUserBank{}).Where("mobile_user_id = ?", userId).Count(&bankCount)
-	log.Info("mobile user bank list", userBankList)
+	// log.Info("mobile user bank list", userBankList)
 	if bankCount == 0{
 		for _, element := range userBankList {
 			m.DB.Create(&entities.MobileUserBank{MobileUserId: userId, BankId: element})
@@ -246,5 +246,13 @@ func (m mobileAppUserMySqlRepo) UpdateUserProfile(ctx context.Context, user enti
 		}
 	}
 
+	return
+}
+
+func (m mobileAppUserMySqlRepo) TrackUserLocation(ctx context.Context, location entities.UserLocationChanges) (err error) {
+	err = m.DB.Create(&location).Error
+	if err != nil{
+		log.Info(err)
+	}
 	return
 }

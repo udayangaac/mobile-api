@@ -32,6 +32,9 @@ type UserService interface {
 	// User Profile
 	UpdateUserProfile(ctx context.Context, param domain.UserProfile, userId int, advertisementCategory []int, bankIdList []int ) (err error)
 
+	// Track User Location
+	TrackUserLocation(ctx context.Context, param domain.TrackUserLocation) (err error)
+
 	// pull notification
 	PullNotification(ctx context.Context, userId int, lat float64, lon float64) (resp entities.Notification, err error)
 
