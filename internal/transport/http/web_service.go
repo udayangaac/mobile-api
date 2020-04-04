@@ -126,21 +126,21 @@ func (ws *WebService) Init() {
 			endpoint.NotificationTypeEndpoints(ws.Services),
 			decoder.NotificationTypeDecoder,
 			encoder.MainEncoder,
-			serverOpts...)).Methods(http.MethodGet)
+			serverOpts...)).Methods(http.MethodPost)
 
 	authSubRouter.Handle("/bank-list",
 		transportHttp.NewServer(
 			endpoint.BankListEndpoints(ws.Services),
 			decoder.BankListDecoder,
 			encoder.MainEncoder,
-			serverOpts...)).Methods(http.MethodGet)
+			serverOpts...)).Methods(http.MethodPost)
 
 	authSubRouter.Handle("/user-profile",
 		transportHttp.NewServer(
 			endpoint.UserProfileEndpoints(ws.Services),
 			decoder.UserProfileDecoder,
 			encoder.MainEncoder,
-			serverOpts...)).Methods(http.MethodGet)
+			serverOpts...)).Methods(http.MethodPost)
 
 	authSubRouter.Handle("/user-profile",
 		transportHttp.NewServer(
