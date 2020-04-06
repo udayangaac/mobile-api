@@ -135,7 +135,7 @@ func (ws *WebService) Init() {
 			encoder.MainEncoder,
 			serverOpts...)).Methods(http.MethodPost)
 
-	authSubRouter.Handle("/user-profile",
+	authSubRouter.Handle("/get-user-profile",
 		transportHttp.NewServer(
 			endpoint.UserProfileEndpoints(ws.Services),
 			decoder.UserProfileDecoder,
