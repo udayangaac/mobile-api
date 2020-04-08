@@ -29,7 +29,7 @@ func (u *userService) AddMobileUser(ctx context.Context, param domain.SignUpRequ
 		Name:         param.Name,
 		Email:        param.Email,
 		HashPassword: sha256.GetHashString(param.Password),
-		DOB:          param.DOB,
+		// DOB:          param.DOB,
 	}
 	mobileUserConfiguration := entities.MobileUserConfiguration{
 		LoginStatus:            1,
