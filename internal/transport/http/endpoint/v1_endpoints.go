@@ -6,6 +6,7 @@ import (
 	log "github.com/sirupsen/logrus"
 	"github.com/udayangaac/mobile-api/internal/domain"
 	"github.com/udayangaac/mobile-api/internal/entities"
+	"github.com/udayangaac/mobile-api/internal/errors_custom"
 	"github.com/udayangaac/mobile-api/internal/services"
 )
 
@@ -29,14 +30,11 @@ func LoginEndpoints(service services.Services) endpoint2.Endpoint {
 		param := request.(domain.LoginRequest)
 		token, err = service.UserService.GenerateToken(ctx, param)
 		if err != nil {
-			return 
+			return
 		}
 		response = token
-
-		if token.ID == 0{
-			response = domain.SuccessResponse{
-				Message: "Login Failed",
-			}
+		if token.ID == 0 {
+			err = errors_custom.ErrInvalidCredentials
 		}
 		return
 	}
@@ -133,7 +131,6 @@ func UserProfileUpdateEndpoints(service services.Services) endpoint2.Endpoint {
 		return
 	}
 }
-
 
 func TrackUserLocationEndpoints(service services.Services) endpoint2.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {

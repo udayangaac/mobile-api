@@ -35,6 +35,10 @@ func (m mobileAppUserMySqlRepo) AddMobileUser(ctx context.Context, mobileUser en
 
 func (m mobileAppUserMySqlRepo) GetMobileUserByEmail(ctx context.Context, email string) (mobileUser entities.MobileAppUser, err error) {
 	err = m.DB.Where("email=?", email).First(&mobileUser).Error
+	if err == gorm.ErrRecordNotFound {
+		err = nil
+		return
+	}
 	return
 }
 
@@ -154,23 +158,23 @@ func (m mobileAppUserMySqlRepo) GetUserProfile(ctx context.Context, userId int) 
 
 	return
 }
-                             
-func (m mobileAppUserMySqlRepo) UpdateUserProfile(ctx context.Context, user entities.MobileAppUser, mobileUserConfiguration entities.MobileUserConfiguration ,userAdvertisementCategories []int,userBankList []int ,userId int) (err error) {
+
+func (m mobileAppUserMySqlRepo) UpdateUserProfile(ctx context.Context, user entities.MobileAppUser, mobileUserConfiguration entities.MobileUserConfiguration, userAdvertisementCategories []int, userBankList []int, userId int) (err error) {
 	user.MobileUserConfigurations = mobileUserConfiguration
-    userUpdate := make(map[string]interface{})
-    if user.Name != ""{
+	userUpdate := make(map[string]interface{})
+	if user.Name != "" {
 		userUpdate["name"] = user.Name
 	}
-	if user.Email != ""{
+	if user.Email != "" {
 		userUpdate["email"] = user.Email
 	}
-	if user.Email != ""{
+	if user.Email != "" {
 		userUpdate["hash_password"] = user.HashPassword
 	}
-	if user.DOB != ""{
+	if user.DOB != "" {
 		userUpdate["dob"] = user.DOB
 	}
-	if user.Gender != ""{
+	if user.Gender != "" {
 		userUpdate["gender"] = user.Gender
 	}
 	if user.EmployeeStatus != 0 {
@@ -226,20 +230,20 @@ func (m mobileAppUserMySqlRepo) UpdateUserProfile(ctx context.Context, user enti
 			m.DB.Create(&entities.UserAdvertisementCategories{UserId: userId, AdvertisementCatId: element})
 		}
 
-		}else{
+	} else {
 		m.DB.Where("user_id = ?", userId).Delete(&entities.UserAdvertisementCategories{})
 		for _, element := range userAdvertisementCategories {
-		 m.DB.Create(&entities.UserAdvertisementCategories{UserId: userId, AdvertisementCatId: element})
+			m.DB.Create(&entities.UserAdvertisementCategories{UserId: userId, AdvertisementCatId: element})
 		}
 	}
 
 	m.DB.Model(&entities.MobileUserBank{}).Where("mobile_user_id = ?", userId).Count(&bankCount)
 	// log.Info("mobile user bank list", userBankList)
-	if bankCount == 0{
+	if bankCount == 0 {
 		for _, element := range userBankList {
 			m.DB.Create(&entities.MobileUserBank{MobileUserId: userId, BankId: element})
 		}
-	}   else {
+	} else {
 		m.DB.Where("mobile_user_id = ?", userId).Delete(&entities.MobileUserBank{})
 		for _, element := range userBankList {
 			m.DB.Create(&entities.MobileUserBank{MobileUserId: userId, BankId: element})
@@ -251,7 +255,7 @@ func (m mobileAppUserMySqlRepo) UpdateUserProfile(ctx context.Context, user enti
 
 func (m mobileAppUserMySqlRepo) TrackUserLocation(ctx context.Context, location entities.UserLocationChanges) (err error) {
 	err = m.DB.Create(&location).Error
-	if err != nil{
+	if err != nil {
 		log.Info(err)
 	}
 	return
