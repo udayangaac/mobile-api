@@ -128,7 +128,7 @@ func (ws *WebService) Init() {
 			encoder.MainEncoder,
 			serverOpts...)).Methods(http.MethodPost)
 
-	authSubRouter.Handle("/bank-list",
+	authSubRouter.Handle("/bank-list/user/{userId}",
 		transportHttp.NewServer(
 			endpoint.BankListEndpoints(ws.Services),
 			decoder.BankListDecoder,
