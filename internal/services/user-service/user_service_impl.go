@@ -4,6 +4,8 @@ import (
 	"context"
 	"errors"
 	log "github.com/sirupsen/logrus"
+	log_traceable "github.com/udayangaac/mobile-api/internal/lib/log-traceable"
+
 	// log "github.com/sirupsen/logrus"
 	"github.com/udayangaac/mobile-api/internal/config"
 	"github.com/udayangaac/mobile-api/internal/domain"
@@ -43,15 +45,15 @@ func (u *userService) AddMobileUser(ctx context.Context, param domain.SignUpRequ
 		SecretKey:     config.ServerConf.Jwt.Key,
 		ValidDuration: config.ServerConf.Jwt.Duration,
 	}
-	
+
 	userDetails := entities.MobileAppUser{}
 
 	userDetails, err = u.RepoContainer.MobileUserRepo.AddMobileUser(ctx, mobileAppUser, mobileUserConfiguration)
 
-	if err != nil{
+	if err != nil {
 		return
 	}
-	
+
 	resp.Email = userDetails.Email
 	resp.ID = int(userDetails.ID)
 	resp.Name = userDetails.Name
@@ -64,18 +66,18 @@ func (u *userService) AddMobileUser(ctx context.Context, param domain.SignUpRequ
 func (u *userService) UpdateUserProfile(ctx context.Context, param domain.UserProfile, userId int, advertisementCategory []int, bankList []int) (err error) {
 
 	mobileAppUser := entities.MobileAppUser{
-		Name:               	param.Name,
-		Email:              	param.Email,
-		HashPassword:       	sha256.GetHashString(param.Password),
-		DOB:                	param.DOB,
-		Gender:             	param.Gender,
-		EmployeeStatus:     	param.JobStatus,
-		Status:             	1,
-		Address:            	param.Address,
-		CivilStatus:        	param.CivilStatus,
-		JobCompanyName:     	param.JobDetails.Name,
-		JobCompanyLocation: 	param.JobDetails.Address,
-		Kids:               	param.Kids,
+		Name:                   param.Name,
+		Email:                  param.Email,
+		HashPassword:           sha256.GetHashString(param.Password),
+		DOB:                    param.DOB,
+		Gender:                 param.Gender,
+		EmployeeStatus:         param.JobStatus,
+		Status:                 1,
+		Address:                param.Address,
+		CivilStatus:            param.CivilStatus,
+		JobCompanyName:         param.JobDetails.Name,
+		JobCompanyLocation:     param.JobDetails.Address,
+		Kids:                   param.Kids,
 		LoginStatus:            param.Configuration.LoginStatus,
 		PushNotificationStatus: param.Configuration.PushNotificationStatus,
 		SoundStatus:            param.Configuration.SoundStatus,
@@ -93,7 +95,7 @@ func (u *userService) UpdateUserProfile(ctx context.Context, param domain.UserPr
 
 	//userAdvertisement :=  entities.UserAdvertisementCategories{}
 
-	err = u.RepoContainer.MobileUserRepo.UpdateUserProfile(ctx, mobileAppUser, mobileUserConfiguration, advertisementCategory, bankList,userId)
+	err = u.RepoContainer.MobileUserRepo.UpdateUserProfile(ctx, mobileAppUser, mobileUserConfiguration, advertisementCategory, bankList, userId)
 	return
 }
 
@@ -107,6 +109,7 @@ func (u *userService) GenerateToken(ctx context.Context, param domain.LoginReque
 	mobileAppUser, err = u.RepoContainer.MobileUserRepo.GetMobileUserByEmail(ctx, param.Email)
 
 	if err != nil {
+		log.Error(log_traceable.GetMessage(ctx, "Get mobile user by E-mail, Error : "+err.Error()))
 		return
 	}
 
@@ -240,21 +243,21 @@ func (u *userService) GetUserProfile(ctx context.Context, userId int) (resp doma
 	resp.Kids = userProfile.Kids
 	resp.Configuration.LoginStatus = userProfile.LoginStatus
 	resp.Configuration.PushNotificationStatus = userProfile.PushNotificationStatus
-	resp.Configuration.SoundStatus =  userProfile.SoundStatus
+	resp.Configuration.SoundStatus = userProfile.SoundStatus
 	resp.Configuration.LocationServiceStatus = userProfile.LocationServiceStatus
 	resp.Configuration.AnyStatus = userProfile.AnyStatus
-	resp.UserAdvertisementsCategories   = userProfile.UserAdvertisementCategories
+	resp.UserAdvertisementsCategories = userProfile.UserAdvertisementCategories
 	resp.UserBanks = userProfile.UserBankList
-	
-	return resp,err
+
+	return resp, err
 }
 
 func (u *userService) TrackUserLocation(ctx context.Context, param domain.TrackUserLocation) (err error) {
-    log.Info(param)
+	log.Info(param)
 	location := entities.UserLocationChanges{
 		UserId: param.UserId,
-		Lat: param.Latitude,
-		Lon: param.Longitude,
+		Lat:    param.Latitude,
+		Lon:    param.Longitude,
 		// Date:
 	}
 	err = u.RepoContainer.MobileUserRepo.TrackUserLocation(ctx, location)
