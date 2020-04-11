@@ -3,10 +3,12 @@ package decoder
 import (
 	"context"
 	"encoding/json"
+	"github.com/gorilla/mux"
 	"github.com/udayangaac/mobile-api/internal/domain"
 	"github.com/udayangaac/mobile-api/internal/entities"
 	domain_errors "github.com/udayangaac/mobile-api/internal/errors_custom"
 	"net/http"
+	"strconv"
 )
 
 func SignUpDecoder(ctx context.Context, r *http.Request) (interface{}, error) {
@@ -42,7 +44,7 @@ func PullNotificationDecoder(ctx context.Context, r *http.Request) (interface{},
 	if err != nil {
 		return nil, domain_errors.ErrBadRequest
 	}
-	return  pullNotificationRequestParam, nil
+	return pullNotificationRequestParam, nil
 }
 
 func PushNotificationDecoder(ctx context.Context, r *http.Request) (interface{}, error) {
@@ -51,7 +53,7 @@ func PushNotificationDecoder(ctx context.Context, r *http.Request) (interface{},
 	if err != nil {
 		return nil, domain_errors.ErrBadRequest
 	}
-	return  pushNotificationRequestParam, nil
+	return pushNotificationRequestParam, nil
 }
 
 func UserProfileDecoder(ctx context.Context, r *http.Request) (interface{}, error) {
@@ -60,25 +62,30 @@ func UserProfileDecoder(ctx context.Context, r *http.Request) (interface{}, erro
 	if err != nil {
 		return nil, domain_errors.ErrBadRequest
 	}
-	return  userProfile, nil
+	return userProfile, nil
 }
 
 func NotificationTypeDecoder(ctx context.Context, r *http.Request) (interface{}, error) {
 	notificationType := domain.NotificationType{}
+
 	err := json.NewDecoder(r.Body).Decode(&notificationType)
 	if err != nil {
 		return nil, domain_errors.ErrBadRequest
 	}
-	return  notificationType, nil
+	return notificationType, nil
 }
 
 func BankListDecoder(ctx context.Context, r *http.Request) (interface{}, error) {
+	var err error
 	bankList := entities.UserParam{}
-	err := json.NewDecoder(r.Body).Decode(&bankList)
+	pathVariables := mux.Vars(r)
+	userIdStr := pathVariables["userId"]
+	bankList.UserId, err = strconv.Atoi(userIdStr)
+	//err := json.NewDecoder(r.Body).Decode(&bankList)
 	if err != nil {
 		return nil, domain_errors.ErrBadRequest
 	}
-	return  bankList, nil
+	return bankList, nil
 }
 
 func ProfilePictureDecoder(ctx context.Context, r *http.Request) (interface{}, error) {
@@ -87,7 +94,7 @@ func ProfilePictureDecoder(ctx context.Context, r *http.Request) (interface{}, e
 	if err != nil {
 		return nil, domain_errors.ErrBadRequest
 	}
-	return  profilePictureRequestParam, nil
+	return profilePictureRequestParam, nil
 
 }
 
@@ -97,7 +104,7 @@ func LocationStatusDecoder(ctx context.Context, r *http.Request) (interface{}, e
 	if err != nil {
 		return nil, domain_errors.ErrBadRequest
 	}
-	return  locationRequestParam, nil
+	return locationRequestParam, nil
 }
 
 func PushNotificationStatusDecoder(ctx context.Context, r *http.Request) (interface{}, error) {
@@ -106,7 +113,7 @@ func PushNotificationStatusDecoder(ctx context.Context, r *http.Request) (interf
 	if err != nil {
 		return nil, domain_errors.ErrBadRequest
 	}
-	return  pushRequestParam, nil
+	return pushRequestParam, nil
 }
 
 func LoginStatusDecoder(ctx context.Context, r *http.Request) (interface{}, error) {
@@ -115,7 +122,7 @@ func LoginStatusDecoder(ctx context.Context, r *http.Request) (interface{}, erro
 	if err != nil {
 		return nil, domain_errors.ErrBadRequest
 	}
-	return  loginStatusRequestParam, nil
+	return loginStatusRequestParam, nil
 }
 
 func SoundStatusDecoder(ctx context.Context, r *http.Request) (interface{}, error) {
@@ -124,7 +131,7 @@ func SoundStatusDecoder(ctx context.Context, r *http.Request) (interface{}, erro
 	if err != nil {
 		return nil, domain_errors.ErrBadRequest
 	}
-	return soundRequestParam , nil
+	return soundRequestParam, nil
 }
 func TrackUserDecoder(ctx context.Context, r *http.Request) (interface{}, error) {
 	userLocation := domain.TrackUserLocation{}
@@ -132,5 +139,5 @@ func TrackUserDecoder(ctx context.Context, r *http.Request) (interface{}, error)
 	if err != nil {
 		return nil, domain_errors.ErrBadRequest
 	}
-	return  userLocation, nil
+	return userLocation, nil
 }
