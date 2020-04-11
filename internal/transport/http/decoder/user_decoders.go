@@ -66,9 +66,12 @@ func UserProfileDecoder(ctx context.Context, r *http.Request) (interface{}, erro
 }
 
 func NotificationTypeDecoder(ctx context.Context, r *http.Request) (interface{}, error) {
-	notificationType := domain.NotificationType{}
-
-	err := json.NewDecoder(r.Body).Decode(&notificationType)
+	var err error
+	notificationType := entities.UserParam{}
+	pathVariables := mux.Vars(r)
+	userIdStr := pathVariables["userId"]
+	notificationType.UserId, err = strconv.Atoi(userIdStr)
+	// err := json.NewDecoder(r.Body).Decode(&notificationType)
 	if err != nil {
 		return nil, domain_errors.ErrBadRequest
 	}

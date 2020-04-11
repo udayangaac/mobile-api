@@ -121,12 +121,12 @@ func (ws *WebService) Init() {
 			encoder.MainEncoder,
 			serverOpts...)).Methods(http.MethodPost)
 
-	authSubRouter.Handle("/notification-type",
+	authSubRouter.Handle("/notification-type/user/{userId}",
 		transportHttp.NewServer(
 			endpoint.NotificationTypeEndpoints(ws.Services),
 			decoder.NotificationTypeDecoder,
 			encoder.MainEncoder,
-			serverOpts...)).Methods(http.MethodPost)
+			serverOpts...)).Methods(http.MethodGet)
 
 	authSubRouter.Handle("/bank-list/user/{userId}",
 		transportHttp.NewServer(
