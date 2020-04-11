@@ -81,7 +81,7 @@ func BankListDecoder(ctx context.Context, r *http.Request) (interface{}, error) 
 	pathVariables := mux.Vars(r)
 	userIdStr := pathVariables["userId"]
 	bankList.UserId, err = strconv.Atoi(userIdStr)
-	//err := json.NewDecoder(r.Body).Decode(&bankList)
+	// err := json.NewDecoder(r.Body).Decode(&bankList)
 	if err != nil {
 		return nil, domain_errors.ErrBadRequest
 	}
