@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"github.com/udayangaac/mobile-api/internal/domain"
+	"github.com/udayangaac/mobile-api/internal/entities"
 	domain_errors "github.com/udayangaac/mobile-api/internal/errors_custom"
 	"net/http"
 )
@@ -72,7 +73,7 @@ func NotificationTypeDecoder(ctx context.Context, r *http.Request) (interface{},
 }
 
 func BankListDecoder(ctx context.Context, r *http.Request) (interface{}, error) {
-	bankList := domain.BankList{}
+	bankList := entities.UserParam{}
 	err := json.NewDecoder(r.Body).Decode(&bankList)
 	if err != nil {
 		return nil, domain_errors.ErrBadRequest
