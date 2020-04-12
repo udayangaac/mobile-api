@@ -196,7 +196,7 @@ func (m mobileAppUserMySqlRepo) UpdateUserProfile(ctx context.Context, user enti
 		userUpdate["kids"] = user.Kids
 	}
 	if user.MobileUserConfigurations.LoginStatus != 0 {
-		userUpdate["login_status"] = user.Kids
+		userUpdate["login_status"] = user.LoginStatus
 	}
 	if user.MobileUserConfigurations.PushNotificationStatus != 0 {
 		userUpdate["push_notification_status"] = user.MobileUserConfigurations.PushNotificationStatus

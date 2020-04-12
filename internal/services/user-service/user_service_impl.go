@@ -235,11 +235,11 @@ func (u *userService) GetUserProfile(ctx context.Context, userId int) (resp doma
 	resp.Email = userProfile.Email
 	resp.DOB = userProfile.DOB
 	resp.Gender = userProfile.Gender
-	resp.EmployeeStatus = userProfile.EmployeeStatus
 	resp.Address = userProfile.Address
 	resp.CivilStatus = userProfile.CivilStatus
-	resp.JobCompanyName = userProfile.JobCompanyName
-	resp.JobCompanyLocation = userProfile.JobCompanyLocation
+	resp.EmployeeStatus = userProfile.EmployeeStatus
+	resp.JobDetails.JobCompanyName = userProfile.JobCompanyName
+	resp.JobDetails.JobCompanyLocation = userProfile.JobCompanyLocation
 	resp.Kids = userProfile.Kids
 	resp.Configuration.LoginStatus = userProfile.LoginStatus
 	resp.Configuration.PushNotificationStatus = userProfile.PushNotificationStatus

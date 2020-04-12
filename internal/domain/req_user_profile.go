@@ -9,7 +9,7 @@ type UserProfile struct {
 	Address    string `json:"address"`
 	DOB        string `json:"dob"`
 	Gender     string `json:"gender"`
-	JobStatus  int16  `json:"job_status"`
+	JobStatus  int16  `json:"employee_status"`
 	JobDetails struct {
 		Name    string `json:"name"`
 		Address string `json:"address"`
