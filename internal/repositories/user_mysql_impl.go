@@ -177,13 +177,13 @@ func (m mobileAppUserMySqlRepo) UpdateUserProfile(ctx context.Context, user enti
 	if user.Gender != "" {
 		userUpdate["gender"] = user.Gender
 	}
-	if user.EmployeeStatus != 0 {
+	if user.EmployeeStatus == 0 || user.EmployeeStatus == 1 {
 		userUpdate["employee_status"] = user.EmployeeStatus
 	}
 	if user.Address != "" {
 		userUpdate["address"] = user.Address
 	}
-	if user.CivilStatus != 0 {
+	if user.CivilStatus == 0 || user.CivilStatus == 1 {
 		userUpdate["civil_status"] = user.CivilStatus
 	}
 	if user.JobCompanyName != "" {
@@ -192,27 +192,26 @@ func (m mobileAppUserMySqlRepo) UpdateUserProfile(ctx context.Context, user enti
 	if user.JobCompanyLocation != "" {
 		userUpdate["job_company_location"] = user.JobCompanyLocation
 	}
-	if user.Kids != 0 {
+	if user.Kids >= 0 {
 		userUpdate["kids"] = user.Kids
 	}
-	if user.MobileUserConfigurations.LoginStatus != 0 {
+	if user.MobileUserConfigurations.LoginStatus == 0 || user.MobileUserConfigurations.LoginStatus == 1 {
 		userUpdate["login_status"] = user.LoginStatus
 	}
-	if user.MobileUserConfigurations.PushNotificationStatus != 0 {
+	if user.MobileUserConfigurations.PushNotificationStatus == 0 || user.MobileUserConfigurations.PushNotificationStatus == 1{
 		userUpdate["push_notification_status"] = user.MobileUserConfigurations.PushNotificationStatus
 	}
-	if user.MobileUserConfigurations.SoundStatus != 0 {
+	if user.MobileUserConfigurations.SoundStatus == 0 || user.MobileUserConfigurations.SoundStatus == 1 {
 		userUpdate["sound_status"] = user.MobileUserConfigurations.SoundStatus
 	}
-	if user.MobileUserConfigurations.LocationServiceStatus != 0 {
+	if user.MobileUserConfigurations.LocationServiceStatus == 0 || user.MobileUserConfigurations.LocationServiceStatus == 1{
 		userUpdate["location_service_status"] = user.MobileUserConfigurations.LocationServiceStatus
 	}
-	if user.MobileUserConfigurations.LocationServiceStatus != 0 {
-		userUpdate["location_service_status"] = user.MobileUserConfigurations.LocationServiceStatus
-	}
-	if user.MobileUserConfigurations.AnyStatus != 0 {
+	if user.MobileUserConfigurations.AnyStatus == 0  || user.MobileUserConfigurations.AnyStatus == 1  {
 		userUpdate["any_status"] = user.MobileUserConfigurations.AnyStatus
 	}
+
+	log.Info(userUpdate)
 
 	// err = m.DB.Model(&user).Where("id = ?", userId).Updates(map[string]interface{}{"name": user.Name, "email": user.Email, "hash_password": user.HashPassword, "dob": user.DOB, "gender": user.Gender, "employee_status": user.EmployeeStatus, "address": user.Address, "civil_status": user.CivilStatus, "job_company_name": user.JobCompanyName, "job_company_location": user.JobCompanyLocation, "kids": user.Kids, "login_status": user.MobileUserConfigurations.LoginStatus, "push_notification_status": user.MobileUserConfigurations.PushNotificationStatus, "sound_status": user.MobileUserConfigurations.SoundStatus, "location_service_status": user.MobileUserConfigurations.LocationServiceStatus, "any_status": user.MobileUserConfigurations.AnyStatus }).Error
 	err = m.DB.Model(&user).Where("id = ?", userId).Updates(userUpdate).Error
