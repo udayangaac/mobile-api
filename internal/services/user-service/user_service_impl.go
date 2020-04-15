@@ -258,7 +258,6 @@ func (u *userService) TrackUserLocation(ctx context.Context, param domain.TrackU
 		UserId: param.UserId,
 		Lat:    param.Latitude,
 		Lon:    param.Longitude,
-		// Date:
 	}
 	err = u.RepoContainer.MobileUserRepo.TrackUserLocation(ctx, location)
 	return

@@ -135,24 +135,24 @@ func (m mobileAppUserMySqlRepo) GetUserProfile(ctx context.Context, userId int) 
 	if err != nil {
 		return userProfile, err
 	}
-	rows, err := m.DB.Raw("SELECT ac.id, ac.category_name FROM advertisements_categories ac INNER JOIN user_advertisement_categories uac on ac.id = uac.advertisement_cat_id WHERE uac.deleted_at is null and  uac.user_id = ?", userId).Rows()
+	rows, err := m.DB.Raw("SELECT ac.id, ac.category_name, ac.image FROM advertisements_categories ac INNER JOIN user_advertisement_categories uac on ac.id = uac.advertisement_cat_id WHERE uac.deleted_at is null and  uac.user_id = ?", userId).Rows()
 	if err != nil {
 		log.Info(err.Error())
 		return userProfile, err
 	}
 	for rows.Next() {
-		nt := entities.AdvertisementsCategories{}
-		rows.Scan(&nt.ID, &nt.CategoryName)
+		nt := entities.AdvertisementsList{}
+		rows.Scan(&nt.Id, &nt.CategoryName, &nt.Image)
 		userProfile.UserAdvertisementCategories = append(userProfile.UserAdvertisementCategories, nt)
 	}
-	bankListRows, errbank := m.DB.Raw("SELECT mub.bank_id, b.name FROM banks b INNER JOIN mobile_user_banks mub on b.id = mub.bank_id WHERE mub.deleted_at is null and  mub.mobile_user_id = ?", userId).Rows()
+	bankListRows, errbank := m.DB.Raw("SELECT mub.bank_id, b.name, b.image FROM banks b INNER JOIN mobile_user_banks mub on b.id = mub.bank_id WHERE mub.deleted_at is null and  mub.mobile_user_id = ?", userId).Rows()
 	if errbank != nil {
 		log.Info(errbank.Error())
 		return userProfile, errbank
 	}
 	for bankListRows.Next() {
-		mb := entities.Banks{}
-		bankListRows.Scan(&mb.ID, &mb.Name)
+		mb := entities.BanksList{}
+		bankListRows.Scan(&mb.Id, &mb.Name, &mb.Image)
 		userProfile.UserBankList = append(userProfile.UserBankList, mb)
 	}
 

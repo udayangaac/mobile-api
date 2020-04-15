@@ -24,6 +24,6 @@ type UserProfileResponse struct {
 		LocationServiceStatus  int `json:"location_status"`
 		AnyStatus              int `json:"any_status"`
 	} `json:"configuration"`
-	UserAdvertisementsCategories []entities.AdvertisementsCategories `json:"advertisement_cat_id"`
-	UserBanks []entities.Banks `json:"bank_id_list"`
+	UserAdvertisementsCategories []entities.AdvertisementsList `json:"advertisement_cat_id"`
+	UserBanks []entities.BanksList `json:"bank_id_list"`
 }
