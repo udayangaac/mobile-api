@@ -5,3 +5,4 @@ jwt:
 metrics_port: 8002
 resource_path: "/home/jayan/GolandProjects/mobile-api/src/images"
 file_server_port: 8003
+cdn_path: "167.99.150.213:8003/file"

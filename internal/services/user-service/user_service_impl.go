@@ -3,6 +3,7 @@ package user_service
 import (
 	"context"
 	"errors"
+	"fmt"
 	log "github.com/sirupsen/logrus"
 	log_traceable "github.com/udayangaac/mobile-api/internal/lib/log-traceable"
 
@@ -216,7 +217,7 @@ func (u *userService) BankList(ctx context.Context, userId int) (resp interface{
 		bankList := domain.BankListResponse{}
 		bankList.Id = int(val.Id)
 		bankList.BankName = val.Name
-		bankList.Image = ":8003/file?name=" + val.Image
+		bankList.Image = fmt.Sprintf("%v?name=%v", config.ServerConf.CDNPath, val.Image)
 		bankLists = append(bankLists, bankList)
 	}
 

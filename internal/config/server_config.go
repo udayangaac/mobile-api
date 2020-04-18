@@ -16,6 +16,7 @@ type ServerConfig struct {
 	MetricsPort    int    `yaml:"metrics_port"`
 	ResourcePath   string `yaml:"resource_path"`
 	FileServerPort int    `yaml:"file_server_port"`
+	CDNPath        string `yaml:"cdn_path"`
 }
 
 type JWT struct {
