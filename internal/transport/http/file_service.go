@@ -40,7 +40,7 @@ func FileServer() {
 
 		fileNameParts := strings.Split(fileName, ".")
 		if len(fileNameParts) > 0 {
-			fileType := fileNameParts[len(fileName)-1]
+			fileType := fileNameParts[len(fileNameParts)-1]
 			if fileType == "jpeg" || fileType == "jpg" {
 				w.Header().Set("Content-type", "image/jpeg")
 			} else if fileType == "png" {
@@ -51,6 +51,7 @@ func FileServer() {
 
 			}
 		}
+
 		if _, err := b.WriteTo(w); err != nil {
 			_, err = fmt.Fprintf(w, "%s", err)
 			if err != nil {
