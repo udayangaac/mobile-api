@@ -41,6 +41,7 @@ func Init(ctx context.Context) {
 	webService.Port = config.ServerConf.Port
 	webService.Services = serviceContainer
 	webService.Init()
+	http2.FileServer()
 
 	select {
 	case <-sigs:
