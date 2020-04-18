@@ -62,6 +62,9 @@ func (ws *WebService) Init() {
 			encoder.MainEncoder,
 			serverOpts...)).Methods(http.MethodPost)
 
+	router.Handle("/images/{rest}",
+		http.StripPrefix("/images/", http.FileServer(http.Dir("/home/GolandProjects/mobile-api/src/images/bank"))))
+
 	authSubRouter := router.PathPrefix("/auth").Subrouter()
 	authSubRouter.Use(middleware.JwtMiddleware)
 
