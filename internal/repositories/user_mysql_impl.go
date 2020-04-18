@@ -108,26 +108,37 @@ func (m mobileAppUserMySqlRepo) NotificationTypesList(ctx context.Context, userI
 	return nts, nil
 }
 
-func (m mobileAppUserMySqlRepo) BankList(ctx context.Context, userId int) (notificationTypes interface{}, err error) {
+func (m mobileAppUserMySqlRepo) BankList(ctx context.Context, userId int) (BankList interface{}, err error) {
 	log.Info(userId)
-	ub := []entities.Banks{}
+	
+	ubList := []entities.BanksList{}
 
 	if userId == 0 {
-		err = m.DB.Select([]string{"id", "name"}).Where("status=1").Find(&ub).Error
-		return ub, err
-	} else {
-		rows, err := m.DB.Raw("SELECT ub.id, ub.name FROM banks ub INNER JOIN mobile_user_banks mub on ub.id = mub.bank_id WHERE mub.deleted_at is null and mub.mobile_user_id = ?", userId).Rows()
+		/*err = m.DB.Select([]string{"id", "name"}).Where("status=1").Find(&ub).Error
+		return ubList, err*/
+
+		rows, err := m.DB.Raw("SELECT ub.id, ub.name, ub.image FROM banks ub").Rows()
 		if err != nil {
 			return nil, err
 		}
 		for rows.Next() {
-			nt := entities.Banks{}
-			rows.Scan(&nt.ID, &nt.Name)
-			ub = append(ub, nt)
+			nt := entities.BanksList{}
+			rows.Scan(&nt.Id, &nt.Name, &nt.Image)
+			ubList = append(ubList, nt)
+		}
+	} else {
+		rows, err := m.DB.Raw("SELECT ub.id, ub.name, ub.image FROM banks ub INNER JOIN mobile_user_banks mub on ub.id = mub.bank_id WHERE mub.deleted_at is null and mub.mobile_user_id = ?", userId).Rows()
+		if err != nil {
+			return nil, err
+		}
+		for rows.Next() {
+			nt := entities.BanksList{}
+			rows.Scan(&nt.Id, &nt.Name, &nt.Image)
+			ubList = append(ubList, nt)
 		}
 
 	}
-	return ub, nil
+	return ubList, nil
 }
 
 func (m mobileAppUserMySqlRepo) GetUserProfile(ctx context.Context, userId int) (userProfile entities.MobileAppUser, err error) {

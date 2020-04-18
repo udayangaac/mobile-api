@@ -3,5 +3,5 @@ jwt:
   key: "1qaz2ws"
   duration: 1000
 metrics_port: 8002
-resource_path: "/home/GolandProjects/mobile-api/src/images"
+resource_path: "/home/jayan/GolandProjects/mobile-api/src/images"
 file_server_port: 8003
