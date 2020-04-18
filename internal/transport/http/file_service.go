@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"strings"
 )
 
 func FileServer() {
@@ -36,7 +37,20 @@ func FileServer() {
 			log.Println(err)
 		}
 		b := bytes.NewBuffer(streamPDFBytes)
-		w.Header().Set("Content-type", "application/pdf")
+
+		fileNameParts := strings.Split(fileName, ".")
+		if len(fileNameParts) > 0 {
+			fileType := fileNameParts[len(fileName)-1]
+			if fileType == "jpeg" || fileType == "jpg" {
+				w.Header().Set("Content-type", "image/jpeg")
+			} else if fileType == "png" {
+				w.Header().Set("Content-type", "image/png")
+			} else if fileType == "gif" {
+				w.Header().Set("Content-type", "image/gif")
+			} else {
+
+			}
+		}
 		if _, err := b.WriteTo(w); err != nil {
 			_, err = fmt.Fprintf(w, "%s", err)
 			if err != nil {
