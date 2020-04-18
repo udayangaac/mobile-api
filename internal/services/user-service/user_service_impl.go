@@ -216,7 +216,7 @@ func (u *userService) BankList(ctx context.Context, userId int) (resp interface{
 		bankList := domain.BankListResponse{}
 		bankList.Id = int(val.Id)
 		bankList.BankName = val.Name
-		bankList.Image = val.Image
+		bankList.Image = ":8003/file?name=" + val.Image
 		bankLists = append(bankLists, bankList)
 	}
 
