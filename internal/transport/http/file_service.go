@@ -31,7 +31,24 @@ func FileServer() {
 		}
 
 		fileName := files[0]
-		filePath := fmt.Sprintf("%v/%v", config.ServerConf.ResourcePath, fileName)
+		folders := strings.Split(fileName, "_")
+		folderPath := "/"
+
+		if len(folders) < 2 {
+			_, err := w.Write([]byte("Invalid request"))
+			if err != nil {
+				return
+			}
+			return
+		}
+
+		for i, v := range folders {
+			if i != len(folders)-1 {
+				folderPath = folderPath + fmt.Sprintf("%v/", v)
+			}
+		}
+
+		filePath := fmt.Sprintf("%v%v%v", config.ServerConf.ResourcePath, folderPath, fileName)
 		streamPDFBytes, err := ioutil.ReadFile(filePath)
 		if err != nil {
 			log.Println(err)
