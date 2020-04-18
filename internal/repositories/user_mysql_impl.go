@@ -88,22 +88,31 @@ func (m mobileAppUserMySqlRepo) SetLoginStatus(ctx context.Context, userId int, 
 
 func (m mobileAppUserMySqlRepo) NotificationTypesList(ctx context.Context, userId int) (notificationTypes interface{}, err error) {
 	log.Info(userId)
-	nts := []entities.AdvertisementsCategories{}
+	nts := []entities.AdvertisementsList{}
 
 	if userId == 0 {
-		err = m.DB.Select([]string{"id", "category_name"}).Where("status=1").Find(&nts).Error
-		return nts, err
-	} else {
-		rows, err := m.DB.Raw("SELECT ac.id, ac.category_name FROM advertisements_categories ac INNER JOIN user_advertisement_categories uac on ac.id = uac.advertisement_cat_id WHERE uac.user_id = ?", userId).Rows()
+		/*err = m.DB.Select([]string{"id", "category_name"}).Where("status=1").Find(&nts).Error
+		return nts, err*/
+		rows, err := m.DB.Raw("SELECT ac.id, ac.category_name, ac.image FROM advertisements_categories ac").Rows()
 		if err != nil {
 			return nil, err
 		}
 		for rows.Next() {
-			nt := entities.AdvertisementsCategories{}
-			rows.Scan(&nt.ID, &nt.CategoryName)
+			nt := entities.AdvertisementsList{}
+			rows.Scan(&nt.Id, &nt.CategoryName, &nt.Image)
 			nts = append(nts, nt)
 		}
 
+	} else {
+		rows, err := m.DB.Raw("SELECT ac.id, ac.category_name, ac.image FROM advertisements_categories ac INNER JOIN user_advertisement_categories uac on ac.id = uac.advertisement_cat_id WHERE uac.user_id = ?", userId).Rows()
+		if err != nil {
+			return nil, err
+		}
+		for rows.Next() {
+			nt := entities.AdvertisementsList{}
+			rows.Scan(&nt.Id, &nt.CategoryName, &nt.Image)
+			nts = append(nts, nt)
+		}
 	}
 	return nts, nil
 }

@@ -187,14 +187,16 @@ func (u *userService) NotificationTypes(ctx context.Context, userId int) (resp i
 	if err != nil {
 		return
 	}
-	categories, ok := notification.([]entities.AdvertisementsCategories)
+	categories, ok := notification.([]entities.AdvertisementsList)
+
 	if !ok {
 		return nil, errors.New("cannot cast []entities.UserAdvertisementCategories")
 	}
 	for _, val := range categories {
 		notificationType := domain.NotificationTypes{}
-		notificationType.Id = int(val.ID)
+		notificationType.Id = int(val.Id)
 		notificationType.CategoryName = val.CategoryName
+		notificationType.Image = val.Image
 		notificationTypes = append(notificationTypes, notificationType)
 	}
 
