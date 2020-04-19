@@ -143,8 +143,7 @@ func (m mobileAppUserMySqlRepo) BankList(ctx context.Context, userId int) (BankL
 		if err != nil {
 			return nil, err
 		}
-
-		selectedBankIds := make(map[int]interface{})
+		selectedBankIds := make(map[int]bool)
 		for rows.Next() {
 			id := 0
 			err := rows.Scan(&id)
