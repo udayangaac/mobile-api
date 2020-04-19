@@ -5,6 +5,7 @@ import (
 	"github.com/jinzhu/gorm"
 	log "github.com/sirupsen/logrus"
 	"github.com/udayangaac/mobile-api/internal/config"
+	"github.com/udayangaac/mobile-api/internal/domain"
 	"github.com/udayangaac/mobile-api/internal/entities"
 	"github.com/udayangaac/mobile-api/internal/errors_custom"
 	"github.com/udayangaac/mobile-api/internal/lib/orm"
@@ -121,29 +122,41 @@ func (m mobileAppUserMySqlRepo) NotificationTypesList(ctx context.Context, userI
 func (m mobileAppUserMySqlRepo) BankList(ctx context.Context, userId int) (BankList interface{}, err error) {
 	log.Info(userId)
 	
-	ubList := []entities.BanksList{}
+	ubList := []domain.BankListResponse{}
 
 	if userId == 0 {
 		/*err = m.DB.Select([]string{"id", "name"}).Where("status=1").Find(&ub).Error
 		return ubList, err*/
 
-		rows, err := m.DB.Raw("SELECT ub.id, ub.name, ub.image FROM banks ub").Rows()
+		rows, err := m.DB.Raw("SELECT ub.id, ub.name, ub.image,0 as is_selected  FROM banks ub").Rows()
 		if err != nil {
 			return nil, err
 		}
 		for rows.Next() {
-			nt := entities.BanksList{}
-			rows.Scan(&nt.Id, &nt.Name, &nt.Image)
+			nt := domain.BankListResponse{}
+			rows.Scan(&nt.Id, &nt.BankName, &nt.Image, &nt.IsSelected)
 			ubList = append(ubList, nt)
 		}
 	} else {
-		rows, err := m.DB.Raw("SELECT ub.id, ub.name, ub.image FROM banks ub INNER JOIN mobile_user_banks mub on ub.id = mub.bank_id WHERE mub.deleted_at is null and mub.mobile_user_id = ?", userId).Rows()
+		// get user selected bank list
+		rows, err := m.DB.Raw("SELECT mub.bank_id FROM mobile_user_banks mub WHERE mub.deleted_at is null and mub.mobile_user_id = ?", userId).Rows()
 		if err != nil {
 			return nil, err
 		}
 		for rows.Next() {
-			nt := entities.BanksList{}
-			rows.Scan(&nt.Id, &nt.Name, &nt.Image)
+			nt := domain.BankListResponse{}
+			rows.Scan(&nt.Id, &nt.BankName, &nt.Image)
+			ubList = append(ubList, nt)
+		}
+
+		//get all banks
+		bankrows, err := m.DB.Raw("SELECT ub.id, ub.name, ub.image,0 as is_selected FROM banks ub").Rows()
+		if err != nil {
+			return nil, err
+		}
+		for bankrows.Next() {
+			nt := domain.BankListResponse{}
+			rows.Scan(&nt.Id, &nt.BankName, &nt.Image, &nt.IsSelected)
 			ubList = append(ubList, nt)
 		}
 
