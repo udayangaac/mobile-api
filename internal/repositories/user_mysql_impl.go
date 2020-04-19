@@ -121,7 +121,7 @@ func (m mobileAppUserMySqlRepo) NotificationTypesList(ctx context.Context, userI
 
 func (m mobileAppUserMySqlRepo) BankList(ctx context.Context, userId int) (BankList interface{}, err error) {
 	log.Info(userId)
-	
+
 	ubList := []domain.BankListResponse{}
 
 	if userId == 0 {
@@ -143,20 +143,31 @@ func (m mobileAppUserMySqlRepo) BankList(ctx context.Context, userId int) (BankL
 		if err != nil {
 			return nil, err
 		}
+
+		selectedBankIds := make(map[int]interface{})
 		for rows.Next() {
-			nt := domain.BankListResponse{}
-			rows.Scan(&nt.Id, &nt.BankName, &nt.Image)
-			ubList = append(ubList, nt)
+			id := 0
+			err := rows.Scan(&id)
+			if err != nil {
+				continue
+			}
+			selectedBankIds[id] = true
 		}
 
-		//get all banks
-		bankrows, err := m.DB.Raw("SELECT ub.id, ub.name, ub.image,0 as is_selected FROM banks ub").Rows()
+		//get all banksScanScan
+		bankrows, err := m.DB.Raw("SELECT ub.id, ub.name, ub.image FROM banks ub").Rows()
 		if err != nil {
 			return nil, err
 		}
 		for bankrows.Next() {
 			nt := domain.BankListResponse{}
-			rows.Scan(&nt.Id, &nt.BankName, &nt.Image, &nt.IsSelected)
+			err := rows.Scan(&nt.Id, &nt.BankName, &nt.Image)
+			if err != nil {
+				continue
+			}
+			if _, ok := selectedBankIds[nt.Id]; ok {
+				nt.IsSelected = 1
+			}
 			ubList = append(ubList, nt)
 		}
 
@@ -234,16 +245,16 @@ func (m mobileAppUserMySqlRepo) UpdateUserProfile(ctx context.Context, user enti
 	if user.MobileUserConfigurations.LoginStatus == 0 || user.MobileUserConfigurations.LoginStatus == 1 {
 		userUpdate["login_status"] = user.LoginStatus
 	}
-	if user.MobileUserConfigurations.PushNotificationStatus == 0 || user.MobileUserConfigurations.PushNotificationStatus == 1{
+	if user.MobileUserConfigurations.PushNotificationStatus == 0 || user.MobileUserConfigurations.PushNotificationStatus == 1 {
 		userUpdate["push_notification_status"] = user.MobileUserConfigurations.PushNotificationStatus
 	}
 	if user.MobileUserConfigurations.SoundStatus == 0 || user.MobileUserConfigurations.SoundStatus == 1 {
 		userUpdate["sound_status"] = user.MobileUserConfigurations.SoundStatus
 	}
-	if user.MobileUserConfigurations.LocationServiceStatus == 0 || user.MobileUserConfigurations.LocationServiceStatus == 1{
+	if user.MobileUserConfigurations.LocationServiceStatus == 0 || user.MobileUserConfigurations.LocationServiceStatus == 1 {
 		userUpdate["location_service_status"] = user.MobileUserConfigurations.LocationServiceStatus
 	}
-	if user.MobileUserConfigurations.AnyStatus == 0  || user.MobileUserConfigurations.AnyStatus == 1  {
+	if user.MobileUserConfigurations.AnyStatus == 0 || user.MobileUserConfigurations.AnyStatus == 1 {
 		userUpdate["any_status"] = user.MobileUserConfigurations.AnyStatus
 	}
 
