@@ -196,7 +196,7 @@ func (u *userService) NotificationTypes(ctx context.Context, userId int) (resp i
 		notificationType := domain.NotificationTypes{}
 		notificationType.Id = int(val.Id)
 		notificationType.CategoryName = val.CategoryName
-		notificationType.Image = val.Image
+		notificationType.Image = fmt.Sprintf("%v?name=%v", config.ServerConf.CDNPath, "notification_"+val.Image)
 		notificationTypes = append(notificationTypes, notificationType)
 	}
 
@@ -219,7 +219,7 @@ func (u *userService) BankList(ctx context.Context, userId int) (resp interface{
 		bankList := domain.BankListResponse{}
 		bankList.Id = int(val.Id)
 		bankList.BankName = val.Name
-		bankList.Image = fmt.Sprintf("%v?name=%v", config.ServerConf.CDNPath, val.Image)
+		bankList.Image = fmt.Sprintf("%v?name=%v", config.ServerConf.CDNPath, "bank_"+val.Image)
 		bankLists = append(bankLists, bankList)
 	}
 
