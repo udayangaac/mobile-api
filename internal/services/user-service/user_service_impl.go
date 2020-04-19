@@ -203,34 +203,43 @@ func (u *userService) NotificationTypes(ctx context.Context, userId int) (resp i
 	return notificationTypes, nil
 }
 
-func (u *userService) BankList(ctx context.Context, userId int) (resp interface{}, err error) {
+func (u *userService) BankList(ctx context.Context, userId int) (resp domain.UserBankListResponse, err error) {
 	var bank interface{}
+	isBankSelected := 0
 	bank, err = u.RepoContainer.MobileUserRepo.BankList(ctx, userId)
 
 	bankLists := []domain.BankListResponse{}
+	//userBankList := []domain.UserBankListResponse{}
+
 	if err != nil {
 		return
 	}
 	bankListEntity, ok := bank.([]entities.BanksList)
 	if !ok {
-		return nil, errors.New("cannot cast []entities.UserBankList")
+		return domain.UserBankListResponse{}, errors.New("cannot cast []entities.UserBankList")
 	}
 	for _, val := range bankListEntity {
 		bankList := domain.BankListResponse{}
+		isBankSelected = 1
 		bankList.Id = int(val.Id)
 		bankList.BankName = val.Name
 		bankList.Image = fmt.Sprintf("%v?name=%v", config.ServerConf.CDNPath, "bank_"+val.Image)
 		bankLists = append(bankLists, bankList)
 	}
-
-	return bankLists, nil
+	if userId == 0{
+		isBankSelected = 0
+	}
+	resp.IsBankSelected = isBankSelected
+	resp.BankList = bankLists
+	return resp, nil
 }
 
 func (u *userService) GetUserProfile(ctx context.Context, userId int) (resp domain.UserProfileResponse, err error) {
 
 	userProfile := entities.MobileAppUser{}
+	//isBank := 0
 
-	userProfile, err = u.RepoContainer.MobileUserRepo.GetUserProfile(ctx, userId)
+	userProfile, _, err = u.RepoContainer.MobileUserRepo.GetUserProfile(ctx, userId)
 
 	if err != nil {
 		return
@@ -252,6 +261,7 @@ func (u *userService) GetUserProfile(ctx context.Context, userId int) (resp doma
 	resp.Configuration.LocationServiceStatus = userProfile.LocationServiceStatus
 	resp.Configuration.AnyStatus = userProfile.AnyStatus
 	resp.UserAdvertisementsCategories = userProfile.UserAdvertisementCategories
+	// resp.IsbankSelected = isBank
 	resp.UserBanks = userProfile.UserBankList
 
 	return resp, err

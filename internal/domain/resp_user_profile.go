@@ -25,5 +25,6 @@ type UserProfileResponse struct {
 		AnyStatus              int `json:"any_status"`
 	} `json:"configuration"`
 	UserAdvertisementsCategories []entities.AdvertisementsList `json:"advertisement_cat_id"`
+	//IsbankSelected int   `json:"bank_selected"`
 	UserBanks []entities.BanksList `json:"bank_id_list"`
 }

@@ -151,17 +151,16 @@ func (m mobileAppUserMySqlRepo) BankList(ctx context.Context, userId int) (BankL
 	return ubList, nil
 }
 
-func (m mobileAppUserMySqlRepo) GetUserProfile(ctx context.Context, userId int) (userProfile entities.MobileAppUser, err error) {
-	//fmt.Sprintf("%v?name=%v", config.ServerConf.CDNPath, val.Image)
+func (m mobileAppUserMySqlRepo) GetUserProfile(ctx context.Context, userId int) (userProfile entities.MobileAppUser, isBank int, err error) {
 	//imagePath :=   config.ServerConf.CDNPath
 	err = m.DB.Where("id=?", userId).First(&userProfile).Error
 	if err != nil {
-		return userProfile, err
+		return userProfile, 0, err
 	}
 	rows, err := m.DB.Raw("SELECT ac.id, ac.category_name, concat("+"'"+config.ServerConf.CDNPath+"?name=notification_"+"'"+", ac.image) FROM advertisements_categories ac INNER JOIN user_advertisement_categories uac on ac.id = uac.advertisement_cat_id WHERE uac.deleted_at is null and  uac.user_id = ?", userId).Rows()
 	if err != nil {
 		log.Info(err.Error())
-		return userProfile, err
+		return userProfile, 0, err
 	}
 	for rows.Next() {
 		nt := entities.AdvertisementsList{}
@@ -171,9 +170,10 @@ func (m mobileAppUserMySqlRepo) GetUserProfile(ctx context.Context, userId int) 
 	bankListRows, errbank := m.DB.Raw("SELECT mub.bank_id, b.name, concat("+"'"+config.ServerConf.CDNPath+"?name=bank_"+"'"+", b.image) as image  FROM banks b INNER JOIN mobile_user_banks mub on b.id = mub.bank_id WHERE mub.deleted_at is null and  mub.mobile_user_id = ?", userId).Rows()
 	if errbank != nil {
 		log.Info(errbank.Error())
-		return userProfile, errbank
+		return userProfile, 0, errbank
 	}
 	for bankListRows.Next() {
+		isBank = 1
 		mb := entities.BanksList{}
 		bankListRows.Scan(&mb.Id, &mb.Name, &mb.Image)
 		userProfile.UserBankList = append(userProfile.UserBankList, mb)

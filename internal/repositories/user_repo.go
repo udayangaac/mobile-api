@@ -18,7 +18,7 @@ type MobileAppUserRepo interface {
 	SetLoginStatus(ctx context.Context, userId int, status int) (err error)
 	NotificationTypesList(ctx context.Context, userId int) (notificationType interface{}, err error)
 	BankList(ctx context.Context, userId int) (banks interface{}, err error)
-	GetUserProfile(ctx context.Context, userId int) (userProfile entities.MobileAppUser, err error)
+	GetUserProfile(ctx context.Context, userId int) (userProfile entities.MobileAppUser, bankSelected int, err error)
 	UpdateUserProfile(ctx context.Context, mobileUser entities.MobileAppUser, mobileUserConfiguration entities.MobileUserConfiguration, userAdvertisementCategories []int, userBankList []int, userId int) (err error)
     TrackUserLocation(ctx context.Context, location entities.UserLocationChanges) (err error)
 }

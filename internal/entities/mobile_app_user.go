@@ -25,5 +25,6 @@ type MobileAppUser struct {
 	AnyStatus                   int
 	MobileUserConfigurations    MobileUserConfiguration
 	UserAdvertisementCategories []AdvertisementsList
+	// UserBankSelect              int
 	UserBankList                []BanksList
 }

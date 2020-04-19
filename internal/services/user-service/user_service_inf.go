@@ -24,7 +24,7 @@ type UserService interface {
 	NotificationTypes(ctx context.Context, userId int) (resp interface{}, err error)
 
 	// Bank List
-	BankList(ctx context.Context, userId int) (resp interface{}, err error)
+	BankList(ctx context.Context, userId int) (resp domain.UserBankListResponse, err error)
 
 	// Get Mobile user
 	GetUserProfile(ctx context.Context, userId int) (resp domain.UserProfileResponse, err error)
