@@ -139,8 +139,8 @@ func (m mobileAppUserMySqlRepo) BankList(ctx context.Context, userId int) (BankL
 		}
 	} else {
 		// get user selected bank list
-		rows, err := m.DB.Raw("SELECT mub.bank_id FROM mobile_user_banks mub WHERE mub.deleted_at is null and mub.mobile_user_id = ?", userId).Rows()
-		if err != nil {
+		rows, err := m.DB.Raw("SELECT mub.bank_id FROM mobile_user_banks AS mub WHERE mub.mobile_user_id = ?", userId).Rows()
+		if err != nil && err != gorm.ErrRecordNotFound {
 			return nil, err
 		}
 		selectedBankIds := make(map[int]bool)
