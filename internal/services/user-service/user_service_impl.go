@@ -197,6 +197,7 @@ func (u *userService) NotificationTypes(ctx context.Context, userId int) (resp i
 		notificationType.Id = int(val.Id)
 		notificationType.CategoryName = val.CategoryName
 		notificationType.Image = fmt.Sprintf("%v?name=%v", config.ServerConf.CDNPath, "notification_"+val.Image)
+		notificationType.IsSelected = val.IsSelected
 		notificationTypes = append(notificationTypes, notificationType)
 	}
 

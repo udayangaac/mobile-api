@@ -95,24 +95,24 @@ func (m mobileAppUserMySqlRepo) NotificationTypesList(ctx context.Context, userI
 	if userId == 0 {
 		/*err = m.DB.Select([]string{"id", "category_name"}).Where("status=1").Find(&nts).Error
 		return nts, err*/
-		rows, err := m.DB.Raw("SELECT ac.id, ac.category_name, ac.image FROM advertisements_categories ac").Rows()
+		rows, err := m.DB.Raw("SELECT ac.id, ac.category_name, ac.image, 0 as is_selected FROM advertisements_categories ac").Rows()
 		if err != nil {
 			return nil, err
 		}
 		for rows.Next() {
 			nt := entities.AdvertisementsList{}
-			rows.Scan(&nt.Id, &nt.CategoryName, &nt.Image)
+			rows.Scan(&nt.Id, &nt.CategoryName, &nt.Image, &nt.IsSelected)
 			nts = append(nts, nt)
 		}
 
 	} else {
-		rows, err := m.DB.Raw("SELECT ac.id, ac.category_name, ac.image FROM advertisements_categories ac INNER JOIN user_advertisement_categories uac on ac.id = uac.advertisement_cat_id WHERE uac.user_id = ?", userId).Rows()
+		rows, err := m.DB.Raw("select ac.id, ac.category_name, ac.image, if (uac.advertisement_cat_id is null, 0 , 1) as is_selected from advertisements_categories ac left join user_advertisement_categories uac on uac.advertisement_cat_id = ac.id and user_id = ? where uac.deleted_at is null order by ac.id ", userId).Rows()
 		if err != nil {
 			return nil, err
 		}
 		for rows.Next() {
 			nt := entities.AdvertisementsList{}
-			rows.Scan(&nt.Id, &nt.CategoryName, &nt.Image)
+			rows.Scan(&nt.Id, &nt.CategoryName, &nt.Image, &nt.IsSelected)
 			nts = append(nts, nt)
 		}
 	}
@@ -125,10 +125,8 @@ func (m mobileAppUserMySqlRepo) BankList(ctx context.Context, userId int) (BankL
 	ubList := []domain.BankListResponse{}
 
 	if userId == 0 {
-		/*err = m.DB.Select([]string{"id", "name"}).Where("status=1").Find(&ub).Error
-		return ubList, err*/
 
-		rows, err := m.DB.Raw("SELECT ub.id, ub.name, ub.image,0 as is_selected  FROM banks ub").Rows()
+		rows, err := m.DB.Raw("SELECT ub.id, ub.name, ub.image,0 as is_selected FROM banks ub").Rows()
 		if err != nil {
 			return nil, err
 		}
@@ -138,38 +136,18 @@ func (m mobileAppUserMySqlRepo) BankList(ctx context.Context, userId int) (BankL
 			ubList = append(ubList, nt)
 		}
 	} else {
-		// get user selected bank list
-		rows, err := m.DB.Raw("SELECT mub.bank_id FROM mobile_user_banks AS mub WHERE mub.mobile_user_id = ?", userId).Rows()
-		if err != nil && err != gorm.ErrRecordNotFound {
-			return nil, err
-		}
-		selectedBankIds := make(map[int]bool)
-		for rows.Next() {
-			id := 0
-			err := rows.Scan(&id)
-			if err != nil {
-				continue
-			}
-			selectedBankIds[id] = true
-		}
-
 		//get all banksScanScan
-		bankrows, err := m.DB.Raw("SELECT ub.id, ub.name, ub.image FROM banks ub").Rows()
+		rows, err := m.DB.Raw("SELECT ub.id, ub.name, ub.image, if (mub.bank_id is null, 0 , 1) as is_selected FROM banks ub left join mobile_user_banks mub on ub.id = mub.bank_id and mub.mobile_user_id = ? where mub.deleted_at is null order by id", userId).Rows()
+
 		if err != nil {
 			return nil, err
 		}
-		for bankrows.Next() {
+		for rows.Next() {
 			nt := domain.BankListResponse{}
-			err := rows.Scan(&nt.Id, &nt.BankName, &nt.Image)
-			if err != nil {
-				continue
-			}
-			if _, ok := selectedBankIds[nt.Id]; ok {
-				nt.IsSelected = 1
-			}
+			rows.Scan(&nt.Id, &nt.BankName, &nt.Image, &nt.IsSelected)
 			ubList = append(ubList, nt)
 		}
-
+		log.Info(ubList)
 	}
 	return ubList, nil
 }

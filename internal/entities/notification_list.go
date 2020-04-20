@@ -1,7 +1,8 @@
 package entities
 
 type AdvertisementsList struct {
-	Id           int `json:"id"`
+	Id           int    `json:"id"`
 	CategoryName string `json:"category_name"`
 	Image        string `json:"image"`
+	IsSelected   int    `json:":is_selected"`
 }
