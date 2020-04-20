@@ -62,6 +62,20 @@ func (ws *WebService) Init() {
 			encoder.MainEncoder,
 			serverOpts...)).Methods(http.MethodPost)
 
+	router.Handle("/bank-list/user/{userId}",
+		transportHttp.NewServer(
+			endpoint.BankListEndpoints(ws.Services),
+			decoder.BankListDecoder,
+			encoder.MainEncoder,
+			serverOpts...)).Methods(http.MethodGet)
+
+	router.Handle("/notification-type/user/{userId}",
+		transportHttp.NewServer(
+			endpoint.NotificationTypeEndpoints(ws.Services),
+			decoder.NotificationTypeDecoder,
+			encoder.MainEncoder,
+			serverOpts...)).Methods(http.MethodGet)
+
 	authSubRouter := router.PathPrefix("/auth").Subrouter()
 	authSubRouter.Use(middleware.JwtMiddleware)
 
@@ -120,20 +134,6 @@ func (ws *WebService) Init() {
 			decoder.SoundStatusDecoder,
 			encoder.MainEncoder,
 			serverOpts...)).Methods(http.MethodPost)
-
-	authSubRouter.Handle("/notification-type/user/{userId}",
-		transportHttp.NewServer(
-			endpoint.NotificationTypeEndpoints(ws.Services),
-			decoder.NotificationTypeDecoder,
-			encoder.MainEncoder,
-			serverOpts...)).Methods(http.MethodGet)
-
-	authSubRouter.Handle("/bank-list/user/{userId}",
-		transportHttp.NewServer(
-			endpoint.BankListEndpoints(ws.Services),
-			decoder.BankListDecoder,
-			encoder.MainEncoder,
-			serverOpts...)).Methods(http.MethodGet)
 
 	authSubRouter.Handle("/get-user-profile",
 		transportHttp.NewServer(

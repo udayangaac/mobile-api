@@ -208,7 +208,6 @@ func (u *userService) BankList(ctx context.Context, userId int) (resp interface{
 	var bank interface{}
 	bank, err = u.RepoContainer.MobileUserRepo.BankList(ctx, userId)
 	bankLists := []domain.BankListResponse{}
-	//userBankList := []domain.UserBankListResponse{}
 
 	if err != nil {
 		return

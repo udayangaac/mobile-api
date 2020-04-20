@@ -95,7 +95,6 @@ func NotificationTypeEndpoints(service services.Services) endpoint2.Endpoint {
 func BankListEndpoints(service services.Services) endpoint2.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		param := request.(entities.UserParam)
-		log.Info(param.UserId)
 		response, err = service.UserService.BankList(ctx, param.UserId)
 		if err != nil {
 			return
