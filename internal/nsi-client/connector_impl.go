@@ -6,7 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	log "github.com/sirupsen/logrus"
-	log_traceable "github.com/udayangaac/turbit-nsi/internal/lib/log-traceable"
+	log_traceable "github.com/udayangaac/mobile-api/internal/lib/log-traceable"
 	"net/http"
 	"time"
 )
