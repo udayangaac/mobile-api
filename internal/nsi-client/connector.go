@@ -31,11 +31,6 @@ type Notification struct {
 	LogoCompany      string    `json:"logo_company"`
 	ImagePublisher   string    `json:"image_publisher"`
 	Categories       []string  `json:"categories"`
-	Locations        []struct {
-		Lat string `json:"lat"`
-		Lon string `json:"lon"`
-	} `json:"locations"`
-	GeoHexIds []string `json:"geo_hex_ids"`
 }
 
 type NSIConnector interface {
