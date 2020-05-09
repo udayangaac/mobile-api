@@ -35,6 +35,9 @@ type UserService interface {
 	// Track User Location
 	TrackUserLocation(ctx context.Context, param domain.TrackUserLocation) (err error)
 
+	// Track User Reactions
+	TrackUserReaction(ctx context.Context, param domain.TrackUserReaction) (err error)
+
 	// pull notification
 	PullNotification(ctx context.Context, userId int, lat float64, lon float64) (resp entities.Notification, err error)
 

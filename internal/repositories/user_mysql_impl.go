@@ -283,3 +283,11 @@ func (m mobileAppUserMySqlRepo) TrackUserLocation(ctx context.Context, location 
 	}
 	return
 }
+
+func (m mobileAppUserMySqlRepo) TrackUserReaction(ctx context.Context, userResponse entities.MobileUserResponse) (err error) {
+	err = m.DB.Create(&userResponse).Error
+	if err != nil {
+		log.Info(err)
+	}
+	return
+}

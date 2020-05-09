@@ -272,3 +272,14 @@ func (u *userService) TrackUserLocation(ctx context.Context, param domain.TrackU
 	err = u.RepoContainer.MobileUserRepo.TrackUserLocation(ctx, location)
 	return
 }
+
+func (u *userService) TrackUserReaction(ctx context.Context, param domain.TrackUserReaction) (err error) {
+	log.Info(param)
+	reaction := entities.MobileUserResponse{
+		UserId: param.UserId,
+		NotificationId: param.NotificationId,
+		Status: param.Status,
+	}
+	err = u.RepoContainer.MobileUserRepo.TrackUserReaction(ctx, reaction)
+	return
+}
