@@ -204,7 +204,7 @@ ALTER TABLE `mobile_user_configuration`
 --
 -- Indexes for table `mobile_user_viewd_advertisment_list`
 --
-ALTER TABLE `mobile_user_viewd_advertisment_list`
+ALTER TABLE mobile_user_viewed_advertisement_lists
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `id` (`id`),
   ADD KEY `uid` (`user_id`) USING BTREE,
@@ -236,7 +236,7 @@ ALTER TABLE `mobile_user_configuration`
 --
 -- Constraints for table `mobile_user_viewd_advertisment_list`
 --
-ALTER TABLE `mobile_user_viewd_advertisment_list`
+ALTER TABLE mobile_user_viewed_advertisement_lists
   ADD CONSTRAINT `uid` FOREIGN KEY (`user_id`) REFERENCES `mobile_app_users` (`id`);
 COMMIT;
 

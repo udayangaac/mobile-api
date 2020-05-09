@@ -283,3 +283,14 @@ func (u *userService) TrackUserReaction(ctx context.Context, param domain.TrackU
 	err = u.RepoContainer.MobileUserRepo.TrackUserReaction(ctx, reaction)
 	return
 }
+
+func (u *userService) UserViewedNotifications(ctx context.Context, param domain.UserViewedNotification) (err error) {
+	log.Info(param)
+	reaction := entities.MobileUserViewedAdvertisementList{
+		UserId: param.UserId,
+		NotificationId: param.NotificationId,
+	}
+	err = u.RepoContainer.MobileUserRepo.UserViewedNotifications(ctx, reaction)
+	return
+}
+

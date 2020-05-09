@@ -291,3 +291,11 @@ func (m mobileAppUserMySqlRepo) TrackUserReaction(ctx context.Context, userRespo
 	}
 	return
 }
+
+func (m mobileAppUserMySqlRepo) UserViewedNotifications(ctx context.Context, userResponse entities.MobileUserViewedAdvertisementList) (err error) {
+	err = m.DB.Create(&userResponse).Error
+	if err != nil {
+		log.Info(err)
+	}
+	return
+}

@@ -38,6 +38,9 @@ type UserService interface {
 	// Track User Reactions
 	TrackUserReaction(ctx context.Context, param domain.TrackUserReaction) (err error)
 
+	// Record User Viewed Notifications
+	UserViewedNotifications(ctx context.Context, param domain.UserViewedNotification) (err error)
+
 	// pull notification
 	PullNotification(ctx context.Context, userId int, lat float64, lon float64) (resp entities.Notification, err error)
 

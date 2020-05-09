@@ -145,6 +145,7 @@ func TrackUserDecoder(ctx context.Context, r *http.Request) (interface{}, error)
 	}
 	return userLocation, nil
 }
+
 func TrackUserReactionDecoder(ctx context.Context, r *http.Request) (interface{}, error) {
 	userLocation := domain.TrackUserReaction{}
 	err := json.NewDecoder(r.Body).Decode(&userLocation)
@@ -154,3 +155,11 @@ func TrackUserReactionDecoder(ctx context.Context, r *http.Request) (interface{}
 	return userLocation, nil
 }
 
+func UserViewedAdvertisementListyDecoder(ctx context.Context, r *http.Request) (interface{}, error) {
+	userLocation := domain.UserViewedNotification{}
+	err := json.NewDecoder(r.Body).Decode(&userLocation)
+	if err != nil {
+		return nil, domain_errors.ErrBadRequest
+	}
+	return userLocation, nil
+}
