@@ -2,9 +2,9 @@
 
 host: 127.0.0.1
 port: 3306
-database: turbit
-user_name: jayan
-password: 123456
+database: turbit_gc
+user_name: chamith
+password: Cha@turbit
 max_open_conn: 100
 max_idle_conn: 50
 conn_max_life_time: 10000
