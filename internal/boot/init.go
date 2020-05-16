@@ -4,6 +4,8 @@ import (
 	"context"
 	log "github.com/sirupsen/logrus"
 	"github.com/udayangaac/mobile-api/internal/config"
+	"github.com/udayangaac/mobile-api/internal/ext_services"
+	nsi_client "github.com/udayangaac/mobile-api/internal/ext_services/nsi-client"
 	file_manager "github.com/udayangaac/mobile-api/internal/lib/file-manager"
 	log_traceable "github.com/udayangaac/mobile-api/internal/lib/log-traceable"
 	"github.com/udayangaac/mobile-api/internal/lib/orm"
@@ -33,9 +35,13 @@ func Init(ctx context.Context) {
 	repoContainer := repositories.RepoContainer{}
 	repoContainer.MobileUserRepo = repositories.NewMobileAppUser()
 
+	extServices := ext_services.Container{
+		NSIConnector: nsi_client.NewNSIConnector(config.CustomConf.NSIUrl),
+	}
+
 	// initialized the services
 	serviceContainer := services.Services{}
-	serviceContainer.UserService = user_service.NewUserService(repoContainer)
+	serviceContainer.UserService = user_service.NewUserService(repoContainer, extServices)
 
 	webService := http2.WebService{}
 	webService.Port = config.ServerConf.Port

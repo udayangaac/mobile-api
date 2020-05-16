@@ -5,6 +5,8 @@ import (
 	"errors"
 	"fmt"
 	log "github.com/sirupsen/logrus"
+	"github.com/udayangaac/mobile-api/internal/ext_services"
+	nsi_client "github.com/udayangaac/mobile-api/internal/ext_services/nsi-client"
 	log_traceable "github.com/udayangaac/mobile-api/internal/lib/log-traceable"
 
 	// log "github.com/sirupsen/logrus"
@@ -17,12 +19,14 @@ import (
 )
 
 type userService struct {
-	RepoContainer repositories.RepoContainer
+	RepoContainer       repositories.RepoContainer
+	ExtServiceContainer ext_services.Container
 }
 
-func NewUserService(repoContainer repositories.RepoContainer) UserService {
+func NewUserService(repoContainer repositories.RepoContainer, extServiceContainer ext_services.Container) UserService {
 	return &userService{
-		RepoContainer: repoContainer,
+		RepoContainer:       repoContainer,
+		ExtServiceContainer: extServiceContainer,
 	}
 }
 
@@ -140,14 +144,32 @@ func (u *userService) PushNotification(ctx context.Context, userId int, lat floa
 	return notification, err
 }
 
-func (u *userService) PullNotification(ctx context.Context, userId int, lat float64, lon float64) (resp entities.Notification, err error) {
-	notification := entities.Notification{}
-	notification, err = u.RepoContainer.MobileUserRepo.PullNotification(ctx, userId, lat, lon)
+func (u *userService) PullNotification(ctx context.Context, userId int, lat float64, lon float64) (resp interface{}, err error) {
+	var notification interface{}
+	notification, err = u.RepoContainer.MobileUserRepo.NotificationTypesList(ctx, userId)
+	categoriesStr := make([]string, 0)
 	if err != nil {
 		return
 	}
-
-	return notification, err
+	categories, ok := notification.([]entities.AdvertisementsList)
+	if !ok {
+		return nil, errors.New("cannot cast []entities.UserAdvertisementCategories")
+	}
+	for _, val := range categories {
+		categoriesStr = append(categoriesStr, val.CategoryName)
+	}
+	reqBody := nsi_client.RequestBody{
+		Lat:        fmt.Sprintf("%v", lat),
+		Lon:        fmt.Sprintf("%v", lon),
+		UserID:     userId,
+		Categories: nil,
+		IsNewest:   false,
+	}
+	esResponse, _, err := u.ExtServiceContainer.NSIConnector.GetNotifications(ctx, reqBody)
+	if err != nil {
+		return nil, err
+	}
+	return esResponse, err
 }
 
 func (u *userService) UserProfilePicture(ctx context.Context, userId int16) (resp domain.SettingsChangeResponse, err error) {
@@ -183,7 +205,7 @@ func (u *userService) SetLoginStatus(ctx context.Context, userId int, status int
 func (u *userService) NotificationTypes(ctx context.Context, userId int) (resp interface{}, err error) {
 	var notification interface{}
 	notification, err = u.RepoContainer.MobileUserRepo.NotificationTypesList(ctx, userId)
-	notificationTypes := []domain.NotificationTypes{}
+	var notificationTypes []domain.NotificationTypes
 	if err != nil {
 		return
 	}

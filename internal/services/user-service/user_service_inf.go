@@ -6,6 +6,9 @@ import (
 	"github.com/udayangaac/mobile-api/internal/entities"
 )
 
+type Notification struct {
+}
+
 // User management related functions are done by this service
 type UserService interface {
 	// add mobile user to the system,
@@ -30,13 +33,13 @@ type UserService interface {
 	GetUserProfile(ctx context.Context, userId int) (resp domain.UserProfileResponse, err error)
 
 	// User Profile
-	UpdateUserProfile(ctx context.Context, param domain.UserProfile, userId int, advertisementCategory []int, bankIdList []int ) (err error)
+	UpdateUserProfile(ctx context.Context, param domain.UserProfile, userId int, advertisementCategory []int, bankIdList []int) (err error)
 
 	// Track User Location
 	TrackUserLocation(ctx context.Context, param domain.TrackUserLocation) (err error)
 
 	// pull notification
-	PullNotification(ctx context.Context, userId int, lat float64, lon float64) (resp entities.Notification, err error)
+	PullNotification(ctx context.Context, userId int, lat float64, lon float64) (resp interface{}, err error)
 
 	// Set Location Permission
 	SetLocationPermission(ctx context.Context, userId int, Status int) (resp domain.SettingsChangeResponse, err error)

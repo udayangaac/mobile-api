@@ -3,6 +3,6 @@ jwt:
   key: "1qaz2ws"
   duration: 1000
 metrics_port: 8002
-resource_path: "/home/jayan/GolandProjects/mobile-api/src/images"
+resource_path: "./src/images"
 file_server_port: 8003
 cdn_path: "167.99.150.213:8003/file"
