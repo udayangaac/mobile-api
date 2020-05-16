@@ -136,8 +136,27 @@ func SoundStatusDecoder(ctx context.Context, r *http.Request) (interface{}, erro
 	}
 	return soundRequestParam, nil
 }
+
 func TrackUserDecoder(ctx context.Context, r *http.Request) (interface{}, error) {
 	userLocation := domain.TrackUserLocation{}
+	err := json.NewDecoder(r.Body).Decode(&userLocation)
+	if err != nil {
+		return nil, domain_errors.ErrBadRequest
+	}
+	return userLocation, nil
+}
+
+func TrackUserReactionDecoder(ctx context.Context, r *http.Request) (interface{}, error) {
+	userLocation := domain.TrackUserReaction{}
+	err := json.NewDecoder(r.Body).Decode(&userLocation)
+	if err != nil {
+		return nil, domain_errors.ErrBadRequest
+	}
+	return userLocation, nil
+}
+
+func UserViewedAdvertisementListyDecoder(ctx context.Context, r *http.Request) (interface{}, error) {
+	userLocation := domain.UserViewedNotification{}
 	err := json.NewDecoder(r.Body).Decode(&userLocation)
 	if err != nil {
 		return nil, domain_errors.ErrBadRequest

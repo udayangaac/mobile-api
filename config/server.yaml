@@ -5,4 +5,4 @@ jwt:
 metrics_port: 8002
 resource_path: "./src/images"
 file_server_port: 8003
-cdn_path: "167.99.150.213:8003/file"
+cdn_path: "134.122.123.88:8003/file"

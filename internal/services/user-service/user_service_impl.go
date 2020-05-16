@@ -255,7 +255,6 @@ func (u *userService) BankList(ctx context.Context, userId int) (resp interface{
 func (u *userService) GetUserProfile(ctx context.Context, userId int) (resp domain.UserProfileResponse, err error) {
 
 	userProfile := entities.MobileAppUser{}
-	//isBank := 0
 
 	userProfile, _, err = u.RepoContainer.MobileUserRepo.GetUserProfile(ctx, userId)
 
@@ -278,7 +277,7 @@ func (u *userService) GetUserProfile(ctx context.Context, userId int) (resp doma
 	resp.Configuration.SoundStatus = userProfile.SoundStatus
 	resp.Configuration.LocationServiceStatus = userProfile.LocationServiceStatus
 	resp.Configuration.AnyStatus = userProfile.AnyStatus
-	resp.UserAdvertisementsCategories = userProfile.UserAdvertisementCategories
+	// resp.UserAdvertisementsCategories = userProfile.UserAdvertisementCategories
 	// resp.IsbankSelected = isBank
 	resp.UserBanks = userProfile.UserBankList
 
@@ -295,3 +294,25 @@ func (u *userService) TrackUserLocation(ctx context.Context, param domain.TrackU
 	err = u.RepoContainer.MobileUserRepo.TrackUserLocation(ctx, location)
 	return
 }
+
+func (u *userService) TrackUserReaction(ctx context.Context, param domain.TrackUserReaction) (err error) {
+	log.Info(param)
+	reaction := entities.MobileUserResponse{
+		UserId: param.UserId,
+		NotificationId: param.NotificationId,
+		Status: param.Status,
+	}
+	err = u.RepoContainer.MobileUserRepo.TrackUserReaction(ctx, reaction)
+	return
+}
+
+func (u *userService) UserViewedNotifications(ctx context.Context, param domain.UserViewedNotification) (err error) {
+	log.Info(param)
+	reaction := entities.MobileUserViewedAdvertisementList{
+		UserId: param.UserId,
+		NotificationId: param.NotificationId,
+	}
+	err = u.RepoContainer.MobileUserRepo.UserViewedNotifications(ctx, reaction)
+	return
+}
+
