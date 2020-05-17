@@ -149,6 +149,7 @@ func (u *userService) PullNotification(ctx context.Context, userId int, lat floa
 	notification, err = u.RepoContainer.MobileUserRepo.NotificationTypesList(ctx, userId)
 	categoriesStr := make([]string, 0)
 	if err != nil {
+		log.Info(err)
 		return
 	}
 	categories, ok := notification.([]entities.AdvertisementsList)
@@ -167,6 +168,7 @@ func (u *userService) PullNotification(ctx context.Context, userId int, lat floa
 	}
 	esResponse, _, err := u.ExtServiceContainer.NSIConnector.GetNotifications(ctx, reqBody)
 	if err != nil {
+		log.Info(err)
 		return nil, err
 	}
 	return esResponse, err
