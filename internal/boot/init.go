@@ -25,6 +25,7 @@ func Init(ctx context.Context) {
 	config.Configurations{
 		new(config.ServerConfig),
 		new(config.DatabaseConfig),
+		new(config.CustomConfig),
 	}.Init(file_manager.NewYamlManager())
 
 	if err := orm.InitDatabase(config.DatabaseConf); err != nil {
