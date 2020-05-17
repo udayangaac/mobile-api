@@ -64,7 +64,7 @@ func PullNotificationEndpoints(service services.Services) endpoint2.Endpoint {
 		if err != nil {
 			return
 		}
-		response = notification
+		response = response
 		return
 	}
 }
