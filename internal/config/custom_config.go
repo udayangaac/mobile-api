@@ -11,7 +11,7 @@ import (
 var CustomConf CustomConfig
 
 type CustomConfig struct {
-	NSIUrl string ``
+	NSIUrl string `yaml:"nsi_url"`
 }
 
 func (cs *CustomConfig) Read(fm file_manager.FileManager) {

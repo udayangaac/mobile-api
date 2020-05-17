@@ -163,7 +163,7 @@ func (u *userService) PullNotification(ctx context.Context, userId int, lat floa
 		Lat:        fmt.Sprintf("%v", lat),
 		Lon:        fmt.Sprintf("%v", lon),
 		UserID:     userId,
-		Categories: nil,
+		Categories: categoriesStr,
 		IsNewest:   false,
 	}
 	esResponse, _, err := u.ExtServiceContainer.NSIConnector.GetNotifications(ctx, reqBody)
@@ -300,9 +300,9 @@ func (u *userService) TrackUserLocation(ctx context.Context, param domain.TrackU
 func (u *userService) TrackUserReaction(ctx context.Context, param domain.TrackUserReaction) (err error) {
 	log.Info(param)
 	reaction := entities.MobileUserResponse{
-		UserId: param.UserId,
+		UserId:         param.UserId,
 		NotificationId: param.NotificationId,
-		Status: param.Status,
+		Status:         param.Status,
 	}
 	err = u.RepoContainer.MobileUserRepo.TrackUserReaction(ctx, reaction)
 	return
@@ -311,10 +311,9 @@ func (u *userService) TrackUserReaction(ctx context.Context, param domain.TrackU
 func (u *userService) UserViewedNotifications(ctx context.Context, param domain.UserViewedNotification) (err error) {
 	log.Info(param)
 	reaction := entities.MobileUserViewedAdvertisementList{
-		UserId: param.UserId,
+		UserId:         param.UserId,
 		NotificationId: param.NotificationId,
 	}
 	err = u.RepoContainer.MobileUserRepo.UserViewedNotifications(ctx, reaction)
 	return
 }
-
