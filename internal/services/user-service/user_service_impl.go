@@ -8,6 +8,7 @@ import (
 	"github.com/udayangaac/mobile-api/internal/ext_services"
 	nsi_client "github.com/udayangaac/mobile-api/internal/ext_services/nsi-client"
 	log_traceable "github.com/udayangaac/mobile-api/internal/lib/log-traceable"
+	"strings"
 
 	// log "github.com/sirupsen/logrus"
 	"github.com/udayangaac/mobile-api/internal/config"
@@ -157,7 +158,7 @@ func (u *userService) PullNotification(ctx context.Context, userId int, lat floa
 		return nil, errors.New("cannot cast []entities.UserAdvertisementCategories")
 	}
 	for _, val := range categories {
-		categoriesStr = append(categoriesStr, val.CategoryName)
+		categoriesStr = append(categoriesStr, strings.ToLower(val.CategoryName))
 	}
 	reqBody := nsi_client.RequestBody{
 		Lat:        fmt.Sprintf("%v", lat),
