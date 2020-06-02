@@ -147,6 +147,7 @@ func (u *userService) PushNotification(ctx context.Context, userId int, lat floa
 
 func (u *userService) PullNotification(ctx context.Context, userId int, lat float64, lon float64) (resp interface{}, err error) {
 	var notification interface{}
+	var respPullNotification domain.PullResponse
 	notification, err = u.RepoContainer.MobileUserRepo.NotificationTypesList(ctx, userId)
 	categoriesStr := make([]string, 0)
 	if err != nil {
@@ -172,7 +173,11 @@ func (u *userService) PullNotification(ctx context.Context, userId int, lat floa
 		log.Info(err)
 		return nil, err
 	}
-	return esResponse, err
+
+	respPullNotification.Error = false
+	respPullNotification.Offers = esResponse
+
+	return respPullNotification, err
 }
 
 func (u *userService) UserProfilePicture(ctx context.Context, userId int16) (resp domain.SettingsChangeResponse, err error) {

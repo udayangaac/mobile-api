@@ -1,11 +1,11 @@
 package domain
 
+import (
+	nsi_client "github.com/udayangaac/mobile-api/internal/ext_services/nsi-client"
+)
+
 type PullResponse struct {
-	ID                  	int    `json:"id"`
-	NotificationCode    	string `json:"code"`
-	ProviderName        	int    `json:"provider_name"`
-	StatusLabel         	string `json:"status_label"`
-	Status              	string `json:"status"`
-	ProviderAvatar			string `json:"provider_avatar"`
-	NotificationContent 	string `json:"notification_content"`
+	Error     bool   `json:"error"`
+	Offers    []nsi_client.Notification `json:"offers"`
+	
 }

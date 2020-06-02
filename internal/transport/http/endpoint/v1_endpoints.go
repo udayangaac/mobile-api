@@ -57,7 +57,7 @@ func LogoutEndpoints(service services.Services) endpoint2.Endpoint {
 func PullNotificationEndpoints(service services.Services) endpoint2.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		param := request.(domain.PullRequest)
-		log.Info("pull request")
+
 		response, err = service.UserService.PullNotification(ctx, param.UserId, param.Location.Lat, param.Location.Lon)
 		log.Info(param.UserId)
 		if err != nil {
