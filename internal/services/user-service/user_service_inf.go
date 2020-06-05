@@ -47,6 +47,9 @@ type UserService interface {
 	// pull notification
 	PullNotification(ctx context.Context, userId int, lat float64, lon float64) (resp interface{}, err error)
 
+	// Pull search Notifications
+	PullSearchNotification(ctx context.Context, userId int, text string) (resp interface{}, err error)
+
 	// Set Location Permission
 	SetLocationPermission(ctx context.Context, userId int, Status int) (resp domain.SettingsChangeResponse, err error)
 

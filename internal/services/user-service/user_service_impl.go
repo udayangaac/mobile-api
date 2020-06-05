@@ -180,6 +180,26 @@ func (u *userService) PullNotification(ctx context.Context, userId int, lat floa
 	return respPullNotification, err
 }
 
+func (u *userService) PullSearchNotification(ctx context.Context, userId int, text string) (resp interface{}, err error) {
+	var respPullNotification domain.PullResponse
+
+	reqBody := nsi_client.RequestBody{
+		UserID:     userId,
+		SearchText : text,
+		IsNewest:   false,
+	}
+	esResponse, _, err := u.ExtServiceContainer.NSIConnector.GetNotifications(ctx, reqBody)
+	if err != nil {
+		log.Info(err)
+		return nil, err
+	}
+
+	respPullNotification.Error = false
+	respPullNotification.Offers = esResponse
+
+	return respPullNotification, err
+}
+
 func (u *userService) UserProfilePicture(ctx context.Context, userId int16) (resp domain.SettingsChangeResponse, err error) {
 	/*mobileAppUser := entities.MobileAppUser{}
 	mobileAppUser, err = u.RepoContainer.MobileUserRepo.UserProfilePicture(ctx, userId)

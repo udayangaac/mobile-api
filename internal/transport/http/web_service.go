@@ -100,6 +100,13 @@ func (ws *WebService) Init() {
 			encoder.MainEncoder,
 			serverOpts...)).Methods(http.MethodPost)
 
+	authSubRouter.Handle("/search",
+		transportHttp.NewServer(
+			endpoint.PullSearchNotificationEndpoints(ws.Services),
+			decoder.PullNotificationDecoder,
+			encoder.MainEncoder,
+			serverOpts...)).Methods(http.MethodPost)
+
 	authSubRouter.Handle("/settings/profile-picture",
 		transportHttp.NewServer(
 			endpoint.UserProfilePictureEndpoints(ws.Services),

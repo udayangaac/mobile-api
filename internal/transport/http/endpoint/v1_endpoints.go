@@ -67,6 +67,19 @@ func PullNotificationEndpoints(service services.Services) endpoint2.Endpoint {
 	}
 }
 
+func PullSearchNotificationEndpoints(service services.Services) endpoint2.Endpoint {
+	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
+		param := request.(domain.PullSearchRequest)
+
+		response, err = service.UserService.PullSearchNotification(ctx, param.UserId, param.SearchText)
+		log.Info(param.UserId)
+		if err != nil {
+			return
+		}
+		return
+	}
+}
+
 func PushNotificationEndpoints(service services.Services) endpoint2.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		notification := entities.Notification{}
