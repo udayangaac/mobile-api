@@ -4,11 +4,12 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"strings"
+
 	log "github.com/sirupsen/logrus"
 	"github.com/udayangaac/mobile-api/internal/ext_services"
 	nsi_client "github.com/udayangaac/mobile-api/internal/ext_services/nsi-client"
 	log_traceable "github.com/udayangaac/mobile-api/internal/lib/log-traceable"
-	"strings"
 
 	// log "github.com/sirupsen/logrus"
 	"github.com/udayangaac/mobile-api/internal/config"
@@ -185,8 +186,9 @@ func (u *userService) PullSearchNotification(ctx context.Context, userId int, te
 
 	reqBody := nsi_client.RequestBody{
 		UserID:     userId,
-		SearchText : text,
+		SearchText: text,
 		IsNewest:   false,
+		SearchTerm: text,
 	}
 	esResponse, _, err := u.ExtServiceContainer.NSIConnector.GetNotifications(ctx, reqBody)
 	if err != nil {

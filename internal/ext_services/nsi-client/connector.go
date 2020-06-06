@@ -19,6 +19,7 @@ type RequestBody struct {
 	UserID     int      `json:"user_id"`
 	Categories []string `json:"categories"`
 	IsNewest   bool     `json:"is_newest"`
+	SearchTerm string   `json:"search_term"`
 }
 
 type Notification struct {
