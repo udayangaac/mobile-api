@@ -47,6 +47,15 @@ func PullNotificationDecoder(ctx context.Context, r *http.Request) (interface{},
 	return pullNotificationRequestParam, nil
 }
 
+func PullSearchNotificationDecoder(ctx context.Context, r *http.Request) (interface{}, error) {
+	pullNotificationRequestParam := domain.PullSearchRequest{}
+	err := json.NewDecoder(r.Body).Decode(&pullNotificationRequestParam)
+	if err != nil {
+		return nil, domain_errors.ErrBadRequest
+	}
+	return pullNotificationRequestParam, nil
+}
+
 func PushNotificationDecoder(ctx context.Context, r *http.Request) (interface{}, error) {
 	pushNotificationRequestParam := domain.PushRequest{}
 	err := json.NewDecoder(r.Body).Decode(&pushNotificationRequestParam)

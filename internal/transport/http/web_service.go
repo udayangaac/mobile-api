@@ -103,7 +103,7 @@ func (ws *WebService) Init() {
 	authSubRouter.Handle("/search",
 		transportHttp.NewServer(
 			endpoint.PullSearchNotificationEndpoints(ws.Services),
-			decoder.PullNotificationDecoder,
+			decoder.PullSearchNotificationDecoder,
 			encoder.MainEncoder,
 			serverOpts...)).Methods(http.MethodPost)
 

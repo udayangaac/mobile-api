@@ -184,13 +184,18 @@ func (u *userService) PullNotification(ctx context.Context, userId int, lat floa
 func (u *userService) PullSearchNotification(ctx context.Context, userId int, text string) (resp interface{}, err error) {
 	var respPullNotification domain.PullResponse
 
+
 	reqBody := nsi_client.RequestBody{
+		Lat:        fmt.Sprintf("%v", 0),
+		Lon:        fmt.Sprintf("%v", 0),
 		UserID:     userId,
-		SearchText: text,
+		Categories: []string{},
 		IsNewest:   false,
 		SearchTerm: text,
 	}
+
 	esResponse, _, err := u.ExtServiceContainer.NSIConnector.GetNotifications(ctx, reqBody)
+
 	if err != nil {
 		log.Info(err)
 		return nil, err

@@ -72,5 +72,6 @@ func (n *nsiConnector) GetNotifications(ctx context.Context, param RequestBody) 
 		return
 	}
 
+
 	return body.Data.Notifications, body.Data.GeoRefID, err
 }
