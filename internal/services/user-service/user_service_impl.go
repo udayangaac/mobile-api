@@ -314,7 +314,7 @@ func (u *userService) GetUserProfile(ctx context.Context, userId int) (resp doma
 	resp.Configuration.AnyStatus = userProfile.AnyStatus
 	// resp.UserAdvertisementsCategories = userProfile.UserAdvertisementCategories
 	// resp.IsbankSelected = isBank
-	resp.UserBanks = userProfile.UserBankList
+	// resp.UserBanks = userProfile.UserBankList
 
 	return resp, err
 }
