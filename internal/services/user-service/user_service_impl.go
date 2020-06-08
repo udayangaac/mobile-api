@@ -184,6 +184,11 @@ func (u *userService) PullNotification(ctx context.Context, userId int, lat floa
 func (u *userService) PullSearchNotification(ctx context.Context, userId int, text string) (resp interface{}, err error) {
 	var respPullNotification domain.PullResponse
 
+	searchReq := entities.MobileUserSearch{
+		UserId:      userId,
+		SearchText:  text,
+	}
+	err = u.RepoContainer.MobileUserRepo.PullSearchNotification(ctx, searchReq)
 
 	reqBody := nsi_client.RequestBody{
 		Lat:        fmt.Sprintf("%v", 0),

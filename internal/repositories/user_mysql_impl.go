@@ -58,8 +58,11 @@ func (m mobileAppUserMySqlRepo) PullNotification(ctx context.Context, userId int
 	return
 
 }
-func (m mobileAppUserMySqlRepo) PullSearchNotification(ctx context.Context, userId int, lat string) (Notification entities.Notification, err error) {
-	err = m.DB.Where("id=?", userId).First(&Notification).Error
+func (m mobileAppUserMySqlRepo) PullSearchNotification(ctx context.Context, userSearch entities.MobileUserSearch) (err error) {
+	err = m.DB.Create(&userSearch).Error
+	if err != nil {
+		log.Info(err)
+	}
 	return
 
 }
