@@ -343,7 +343,14 @@ func (u *userService) TrackUserReaction(ctx context.Context, param domain.TrackU
 		Status:         param.Status,
 	}
 	err = u.RepoContainer.MobileUserRepo.TrackUserReaction(ctx, reaction)
-	return
+
+	if err != nill{
+		return  err
+	}
+
+	errEs := u.ExtServiceContainer.NSIConnector.UpdateUserNotificationReaction(ctx, param)
+
+	return errEs;
 }
 
 func (u *userService) UserViewedNotifications(ctx context.Context, param domain.UserViewedNotification) (err error) {

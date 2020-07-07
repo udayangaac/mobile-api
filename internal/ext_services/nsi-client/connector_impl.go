@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	log "github.com/sirupsen/logrus"
+	"github.com/udayangaac/mobile-api/internal/domain"
 	log_traceable "github.com/udayangaac/mobile-api/internal/lib/log-traceable"
 	"net/http"
 	"time"
@@ -74,4 +75,32 @@ func (n *nsiConnector) GetNotifications(ctx context.Context, param RequestBody) 
 
 
 	return body.Data.Notifications, body.Data.GeoRefID, err
+}
+
+func (n *nsiConnector) UpdateUserNotificationReaction(ctx context.Context, param domain.TrackUserReaction) (err error) {
+	var (
+		req     *http.Request
+		payload []byte
+	)
+
+	url := fmt.Sprintf("%s/tnsi/notifications", n.BaseUrl)
+
+	if payload, err = json.Marshal(param); err != nil {
+		return
+	}
+
+	if req, err = http.NewRequest(http.MethodPost, url, bytes.NewBuffer(payload)); err != nil {
+		return
+	}
+
+	if n.Client == nil {
+		n.init()
+		log.Warn(log_traceable.GetMessage(ctx, "Re initialize http client"))
+	}
+
+	if res, err = n.Client.Do(req); err != nil {
+		return
+	}
+
+	return err
 }

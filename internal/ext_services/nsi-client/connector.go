@@ -2,6 +2,7 @@ package nsi_client
 
 import (
 	"context"
+	"github.com/udayangaac/mobile-api/internal/domain"
 	"time"
 )
 
@@ -36,4 +37,5 @@ type Notification struct {
 
 type NSIConnector interface {
 	GetNotifications(ctx context.Context, param RequestBody) (notifications []Notification, geoRefId string, err error)
+	UpdateUserNotificationReaction(ctx context.Context, param domain.TrackUserReaction) (err error)
 }
