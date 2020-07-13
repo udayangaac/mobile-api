@@ -2,7 +2,6 @@ package nsi_client
 
 import (
 	"context"
-	"github.com/udayangaac/mobile-api/internal/domain"
 	"time"
 )
 
@@ -33,9 +32,16 @@ type Notification struct {
 	LogoCompany      string    `json:"logo_company"`
 	ImagePublisher   string    `json:"image_publisher"`
 	Categories       []string  `json:"categories"`
+	UserReaction     int       `json:"user_reaction"`
+}
+
+type TrackUserReaction struct {
+	UserId          int `json:"userId"`
+	NotificationId  int `json:"notificationId"`
+	Status          int `json:"status"`
 }
 
 type NSIConnector interface {
 	GetNotifications(ctx context.Context, param RequestBody) (notifications []Notification, geoRefId string, err error)
-	UpdateUserNotificationReaction(ctx context.Context, param domain.TrackUserReaction) (err error)
+	UpdateUserNotificationReaction(ctx context.Context, param TrackUserReaction) (err error)
 }
