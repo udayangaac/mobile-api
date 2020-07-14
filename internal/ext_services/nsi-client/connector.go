@@ -33,6 +33,7 @@ type Notification struct {
 	ImagePublisher   string    `json:"image_publisher"`
 	Categories       []string  `json:"categories"`
 	UserReaction     int       `json:"user_reaction"`
+	IsViewed         bool      `json:"is_viewed"`
 }
 
 type TrackUserReaction struct {
