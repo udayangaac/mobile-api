@@ -22,6 +22,7 @@ func TestNewNSIConnector(t *testing.T) {
 		UserID:     3,
 		Categories: []string{"food"},
 		IsNewest:   false,
+		SearchTerm: "Pizza",
 	}
 	notifications, gid, err := connector.GetNotifications(context.Background(), req)
 	if err != nil {

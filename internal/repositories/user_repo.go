@@ -6,7 +6,7 @@ import (
 )
 
 type MobileAppUserRepo interface {
-	AddMobileUser(ctx context.Context, mobileUser entities.MobileAppUser, mobileUserConfiguration entities.MobileUserConfiguration) (user entities.MobileAppUser,err error)
+	AddMobileUser(ctx context.Context, mobileUser entities.MobileAppUser, mobileUserConfiguration entities.MobileUserConfiguration) (user entities.MobileAppUser, err error)
 	GetMobileUserByEmail(ctx context.Context, email string) (mobileUser entities.MobileAppUser, err error)
 	UserLogout(ctx context.Context) (err error)
 	PushNotification(ctx context.Context, userId int, lat float64, lon float64) (notification entities.Notification, err error)

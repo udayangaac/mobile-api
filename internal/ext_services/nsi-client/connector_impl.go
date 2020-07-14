@@ -72,7 +72,6 @@ func (n *nsiConnector) GetNotifications(ctx context.Context, param RequestBody) 
 		return
 	}
 
-
 	return body.Data.Notifications, body.Data.GeoRefID, err
 }
 
@@ -82,9 +81,14 @@ func (n *nsiConnector) UpdateUserNotificationReaction(ctx context.Context, param
 		payload []byte
 	)
 
-	url := fmt.Sprintf("%s/tnsi/notifications", n.BaseUrl)
+	reqBody := UserReactionRequest{
+		UserReaction: param.Status,
+		IsViewed:     false,
+	}
 
-	if payload, err = json.Marshal(param); err != nil {
+	url := fmt.Sprintf("%s/tnsi/user/%v/notification/%v", n.BaseUrl, param.UserId, param.NotificationId)
+
+	if payload, err = json.Marshal(reqBody); err != nil {
 		return
 	}
 

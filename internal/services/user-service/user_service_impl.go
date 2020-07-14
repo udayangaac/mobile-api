@@ -185,8 +185,8 @@ func (u *userService) PullSearchNotification(ctx context.Context, userId int, te
 	var respPullNotification domain.PullResponse
 
 	searchReq := entities.MobileUserSearch{
-		UserId:      userId,
-		SearchText:  text,
+		UserId:     userId,
+		SearchText: text,
 	}
 	err = u.RepoContainer.MobileUserRepo.PullSearchNotification(ctx, searchReq)
 
@@ -344,13 +344,16 @@ func (u *userService) TrackUserReaction(ctx context.Context, param domain.TrackU
 	}
 	err = u.RepoContainer.MobileUserRepo.TrackUserReaction(ctx, reaction)
 
-	if err != nill{
-		return  err
+	if err != nil {
+		return err
 	}
-
-	errEs := u.ExtServiceContainer.NSIConnector.UpdateUserNotificationReaction(ctx, param)
-
-	return errEs;
+	userReaction := nsi_client.TrackUserReaction{
+		UserId:         reaction.UserId,
+		NotificationId: reaction.NotificationId,
+		Status:         reaction.Status,
+	}
+	errEs := u.ExtServiceContainer.NSIConnector.UpdateUserNotificationReaction(ctx, userReaction)
+	return errEs
 }
 
 func (u *userService) UserViewedNotifications(ctx context.Context, param domain.UserViewedNotification) (err error) {

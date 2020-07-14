@@ -67,7 +67,6 @@ func (m mobileAppUserMySqlRepo) PullSearchNotification(ctx context.Context, user
 
 }
 
-
 func (m mobileAppUserMySqlRepo) LocationTrack(ctx context.Context, userId int, status int) (err error) {
 	err = m.DB.Model(entities.MobileAppUser{}).Where("id = ?", userId).Update("location_service_status", status).Error
 	return
@@ -294,9 +293,10 @@ func (m mobileAppUserMySqlRepo) TrackUserLocation(ctx context.Context, location 
 }
 
 func (m mobileAppUserMySqlRepo) TrackUserReaction(ctx context.Context, userResponse entities.MobileUserResponse) (err error) {
-	err = m.DB.Create(&userResponse).Error
-
-	// err = m.DB.Where(MobileUserResponses{UserId : userResponse.UserId, NotificationId : userResponse.NotificationId}).Attrs(MobileUserResponses{Status: &userResponse.Status}).FirstOrCreate(&userResponse).Error;
+	err = m.DB.FirstOrCreate(&userResponse).Error
+	if userResponse.ID != 0 {
+		err = m.DB.Model(entities.MobileUserResponse{}).Where("id = ?", userResponse.ID).Update("status", userResponse.Status).Error
+	}
 	if err != nil {
 		log.Info(err)
 	}

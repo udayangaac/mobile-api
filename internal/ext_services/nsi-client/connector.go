@@ -36,9 +36,14 @@ type Notification struct {
 }
 
 type TrackUserReaction struct {
-	UserId          int `json:"userId"`
-	NotificationId  int `json:"notificationId"`
-	Status          int `json:"status"`
+	UserId         int `json:"userId"`
+	NotificationId int `json:"notificationId"`
+	Status         int `json:"status"`
+}
+
+type UserReactionRequest struct {
+	UserReaction int
+	IsViewed     bool
 }
 
 type NSIConnector interface {
