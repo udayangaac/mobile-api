@@ -43,8 +43,8 @@ type TrackUserReaction struct {
 }
 
 type UserReactionRequest struct {
-	UserReaction int
-	IsViewed     bool
+	UserReaction int `json:"user_reaction"`
+	Status       int `json:"status"`
 }
 
 type NSIConnector interface {

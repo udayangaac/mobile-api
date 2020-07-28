@@ -83,7 +83,7 @@ func (n *nsiConnector) UpdateUserNotificationReaction(ctx context.Context, param
 
 	reqBody := UserReactionRequest{
 		UserReaction: param.Status,
-		IsViewed:     false,
+		Status:       0,
 	}
 
 	url := fmt.Sprintf("%s/tnsi/user/%v/notification/%v", n.BaseUrl, param.UserId, param.NotificationId)

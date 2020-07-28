@@ -296,10 +296,9 @@ func (m mobileAppUserMySqlRepo) TrackUserReaction(ctx context.Context, userRespo
 	err = m.DB.FirstOrCreate(&userResponse).Error
 	if userResponse.ID != 0 {
 		err = m.DB.Model(entities.MobileUserResponse{}).Where("id = ?", userResponse.ID).Update("status", userResponse.Status).Error
+		return
 	}
-	if err != nil {
-		log.Info(err)
-	}
+	err = m.DB.Create(&userResponse).Error
 	return
 }
 
