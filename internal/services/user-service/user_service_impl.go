@@ -336,7 +336,7 @@ func (u *userService) TrackUserLocation(ctx context.Context, param domain.TrackU
 }
 
 func (u *userService) TrackUserReaction(ctx context.Context, param domain.TrackUserReaction) (err error) {
-	log.Info(param)
+	log.Info(log_traceable.GetMessage(ctx, "Track User Location Param", param))
 	reaction := entities.MobileUserResponse{
 		UserId:         param.UserId,
 		NotificationId: param.NotificationId,
@@ -345,6 +345,7 @@ func (u *userService) TrackUserReaction(ctx context.Context, param domain.TrackU
 	err = u.RepoContainer.MobileUserRepo.TrackUserReaction(ctx, reaction)
 
 	if err != nil {
+		log.Error(log_traceable.GetMessage(ctx, "Track User Location Error", err.Error()))
 		return err
 	}
 	userReaction := nsi_client.TrackUserReaction{
