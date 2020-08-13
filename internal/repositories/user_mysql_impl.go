@@ -293,12 +293,25 @@ func (m mobileAppUserMySqlRepo) TrackUserLocation(ctx context.Context, location 
 }
 
 func (m mobileAppUserMySqlRepo) TrackUserReaction(ctx context.Context, userResponse entities.MobileUserResponse) (err error) {
-	err = m.DB.FirstOrCreate(&userResponse).Error
-	if userResponse.ID != 0 {
-		err = m.DB.Model(entities.MobileUserResponse{}).Where("id = ?", userResponse.ID).Update("status", userResponse.Status).Error
-		return
-	}
+	//err = m.DB.FirstOrCreate(&userResponse).Error
+	//
+	//if userResponse.ID != 0 {
+	//	err = m.DB.Model(entities.MobileUserResponse{}).Where("id = ?", userResponse.ID).Update("status", userResponse.Status).Error
+	//	return
+	//} else {
+	//	err = m.DB.Create(&userResponse).Error
+	//}
+	//err = m.DB.Create(&userResponse).Error
+	//
+	//if err != nil {
+	//	log.Info(err)
+	//}
+	//
+	//return
 	err = m.DB.Create(&userResponse).Error
+	if err != nil {
+		log.Info(err)
+	}
 	return
 }
 
