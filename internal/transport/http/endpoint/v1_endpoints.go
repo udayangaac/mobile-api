@@ -176,6 +176,23 @@ func TrackUserReactionEndpoints(service services.Services) endpoint2.Endpoint {
 	}
 }
 
+func TrackUserPushReactionEndpoints(service services.Services) endpoint2.Endpoint {
+	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
+		param := request.(domain.TrackUserReaction)
+		log.Info(param)
+
+		err = service.UserService.TrackUserPushReaction(ctx, param)
+		log.Info(err)
+		if err != nil {
+			return
+		}
+		response = domain.SuccessResponse{
+			Message: "success",
+		}
+		return
+	}
+}
+
 func UserNotificationViewedStatsEndpoints(service services.Services) endpoint2.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		param := request.(domain.UserViewedNotification)

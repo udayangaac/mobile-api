@@ -170,6 +170,13 @@ func (ws *WebService) Init() {
 			encoder.MainEncoder,
 			serverOpts...)).Methods(http.MethodPost)
 
+	authSubRouter.Handle("/push-user-reaction",
+		transportHttp.NewServer(
+			endpoint.TrackUserPushReactionEndpoints(ws.Services),
+			decoder.TrackUserReactionDecoder,
+			encoder.MainEncoder,
+			serverOpts...)).Methods(http.MethodPost)
+
 	authSubRouter.Handle("/user-view-stat",
 		transportHttp.NewServer(
 			endpoint.UserNotificationViewedStatsEndpoints(ws.Services),

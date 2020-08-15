@@ -23,5 +23,6 @@ type MobileAppUserRepo interface {
 	UpdateUserProfile(ctx context.Context, mobileUser entities.MobileAppUser, mobileUserConfiguration entities.MobileUserConfiguration, userAdvertisementCategories []int, userBankList []int, userId int) (err error)
 	TrackUserLocation(ctx context.Context, location entities.UserLocationChanges) (err error)
 	TrackUserReaction(ctx context.Context, reaction entities.MobileUserResponse) (err error)
+	TrackUserPushReaction(ctx context.Context, reaction entities.MobileUserPushNotificationsResponse) (err error)
 	UserViewedNotifications(ctx context.Context, reaction entities.MobileUserViewedAdvertisementList) (err error)
 }

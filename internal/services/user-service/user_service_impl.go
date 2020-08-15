@@ -357,6 +357,28 @@ func (u *userService) TrackUserReaction(ctx context.Context, param domain.TrackU
 	return errEs
 }
 
+func (u *userService) TrackUserPushReaction(ctx context.Context, param domain.TrackUserReaction) (err error) {
+	log.Info(log_traceable.GetMessage(ctx, "Track User push Location Param", param))
+	reaction := entities.MobileUserPushNotificationsResponse{
+		UserId:         param.UserId,
+		NotificationId: param.NotificationId,
+		Status:         param.Status,
+	}
+	err = u.RepoContainer.MobileUserRepo.TrackUserPushReaction(ctx, reaction)
+
+	if err != nil {
+		log.Error(log_traceable.GetMessage(ctx, "Track User Location Error", err.Error()))
+		return err
+	}
+	userReaction := nsi_client.TrackUserReaction{
+		UserId:         reaction.UserId,
+		NotificationId: reaction.NotificationId,
+		Status:         reaction.Status,
+	}
+	errEs := u.ExtServiceContainer.NSIConnector.UpdateUserNotificationReaction(ctx, userReaction)
+	return errEs
+}
+
 func (u *userService) UserViewedNotifications(ctx context.Context, param domain.UserViewedNotification) (err error) {
 	log.Info(param)
 	reaction := entities.MobileUserViewedAdvertisementList{
