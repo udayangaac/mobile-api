@@ -82,13 +82,13 @@ func PullSearchNotificationEndpoints(service services.Services) endpoint2.Endpoi
 
 func PushNotificationEndpoints(service services.Services) endpoint2.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
-		notification := entities.Notification{}
 		param := request.(domain.PushRequest)
-		notification, err = service.UserService.PushNotification(ctx, param.UserId, param.Location.Lat, param.Location.Lon)
+
+		response, err = service.UserService.PushNotification(ctx, param.UserId, param.Location.Lat, param.Location.Lon)
 		if err != nil {
 			return
 		}
-		response = notification
+
 		return
 	}
 }

@@ -136,14 +136,46 @@ func (u *userService) LogOut(ctx context.Context, param domain.LoginRequest) (re
 	return
 }
 
-func (u *userService) PushNotification(ctx context.Context, userId int, lat float64, lon float64) (resp entities.Notification, err error) {
-	notification := entities.Notification{}
-	notification, err = u.RepoContainer.MobileUserRepo.PushNotification(ctx, userId, lat, lon)
+func (u *userService) PushNotification(ctx context.Context, userId int, lat float64, lon float64) (resp interface{}, err error)  {
+	//notification := entities.Notification{}
+	//notification, err = u.RepoContainer.MobileUserRepo.PushNotification(ctx, userId, lat, lon)
+	//if err != nil {
+	//	return
+	//}
+	//
+	//return notification, err
+	var notification interface{}
+	var respPullNotification domain.PullResponse
+	notification, err = u.RepoContainer.MobileUserRepo.NotificationTypesList(ctx, userId)
+	categoriesStr := make([]string, 0)
 	if err != nil {
+		log.Info(err)
 		return
 	}
+	categories, ok := notification.([]entities.AdvertisementsList)
+	if !ok {
+		return nil, errors.New("cannot cast []entities.UserAdvertisementCategories")
+	}
+	for _, val := range categories {
+		categoriesStr = append(categoriesStr, strings.ToLower(val.CategoryName))
+	}
+	reqBody := nsi_client.RequestBody{
+		Lat:        fmt.Sprintf("%v", lat),
+		Lon:        fmt.Sprintf("%v", lon),
+		UserID:     userId,
+		Categories: categoriesStr,
+		IsNewest:   false,
+	}
+	esResponse, _, err := u.ExtServiceContainer.NSIConnector.GetNotifications(ctx, reqBody)
+	if err != nil {
+		log.Info(err)
+		return nil, err
+	}
 
-	return notification, err
+	respPullNotification.Error = false
+	respPullNotification.Offers = esResponse
+
+	return respPullNotification, err
 }
 
 func (u *userService) PullNotification(ctx context.Context, userId int, lat float64, lon float64) (resp interface{}, err error) {

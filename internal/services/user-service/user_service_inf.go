@@ -3,7 +3,6 @@ package user_service
 import (
 	"context"
 	"github.com/udayangaac/mobile-api/internal/domain"
-	"github.com/udayangaac/mobile-api/internal/entities"
 )
 
 type Notification struct {
@@ -21,7 +20,7 @@ type UserService interface {
 	LogOut(ctx context.Context, param domain.LoginRequest) (resp domain.LogoutResponse, err error)
 
 	// push notification
-	PushNotification(ctx context.Context, userId int, lat float64, lon float64) (resp entities.Notification, err error)
+	PushNotification(ctx context.Context, userId int, lat float64, lon float64) (resp interface{}, err error)
 
 	// Notification Types
 	NotificationTypes(ctx context.Context, userId int) (resp interface{}, err error)
